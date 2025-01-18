@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings #for MEdia Manging Step4
 from django.conf.urls.static import static #For Media Manging and Static step4
-from django.conf.urls import url
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('home.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)#For Media Manging Step4
 
 static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
