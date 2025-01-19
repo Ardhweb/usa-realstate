@@ -169,3 +169,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+.migrations
+.migrations/** */
+
+# Ignore all migrations folders
+**/migrations/
+
+# Ignore all __pycache__ folders
+**/__pycache__/

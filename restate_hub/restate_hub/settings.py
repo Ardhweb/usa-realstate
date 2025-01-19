@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'firm_module',
     'transactions_module',
     'membership_module',
+    'agent_module',
+    'library',
 ]
 
 MIDDLEWARE = [
