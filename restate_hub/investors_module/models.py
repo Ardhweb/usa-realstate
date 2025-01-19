@@ -5,7 +5,7 @@ from buyer_module.models import Buyers
 from seller_module.models import Sellers
 from agent_module.models import Agents
 # Create your models here.
-class Inverstors(BaseModel):
+class Investors(BaseModel):
     investor_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     first_name = models.CharField(max_length=50,blank=False, null=True)
     last_name =  models.CharField(max_length=50,blank=False, null=True)
