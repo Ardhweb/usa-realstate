@@ -10,3 +10,6 @@ def sign_up(request):
 
 def login_page(request):
     return render(request, 'home/login.html')
+
+def member_page(request):
+    return render(request, 'home/member_profile.html')
