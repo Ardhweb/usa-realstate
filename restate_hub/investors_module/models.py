@@ -1,8 +1,6 @@
 from django.db import models
 from core.models import BaseModel
 import shortuuid
-from buyer_module.models import Buyers
-from seller_module.models import Sellers
 from agent_module.models import Agents
 # Create your models here.
 class Investors(BaseModel):

@@ -2,8 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-class MyModel(models.Model):
-    name = models.CharField(max_length=100)
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -40,3 +38,4 @@ class Address(models.Model):
     region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
     postal_code = models.ForeignKey(PostalCode, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
+    

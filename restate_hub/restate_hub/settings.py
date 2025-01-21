@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'membership_module',
     'agent_module',
     'library',
+    'message_track',
+    'lender_module',
 ]
 
 MIDDLEWARE = [
