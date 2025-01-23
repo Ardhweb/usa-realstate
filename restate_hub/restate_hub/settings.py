@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'library',
     'message_track',
     'lender_module',
+    'accounts',
 ]
 
 MIDDLEWARE = [
