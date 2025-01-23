@@ -13,3 +13,6 @@ def login_page(request):
 
 def member_page(request):
     return render(request, 'home/member_profile.html')
+
+def property_page(request):
+    return render(request, 'home/property_listing.html')
