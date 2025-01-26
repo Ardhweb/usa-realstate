@@ -15,7 +15,8 @@
             <!-- Login & Signup buttons -->
             <div class="ms-3">
                 {% if request.user.is_authenticated %}
-                <a class="btn btn-outline-primary me-2" href="#">Logout</a>
+                <span class="fw-semibold"> Welcome , {{user.username}}</span>
+                <a class="btn btn-outline-primary me-2" href="{% url "accounts:logout" %}">Logout</a>
                  {% else %}
                  <a class="btn btn-outline-primary me-2" href="#">Log In</a>
                  <a class="btn btn-outline-primary me-2" href="{% url "accounts:register" %}">Sign Up</a>

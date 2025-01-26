@@ -6,6 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignupForm                                     
 from django.contrib import auth, messages
 
+def user_logout(request):
+    logout()
+    return redirect("home")
+    
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -36,7 +40,10 @@ def new_user_register(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
-            return redirect('home')
+            user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+            return redirect('membership_module:member_profile')
     else:
         user_form = SignupForm()
     return render(request,'accounts/register.html',{'user_form': user_form})
