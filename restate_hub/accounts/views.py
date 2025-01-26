@@ -6,6 +6,10 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignupForm                                     
 from django.contrib import auth, messages
 
+def user_logout(request):
+    logout(request)
+    return redirect("home")
+    
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -15,19 +19,21 @@ def user_login(request):
                                         username=cd['username'],
                                         password=cd['password'])
             if user is not None:
-                if user.is_active:
+                #verificatikn logic checking user
+                if user.is_active and user.is_email_verified==True: #and user.is_phone_verified==True:
                     login(request, user)
-                    return HttpResponse('Authenticated '\
-                                        'successfully')
+                    return redirect("property_module:property-listing")
+                elif user.is_active and user.is_email_verified==False:
+                    login(request, user)
+                    #return to property listing
+                    return redirect("membership_module:member_profile")
                 else:
                     return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login')
-    
-        
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'accounts/login.html', {'form': form})
 
 def new_user_register(request):
     if request.method == 'POST':
@@ -36,7 +42,17 @@ def new_user_register(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
-            return redirect('home')
+            user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+            return redirect('membership_module:member_profile')
     else:
         user_form = SignupForm()
     return render(request,'accounts/register.html',{'user_form': user_form})
+
+
+def send_email_kode(request):
+    return "s"
+
+def email_kode_verifiy(request):
+    return "s"

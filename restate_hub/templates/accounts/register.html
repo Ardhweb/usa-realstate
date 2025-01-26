@@ -1,13 +1,87 @@
 {% extends "accounts/base.html" %}
+{% load static %}
 {% block title %}<title>Signup</title>{% endblock title %}
-
+{% block custom_style %}<link rel="stylesheet" href="{% static "css/outerrim.css" %}">{% endblock custom_style %}
 {% block content %}
-<div class="container">
-    <h4>Signup</h4>
-     <form method="POST">
-        {% csrf_token %}
-         {{user_form.as_p}}
-     </form>
-</div>
+
+ 
+     <main class="signup-main">
+        <div class="container signup-container-wrapper">
+            <div class="signup-left-section">
+                
+                <div class="signup-left-text">
+                     <h2 class="signup-left-title">Join Our Community!</h2>
+                    <p class="signup-left-para">
+                     Discover the perfect home with us. Sign up now and unlock access to our extensive property listings!
+                    </p>
+                </div>
+            </div>
+            <div class="signup-form rounded shadow-regular bg-white border p-4">
+                 <h3 class="signup-title">Create Your Account</h3>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="messages {% if message.tags %} {{ message.tags }} {% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                 <form method="post" class="form-style">
+                     {% csrf_token %}
+                     <div class="form-group">
+                        <label for="username">Username:</label>
+                        {{user_form.username}}
+                     </div>
+                     <div class="form-group">
+                        <label for="email">Email:</label>
+                        {{user_form.email}}
+                     </div>
+                     <div class="form-group">
+                        <label for="member_type">Member Type:</label>
+                        <select id="member_type_select" name="member_type" class="form-select" required>
+                            <option value="">Select Member Type</option>
+                            {% if member_type %}
+                            {% for member_type in member_types %}
+                                <option value="{{ member_type.id }}">{{ member_type.name }}</option>
+                            {% endfor %}
+                            {% else %}
+                            <option value="Buyer">Buyer</option>
+                            <option value="Buyer">Seller</option>
+                            <option value="Buyer">Agent</option>
+                            {% endif %}
+                        </select>
+                     </div>
+                     <div class="form-group">
+                        <label for="password">Password:</label>
+                        {{user_form.password}}
+                        <br>
+                        <small class="form-text text-muted">Password requirements: 8 characters, at least one special character, and one number.</small>
+                     </div>
+                      <div class="form-group">
+                        <label for="password2">Confirm Password:</label>
+                        {{user_form.password2}}
+                     </div>
+                     <div class="form-group">
+                        <label for="message">Message:</label>
+                        {{user_form.message}}
+                     </div>
+
+                     {{user_form.member_type}}
+                    
+                    <button type="submit" class="btn btn-success  w-100 mt-2">Submit <i class="fas fa-user-plus"></i></button>
+                    <p class="mt-3 text-center">
+                        Already have an account? <a href="/login" class="login-link">Log in</a>
+                     </p>
+                </form>
+            </div>
+        </div>
+    </main>
+<script>
+    document.getElementById('member_type_select').addEventListener('change', function () {
+        const selectedValuemem = this.value; // Get the selected value
+        let  member_tyo = document.getElementById('member_type_vale')
+        member_tyo.value = selectedValuemem
+    });
+    
+</script>
 
 {% endblock content %}
