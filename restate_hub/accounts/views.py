@@ -7,7 +7,7 @@ from .forms import LoginForm, SignupForm
 from django.contrib import auth, messages
 
 def user_logout(request):
-    logout()
+    logout(request)
     return redirect("home")
     
 def user_login(request):
@@ -21,17 +21,14 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Authenticated '\
-                                        'successfully')
+                    return redirect("home")
                 else:
                     return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login')
-    
-        
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'accounts/login.html', {'form': form})
 
 def new_user_register(request):
     if request.method == 'POST':
