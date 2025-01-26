@@ -194,8 +194,8 @@ body {
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="/signup/">Sign Up</a></li>
-                         <li class="nav-item"><a class="nav-link" href="/memberprofile/">Member Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/properties/">Properties</a></li>
+                         <li class="nav-item"><a class="nav-link" href="/member/">Member Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/property/">Properties</a></li>
                     </ul>
                 </div>
             </div>
@@ -203,7 +203,7 @@ body {
     </header>
     <main class="member-profile-main">
         <div class="container">
-            <h1 class="member-profile-title">Member Profile</h1>
+           <h1 class="member-profile-title">Member Profile</h1>
             <div class="member-profile-form">
                  <div class="row">
                      <div class="col-md-6">
@@ -212,34 +212,17 @@ body {
                            <input type="text" id="first_name" name="first_name" class="form-control"  readonly value="{{ member.first_name }}">
                        </div>
                        <div class="form-group">
-                            <label for="street_address">Street Address:</label>
-                           <input type="text" id="street_address" name="street_address" class="form-control"  readonly value="{{ member.street_address }}">
-                       </div>
-                          <div class="form-group">
-                            <label for="suite_number">Suite Number:</label>
-                           <input type="text" id="suite_number" name="suite_number" class="form-control"  value="{{ member.suite_number }}">
+                        <label for="street_number">Street Number:</label>
+                        <input type="text" id="street_number" name="street_number" class="form-control" readonly value="{{ member.street_number }}"> 
                        </div>
                        <div class="form-group">
-                             <label for="membership_type">Membership Type:</label>
-                             <select id="membership_type" name="membership_type" class="form-select" required>
-                                <option value="">Select Member Type</option>
-                                {% for member_type in member_types %}
-                                   <option value="{{ member_type.id }}" {% if member.membership_type == member_type.id %} selected {% endif %}>{{ member_type.name }}</option>
-                                {% endfor %}
-                            </select>
-                       </div>
-                         <div class="form-group" >
-                                <label for="lease_back">Leaseback:</label>
-                                <select id="lease_back" name="lease_back" class="form-select" >
-                                    <option value="none"  {% if member.lease_back == 'none' %} selected {% endif %}>None</option>
-                                    <option value="yes"  {% if member.lease_back == 'yes' %} selected {% endif %}>Yes</option>
-                                    <option value="no"  {% if member.lease_back == 'no' %} selected {% endif %}>No</option>
-                                </select>
-                            </div>
-                          <div class="form-group">
-                             <label for="agent_handling">Agent Handling:</label>
-                              <input type="text" id="agent_handling" name="agent_handling" class="form-control" readonly value="{{ member.agent_handling }}">
-                         </div>
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" class="form-control"  readonly value="{{ member.phone }}">
+                    </div>                     
+                    <div class="form-group">
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" class="form-control" readonly value="{{ member.city }}">
+                   </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
@@ -247,41 +230,20 @@ body {
                            <input type="text" id="last_name" name="last_name" class="form-control" readonly value="{{ member.last_name }}">
                        </div>
                        <div class="form-group">
-                           <label for="city">City:</label>
-                           <input type="text" id="city" name="city" class="form-control" readonly value="{{ member.city }}">
-                      </div>
+                        <label for="street_address">Street Address:</label>
+                       <input type="text" id="street_address" name="street_address" class="form-control"  readonly value="{{ member.street_address }}">
+                   </div>
+
                       <div class="form-group">
                          <label for="email">Email:</label>
                          <input type="email" id="email" name="email" class="form-control" readonly value="{{ member.email }}">
                        </div>
-                      <div class="form-group">
-                          <label for="phone">Phone #:</label>
-                          <input type="text" id="phone" name="phone" class="form-control"  readonly value="{{ member.phone }}">
-                      </div>
-
-                   <div class="form-group">
-                          <label for="reason_selling">Reason For Selling</label>
-                          <select id="reason_selling" name="reason_selling" class="form-select">
-                               <option value="">Select Reason For Selling</option>
-                                {% for reason in reasons %}
-                                   <option value="{{ reason.id }}"  {% if member.reason_selling == reason.id %} selected {% endif %}>{{ reason.name }}</option>
-                                {% endfor %}
-                           </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="leaseback_months">Lease Back Months</label>
-                        <input 
-                            type="text" 
-                            id="leaseback_months" 
-                            name="leaseback_months" 
-                            class="form-control" 
-                            value="{{ member.leaseback_months }}" 
-                            min="1" 
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '');"
-                            required
-                        >
-                    </div>
+                       <div class="form-group">
+                    <label for="membership_type">Membership Type:</label>
+                    <input type="text" id="membership_type" name="membership_type" class="form-control" readonly value="{{ member.membership_type }}">
+              </div>
                     
+                      
                      </div>
                  </div>
                <div class="row mt-3">
@@ -298,36 +260,35 @@ body {
                      </div>
                  </div>
                </div>
-
-                 <div class="row mt-3">
-                   <div class="col-md-6">
-                       <div class="form-group">
-                          <label for="has_agent">Do you have an agent?</label>
-                            <select id="has_agent" name="has_agent" class="form-select">
-                                 <option value="no"  {% if member.has_agent == 'no' %} selected {% endif %}>No</option>
-                                 <option value="yes"  {% if member.has_agent == 'yes' %} selected {% endif %}>Yes</option>
-                            </select>
-                        </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                           <label for="has_agent">Do you have an agent?</label>
+                             <select id="has_agent" name="has_agent" class="form-select">
+                                  <option value="no">No</option>
+                                  <option value="yes">Yes</option>
+                             </select>
+                         </div>
                     </div>
-                      <div class="col-md-6">
-                           <div class="form-group">
-                              <label for="business_name">Business Name:</label>
-                             <input type="text" id="business_name" name="business_name" class="form-control" readonly value="{{ member.business_name }}">
-                          </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                           <label for="business_name">Business Name:</label>
+                          <input type="text" id="business_name" name="business_name" class="form-control" readonly value="{{ member.business_name }}">
                       </div>
+                    </div>             
                 </div>
                   <div id="agent-section" style="display: none;">
                       <div class="row mt-3">
                         <div class="col-md-6">
                              <div class="form-group">
                               <label for="agent_first_name">Agent First Name:</label>
-                              <input type="text" id="agent_first_name" name="agent_first_name" class="form-control" placeholder="Enter Agent First Name" value="{{ member.agent_first_name }}">
+                              <input type="text" id="agent_first_name" name="agent_first_name" class="form-control" placeholder="Enter Agent First Name">
                           </div>
                        </div>
                          <div class="col-md-6">
                              <div class="form-group">
                                   <label for="agent_last_name">Agent Last Name:</label>
-                                 <input type="text" id="agent_last_name" name="agent_last_name" class="form-control"  placeholder="Enter Agent Last Name"  value="{{ member.agent_last_name }}">
+                                 <input type="text" id="agent_last_name" name="agent_last_name" class="form-control"  placeholder="Enter Agent Last Name">
                             </div>
                           </div>
                        </div>
@@ -335,31 +296,20 @@ body {
                         <div class="col-md-6">
                              <div class="form-group">
                               <label for="agent_phone">Agent Phone #:</label>
-                              <input type="text" id="agent_phone" name="agent_phone" class="form-control" placeholder="Enter Agent Phone #" value="{{ member.agent_phone }}">
+                              <input type="text" id="agent_phone" name="agent_phone" class="form-control" placeholder="Enter Agent Phone #">
                          </div>
                         </div>
                         <div class="col-md-6">
                            <div class="form-group">
                              <label for="agent_email">Agent Email:</label>
-                            <input type="email" id="agent_email" name="agent_email" class="form-control"  placeholder="Enter Agent Email"  value="{{ member.agent_email }}">
+                            <input type="email" id="agent_email" name="agent_email" class="form-control"  placeholder="Enter Agent Email">
                            </div>
                          </div>
                      </div>
-
-                   <div class="row mt-3">
-                         <div class="col-md-12">
-                         <div class="form-group">
-                            <label for="exclusive_agreement">Did you sign an exclusive right listing agreement with your agent?</label>
-                               <select id="exclusive_agreement" name="exclusive_agreement" class="form-select" >
-                                   <option value="no"  {% if member.exclusive_agreement == 'no' %} selected {% endif %}>No</option>
-                                   <option value="yes"  {% if member.exclusive_agreement == 'yes' %} selected {% endif %}>Yes</option>
-                               </select>
-                             </div>
-                            </div>
-                       </div>
                    </div>
-                 <div class="row mt-3">
-                   <div class="col-md-4">
+
+                <div class="row mt-3">
+                    <div class="col-md-4">
                          <div class="form-group">
                              <label for="one_time_fee">One-Time Setup Fee:</label>
                             <input type="text" id="one_time_fee" name="one_time_fee" class="form-control"  readonly value="{{ member.one_time_fee }}">
@@ -378,22 +328,17 @@ body {
                          </div>
                     </div>
                </div>
-              <div class="row mt-4 mb-4">
-                  <div class="col-md-12 text-center">
-                         <a href="/properties" class="btn btn-primary">Click to Enter Property Info</a>
-                   </div>
-              </div>
                <div class="row mt-4">
                  <div class="col-md-12">
                     <div class="form-group">
-                     <label for="send_question">Send a Question to Admin:</label>
+                     <label for="send_question">Send a Question to Admin(Optional):</label>
                       <textarea id="send_question" name="send_question" class="form-control" rows="3"  placeholder="Type your message here..."></textarea>
                     </div>
                  </div>
                 </div>
                  <div class="row mt-3 mb-4">
                      <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-success">Send <i class="fas fa-paper-plane"></i></button>
+                        <button type="submit" class="btn btn-success">Submit <i class="fas fa-paper-plane"></i></button>
                      </div>
                   </div>
             </div>
@@ -404,7 +349,7 @@ body {
      </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-          <script>
+        <script>
         document.getElementById('has_agent').addEventListener('change', function() {
             const agentSection = document.getElementById('agent-section');
             agentSection.style.display = this.value === 'yes' ? 'block' : 'none';
