@@ -409,6 +409,38 @@ input::placeholder {
 .row {
     margin-bottom: 20px;
 }
+
+/* Modified styles for horizontal slider */
+.property-slider-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Keep items on one line */
+    padding-bottom: 20px; /* Add some space at the bottom to account for scroll bar */
+    margin-top: 20px; /* Add space before the slider */
+}
+
+.property-grid {
+    display: inline-block; /* Make elements inline-block */
+    width: 300px; /* Set a fixed width for cards */
+    margin-right: 20px;
+    vertical-align: top;/* Align cards to top */
+    /* Add other stylings you might want */
+    transition: all 0.3s ease-in-out;
+}
+.property-grid:last-child{
+    margin-right: 0; /* Remove right margin of the last element */
+}
+
+/* Hide scrollbar for Webkit browsers */
+.property-slider-container::-webkit-scrollbar {
+    width: 0px; /* Set width to 0 */
+    height: 0px;  /* Set height to 0 */
+    background: transparent;
+}
+
+/* Hide scrollbar for non-Webkit browsers */
+.property-slider-container {
+    scrollbar-width: none; /* "auto" or "thin" or "none" */
+}
 </style>
 <body>
     <!-- Navbar -->
@@ -422,7 +454,7 @@ input::placeholder {
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Listings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="property">Listings</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 </ul>
                 <!-- Login & Signup buttons -->
@@ -516,16 +548,40 @@ input::placeholder {
 
         <!-- Property Display Grid -->
         <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-4 property-grid">
+            <div class="property-slider-container">
+                <div class="property-grid">
                     <img src="{% static 'images/property1.jpg' %}" alt="Property 1">
                     <p>Luxury Apartment</p>
                 </div>
-                <div class="col-md-4 property-grid">
+                <div class="property-grid">
                     <img src="{% static 'images/property2.jpg' %}" alt="Property 2">
                     <p>Spacious Villa</p>
                 </div>
-                <div class="col-md-4 property-grid">
+                <div class="property-grid">
+                    <img src="{% static 'images/property3.jpg' %}" alt="Property 3">
+                    <p>Modern Office Space</p>
+                </div>
+                <div class="property-grid">
+                    <img src="{% static 'images/property1.jpg' %}" alt="Property 1">
+                    <p>Luxury Apartment</p>
+                </div>
+                <div class="property-grid">
+                    <img src="{% static 'images/property2.jpg' %}" alt="Property 2">
+                    <p>Spacious Villa</p>
+                </div>
+                <div class="property-grid">
+                    <img src="{% static 'images/property3.jpg' %}" alt="Property 3">
+                    <p>Modern Office Space</p>
+                </div>
+                  <div class="property-grid">
+                    <img src="{% static 'images/property1.jpg' %}" alt="Property 1">
+                    <p>Luxury Apartment</p>
+                </div>
+                <div class="property-grid">
+                    <img src="{% static 'images/property2.jpg' %}" alt="Property 2">
+                    <p>Spacious Villa</p>
+                </div>
+                <div class="property-grid">
                     <img src="{% static 'images/property3.jpg' %}" alt="Property 3">
                     <p>Modern Office Space</p>
                 </div>

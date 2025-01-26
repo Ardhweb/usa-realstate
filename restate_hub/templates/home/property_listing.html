@@ -4,274 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate App - Property Listings</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Property Listings</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <style>
-       /* General Styling */
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-    color: #333;
-}
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+    
+    .navbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar {
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+        background-color: #e3f2fd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
 
-.container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    .navbar:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
 
-/* Navbar */
-.navbar {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-.navbar {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-    background-color: #e3f2fd;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
+    .navbar-brand {
+        color: #1a3a63;
+        font-weight: bold;
+        font-size: 1.6rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
 
-.navbar:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
+    .navbar-brand:hover {
+        color: #0d2b50;
+        transform: scale(1.05);
+    }
 
-/* Navbar brand */
-.navbar-brand {
-    color: #1a3a63;
-    font-weight: bold;
-    font-size: 1.6rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
+    .navbar a.nav-link {
+        color: #1a3a63;
+        font-size: 1.1rem;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
 
-.navbar-brand:hover {
-    color: #0d2b50;
-    transform: scale(1.05);
-}
-
-/* Navbar links */
-.navbar a.nav-link {
-    color: #1a3a63;
-    font-size: 1.1rem;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar a.nav-link:hover {
-    color: #0d2b50;
-    transform: scale(1.1);
-}
-
-/* Button Styles */
-.navbar .btn {
-    font-size: 1rem;
-    padding: 10px 24px;
-    border-radius: 25px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-}
-
-/* Button hover effects */
-.navbar .btn-outline-primary:hover {
-    background-color: #1a3a63;
-    color: white;
-    transform: scale(1.05);
-}
-
-.navbar .btn-primary:hover {
-    background-color: #0d2b50;
-    color: white;
-    transform: scale(1.05);
-}
-/* Responsive Navbar */
-@media (max-width: 991px) {
-    .navbar-nav {
-        text-align: center;
-        margin-top: 15px;
+    .navbar a.nav-link:hover {
+        color: #0d2b50;
+        transform: scale(1.1);
     }
 
     .navbar .btn {
+        font-size: 1rem;
+        padding: 10px 24px;
+        border-radius: 25px;
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    }
+
+    .navbar .btn-outline-primary:hover {
+        background-color: #1a3a63;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .navbar .btn-primary:hover {
+        background-color: #0d2b50;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 991px) {
+        .navbar-nav {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .navbar .btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 1300px;
+        margin: 0 auto;
+    }
+
+    .property-listing-form {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-row {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-group select,
+    .form-group input {
+        border-radius: 5px;
+        padding: 10px;
         width: 100%;
-        margin-top: 10px;
     }
-}
 
-/* Food Table */
-.food-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-}
-.food-table td {
-    padding: 20px;
-    text-align: center;
-    vertical-align: top;
-    border: 1px solid #ddd;
-}
-
-/* Business Card Styles */
-.business-card {
-    perspective: 1000px;
-}
-.card {
-    width: 100%;
-    height: 200px; /* Changed the height */
-     background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-    position: relative;
-}
-
-.business-card:hover .card {
-    transform: rotateY(180deg);
-}
-
-.card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden;
-    border-radius: 8px;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-.card-front {
-      background: linear-gradient(135deg, #a6c6f6, #abd596); /* Soft gradient */
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-back {
-    background-color: #f9f9f9;
-    color: #333;
-    transform: rotateY(180deg);
-    overflow: auto;
-    text-align: left;
-
-}
-.card-back p{
-    margin-bottom: 4px;
-}
-/* Images */
-.food-table img {
-    width: 190px;
-    height: 160px;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.food-table img:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-/* Property Listing specific styles */
-.property-listing-main {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     padding-top: 50px;
-     padding-bottom: 50px;
-}
-.property-listing-card{
-  width: 90%;
-    max-width: 1200px;
-}
-.property-listing-title {
-   color: #1478a7;
-   font-weight: 700;
-    text-align: center;
-     margin-bottom: 30px;
-     animation: slideInFromLeft 0.8s ease-out;
-}
-/*Animation for title*/
-@keyframes slideInFromLeft {
-    0% {
-        transform: translateX(-100px);
-        opacity: 0;
+    .property-listing-table {
+        margin-top: 20px;
+        width: 100%;
+        border-collapse: collapse;
     }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
+
+    .property-listing-table th, .property-listing-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
     }
-}
-.property-listing-form .form-group {
-  margin-bottom: 1.5rem;
-}
 
-.property-listing-form label {
-    font-weight: 500;
-     color: #343a40;
-}
-.property-listing-form .form-control,
-.property-listing-form .form-select {
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 1rem;
-}
+    .property-listing-table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
 
-.property-listing-form .form-control:focus,
-.property-listing-form .form-select:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(20, 120, 167, 0.25);
-    border-color: #1478a7;
-}
+    .property-image {
+        max-width: 150px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
 
-.property-listing-form small {
-    font-size: 0.9rem;
-    color: #6c757d;
-    margin-top: 0.2rem;
-}
-/* Button styles */
-.btn-success {
-    background-color: #1478a7 !important;
-    border-color: #1478a7 !important;
-    color: #fff !important;
-    border-radius: 10px !important;
-    padding: 14px 26px !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-    display: flex; /* To align icon and text */
-    align-items: center;
-    justify-content: center;
-    gap: 5px; /* space between icon and text */
-}
-.btn-success i{
-    margin-left: 5px; /* Space between the icon and the text */
-    font-size: 1.1rem;
-}
+    .btn-success {
+        background-color: #1478a7;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+    }
 
+    .btn-success:hover {
+        background-color: #0d527a;
+    }
 
-.btn-success:hover {
-    background-color: #0d527a !important;
-    border-color: #0d527a !important;
-    color: white !important;
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    .property-listing-table td:nth-child(1) {
+        width: 25%;
+    }
+
+    .property-listing-table td:nth-child(2) {
+        width: 35%;
+    }
+
+    .property-listing-table td:nth-child(3) {
+        width: 40%;
+    }
+    .member-profile-title {
+    color: #1478a7;
+    font-weight: 700;
+    animation: slideInFromLeft 0.8s ease-out;
 }
 </style>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light">
+        <nav class="navbar navbar-expand-lg navbar-light"> 
             <div class="container">
                 <a class="navbar-brand" href="/">Homelinker</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -288,77 +188,88 @@ body {
             </div>
         </nav>
     </header>
-     <main class="property-listing-main">
-         <div class="container">
-              <h1 class="property-listing-title">Property Listings</h1>
-            <div class="row">
-             <div class="col-md-12">
-                 <div class="property-listing-form">
-                   <div class="row">
-                        <div class="col-md-3">
+
+    <main class="container mt-4">
+        <section class="hero"> 
+            <div class="row align-items-center">
+                <div class="col-md-6"> 
+                    <h1 class="member-profile-title">Property Listings</h1>
+                    <p>Find your dream home today.</p> 
+                </div>
+            </div>
+        </section>
+
+        <div class="property-listing-form mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="city-1">City-1:</label>
-                                <input type="text" id="city-1" name="city-1" class="form-control">
-                             </div>
-                         </div>
-                        <div class="col-md-3">
-                           <div class="form-group">
-                              <label for="city-2">City-2:</label>
-                              <input type="text" id="city-2" name="city-2" class="form-control">
-                            </div>
-                        </div>
-                         <div class="col-md-3">
-                             <div class="form-group">
-                                <label for="city-3">City-3:</label>
-                               <input type="text" id="city-3" name="city-3" class="form-control">
-                             </div>
-                        </div>
-                       <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="state">State:</label>
-                                <select id="state" name="state" class="form-select">
-                                    <option value="">Select State</option>
+                                <label for="state">State</label>
+                                <select id="state" class="form-select">
+                                    <option value="" disabled selected>Select State</option>
                                     <option value="TX">TX</option>
                                     <option value="FL">FL</option>
                                     <option value="CA">CA</option>
                                     <option value="NY">NY</option>
                                 </select>
-                             </div>
-                          </div>
-                      </div>
-                 <table class="food-table">
-                    <tr>
-                        <td class="business-card">
-                            <div class="card">
-                                <div class="card-front">
-                                    <p><strong>Property 1</strong></p>
-                                </div>
-                                  <div class="card-back">
-                                     <p>Address: 123 Main St</p>
-                                     <p>Bedrooms: 3 </p>
-                                     <p>Baths: 2</p>
-                                     <p>Garage: 2</p>
-                                    <p>House Size: 1500 sq ft</p>
-                                    <p>Description: A beautiful property in a peaceful neighborhood.</p>
-                                     <p>Selling Type: Single Family</p>
-                                     <p>Leaseback: No</p>
-                                  </div>
-                             </div>
-                           </td>
-                      </tr>
-                 </table>
-                <div class="row mt-3">
-                   <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-success">Show Me <i class="fas fa-search"></i></button>
-                  </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <select id="city" class="form-control">
+                                    <option value="" disabled selected>Select a City</option>
+                                    <option value="new-york">New York</option>
+                                    <option value="los-angeles">Los Angeles</option>
+                                    <option value="chicago">Chicago</option>
+                                    <option value="houston">Houston</option>
+                                    <option value="miami">Miami</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary">Find Properties</button>
+                    </div>
                 </div>
-           </div>
-         </div>
-    </div>
+            </div>
+        </div>
+
+        <table class="property-listing-table mt-4">
+            <thead>
+                <tr>
+                    <th>Property Image</th>
+                    <th>Details</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="https://via.placeholder.com/150" alt="Property" class="property-image"></td>
+                    <td>
+                        <p><strong>Bedrooms:</strong> 3</p>
+                        <p><strong>Bathrooms:</strong> 2</p>
+                        <p><strong>Garage:</strong> 1</p>
+                        <p><strong>House Size:</strong> 1500 sqft</p>
+                        <p><strong>Selling Type:</strong> Single Family</p>
+                        <p><strong>Leaseback:</strong> 
+                            <select class="form-select">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </p>
+                    </td>
+                    <td>A beautiful property in a peaceful neighborhood.</td>
+                </tr>
+            </tbody>
+        </table>
     </main>
-    <footer class="text-center mt-5 py-3">
-         <p>© 2024 Real Estate App</p>
+
+    <footer class="text-center py-3 bg-light mt-4">
+        <p>&copy; 2024 Real Estate App</p>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
