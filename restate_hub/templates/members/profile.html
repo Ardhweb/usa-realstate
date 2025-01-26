@@ -100,7 +100,7 @@
      color: #0d527a;
 }
 </style>
-
+{% if request.user.is_authenticated %}
     <main class="member-profile-main">
         <div class="container">
            <h1 class="member-profile-title">Member Profile</h1>
@@ -136,11 +136,11 @@
 
                       <div class="form-group">
                          <label for="email">Email:</label>
-                         <input type="email" id="email" name="email" class="form-control" readonly value="{{ member.email }}">
+                         <input type="email" id="email" name="email" class="form-control" readonly value="{{ request.user.email }}">
                        </div>
                        <div class="form-group">
                     <label for="membership_type">Membership Type:</label>
-                    <input type="text" id="membership_type" name="membership_type" class="form-control" readonly value="{{ member.membership_type }}">
+                    <input type="text" id="membership_type" name="membership_type" class="form-control" readonly value="{{ request.user.member_type }}">
               </div>
                     
                       
@@ -161,6 +161,7 @@
                  </div>
                </div>
                 <div class="row mt-3">
+                  {% if request.user.member_type == 'Buyer' or request.user.member_type == 'Seller'  %}
                     <div class="col-md-6">
                         <div class="form-group">
                            <label for="has_agent">Do you have an agent?</label>
@@ -170,6 +171,7 @@
                              </select>
                          </div>
                     </div>
+                  {% endif %}
                     <div class="col-md-6">
                       <div class="form-group">
                            <label for="business_name">Business Name:</label>
@@ -245,7 +247,7 @@
         </div>
     </main>
    
-
+    {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script>
         document.getElementById('has_agent').addEventListener('change', function() {

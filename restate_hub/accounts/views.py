@@ -19,9 +19,14 @@ def user_login(request):
                                         username=cd['username'],
                                         password=cd['password'])
             if user is not None:
-                if user.is_active:
+                #verificatikn logic checking user
+                if user.is_active and user.is_email_verified==True: #and user.is_phone_verified==True:
                     login(request, user)
-                    return redirect("home")
+                    return redirect("property_module:property-listing")
+                elif user.is_active and user.is_email_verified==False:
+                    login(request, user)
+                    #return to property listing
+                    return redirect("membership_module:member_profile")
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -44,3 +49,10 @@ def new_user_register(request):
     else:
         user_form = SignupForm()
     return render(request,'accounts/register.html',{'user_form': user_form})
+
+
+def send_email_kode(request):
+    return "s"
+
+def email_kode_verifiy(request):
+    return "s"

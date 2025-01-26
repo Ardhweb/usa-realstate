@@ -8,6 +8,10 @@ class User(AbstractUser):
     message = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    is_email_verified = models.BooleanField(default=False)
+    is_phone_verified = models.BooleanField(default=False)
+    last_email_code  = models.CharField(max_length=10,blank=True, null=True)
+    last_phone_code  = models.CharField(max_length=10,blank=True, null=True)
     #USERNAME_FIELD = 'email_address'
     #REQUIRED_FIELDS  = [email_address]
     objects = ObUserManager()
