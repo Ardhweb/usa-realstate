@@ -22,10 +22,9 @@ class SignupForm(forms.ModelForm):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
-
-            
-    
-    
-    
+ 
 ##PASSWORD RRESEET
+#SFA
 
+class OTPVerificationForm(forms.Form):
+    otp = forms.IntegerField(widget=forms.HiddenInput(attrs={'id': 'passing-navel', 'class': 'form-control d-none',}))

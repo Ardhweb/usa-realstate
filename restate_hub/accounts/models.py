@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from accounts.managers import  ObUserManager
+import shortuuid
+import random
 # Create your models here.
 class User(AbstractUser):
     contact_no = models.CharField(max_length=15,null=True,blank=True)
@@ -10,8 +12,6 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True)
     is_email_verified = models.BooleanField(default=False)
     is_phone_verified = models.BooleanField(default=False)
-    last_email_code  = models.CharField(max_length=10,blank=True, null=True)
-    last_phone_code  = models.CharField(max_length=10,blank=True, null=True)
     #USERNAME_FIELD = 'email_address'
     #REQUIRED_FIELDS  = [email_address]
     objects = ObUserManager()
@@ -24,3 +24,14 @@ class UserProfile(models.Model):
     dob = models.DateField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class SingleFactorEmailOTP(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    six_otp = models.PositiveIntegerField(null=True,  blank=True)
+    attempts = models.PositiveIntegerField(null=True,  blank=True)
+    u_code = models.CharField(max_length=20,default=shortuuid.ShortUUID().random(length=14), editable=False, blank=True, null=True) 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_expired = models.BooleanField(default=True)
+
