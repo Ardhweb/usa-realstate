@@ -23,10 +23,8 @@ def user_login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            username=cd['username'],
-            password=cd['password']
             user = authenticate(request,
-                                        username=cd['username'],
+                                        username=cd['username_or_email'],
                                         password=cd['password'])
             if user is not None:
                 #verificatikn logic checking user
@@ -89,10 +87,11 @@ def email_kode_verifiy(request,usr_id,u_code):
         print(submitted_otp)
         code_sfa =SingleFactorEmailOTP(u_code=u_code,user_id=usr_id)
         if code_sfa.six_otp == submitted_otp:
-            code_sfa.user.is_active==True
-            return redirect("accounts:login")
-        else:
             return HttpResponse("invalid email and otp")
+        else:
+            code_sfa.user.is_active==True
+        return redirect("accounts:login")
+           
     else:
         forms = OTPVerificationForm()
         context = {"forms":forms}

@@ -1,15 +1,26 @@
-# backends.py
-from django.contrib.auth.backends import ModelBackend
-from django.contrib.auth.models import User
+from django.contrib.auth.backends import BaseBackend
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
-class ObBackend(ModelBackend):
+class ObBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        if '@' in username:
+        user_model = get_user_model()
+        try:
             try:
-                user = User.objects.get(email=username)
-                if user.check_password(password):
-                    return user
-            except User.DoesNotExist:
-                return None
-        else:
-            return super().authenticate(request, username=username, password=password, **kwargs)
+                validate_email(username)
+                user = user_model.objects.get(email=username)
+            except ValidationError:
+                user = user_model.objects.get(username=username)
+
+            if user.check_password(password):
+                return user
+        except user_model.DoesNotExist:
+            return None
+
+    def get_user(self, user_id):
+        user_model = get_user_model()
+        try:
+            return user_model.objects.get(pk=user_id)
+        except user_model.DoesNotExist:
+            return None

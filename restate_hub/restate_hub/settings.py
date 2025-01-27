@@ -162,7 +162,8 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD") # Replace with the genera
 
 # settings.py
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.ObBackend',  
     'django.contrib.auth.backends.ModelBackend',
-    # 'accounts.backends.ObBackend',  
-)
+   
+]
