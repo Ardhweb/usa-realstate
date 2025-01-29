@@ -46,8 +46,6 @@ def user_login(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 def new_user_register(request):
-    protocol = request.scheme  # 'http' or 'https'
-    domain = request.get_host()  # e.g., 'example.com:8000'
     full_url = f"{protocol}://{domain}"
     if request.method == 'POST':
         user_form = SignupForm(request.POST)
@@ -55,23 +53,10 @@ def new_user_register(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
-            new_user.is_active = False
-            #new_user.is_email_verified = False
-            six_digit=generate_secure_otp()
-            sfa = SingleFactorEmailOTP.objects.create(user=new_user,six_otp=six_digit,attempts=1)
-            url = reverse('accounts:email-code-verification', kwargs={'usr_id':new_user.id,'u_code':sfa.u_code})
-            retreat_url = f'{full_url}{url}'
-            send_email_sfa(subject='Email Verification', recipient_email=new_user.email,otp=six_digit,url=retreat_url)
-            #user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
-            # if user is not None:
-            #     login(request, user)
-            #     return redirect('membership_module:member_profile')
-            # elif user.is_email_verified==False:
-            #     return redirect('home')
-            url = reverse('accounts:email-code-verification', kwargs={'usr_id':new_user.id,'u_code':sfa.u_code})
-            return redirect(url)
-            
-
+            user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+            return redirect('membership_module:member_profile')   
     else:
         user_form = SignupForm()
     return render(request,'accounts/register.html',{'user_form': user_form})
