@@ -16,3 +16,6 @@ def member_page(request):
 
 def property_page(request):
     return render(request, 'home/property_listing.html')
+
+def property_detail(request):
+    return render(request, 'home/property_detail.html')
