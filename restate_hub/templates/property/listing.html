@@ -1,2 +1,72 @@
 {% extends "base.html" %}
-{% block content %}{% endblock content %}
+{% block content %}
+
+<main class="container mt-4">
+    <section class="hero text-center mb-4">
+        <h1 class="text-primary fw-bold">Property Listings</h1>
+        <p>Find your dream home today.</p>
+    </section>
+
+    <div class="card shadow-sm p-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="state" class="form-label fw-bold">State</label>
+                <select id="state" class="form-select">
+                    <option value="" disabled selected>Select State</option>
+                    <option value="TX">TX</option>
+                    <option value="FL">FL</option>
+                    <option value="CA">CA</option>
+                    <option value="NY">NY</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="city" class="form-label fw-bold">City</label>
+                <select id="city" class="form-select">
+                    <option value="" disabled selected>Select a City</option>
+                    <option value="new-york">New York</option>
+                    <option value="los-angeles">Los Angeles</option>
+                    <option value="chicago">Chicago</option>
+                    <option value="houston">Houston</option>
+                    <option value="miami">Miami</option>
+                </select>
+            </div>
+            <div class="col-12 text-center">
+                <button class="btn btn-primary">Find Properties</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Property Image</th>
+                    <th>Details</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="https://via.placeholder.com/150" alt="Property" class="img-fluid rounded"></td>
+                    <td>
+                        <p><strong>Bedrooms:</strong> 3</p>
+                        <p><strong>Bathrooms:</strong> 2</p>
+                        <p><strong>Garage:</strong> 1</p>
+                        <p><strong>House Size:</strong> 1500 sqft</p>
+                        <p><strong>Selling Type:</strong> Single Family</p>
+                        <p><strong>Leaseback:</strong> 
+                            <select class="form-select">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </p>
+                    </td>
+                    <td>A beautiful property in a peaceful neighborhood.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+
+{% endblock content %}
