@@ -1,8 +1,101 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block title %}Home Page{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /*  CSS that cannot be easily inlined, mainly for animations and keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideInFromRight {
+            0% {
+              transform: translateX(100px);
+              opacity: 0;
+            }
+            100% {
+              transform: translateX(0);
+              opacity: 1;
+            }
+        }
+         /* Modified styles for horizontal slider */
+        .property-slider-container {
+            overflow-x: auto; /* Enable horizontal scrolling */
+            white-space: nowrap; /* Keep items on one line */
+            padding-bottom: 20px; /* Add some space at the bottom to account for scroll bar */
+            margin-top: 20px; /* Add space before the slider */
+        }
+        
+        .property-grid {
+            display: inline-block; /* Make elements inline-block */
+            width: 300px; /* Set a fixed width for cards */
+            margin-right: 20px;
+            vertical-align: top;/* Align cards to top */
+            /* Add other stylings you might want */
+            transition: all 0.3s ease-in-out;
+        }
+        .property-grid:last-child{
+            margin-right: 0; /* Remove right margin of the last element */
+        }
 
-{% block content %}
+        /* Hide scrollbar for Webkit browsers */
+        .property-slider-container::-webkit-scrollbar {
+            width: 0px; /* Set width to 0 */
+            height: 0px;  /* Set height to 0 */
+            background: transparent;
+        }
+
+        /* Hide scrollbar for non-Webkit browsers */
+        .property-slider-container {
+            scrollbar-width: none; /* "auto" or "thin" or "none" */
+        }
+    </style>
+</head>
+<body style="background-color: #f2f2f2; color: #1a3a63; font-family: 'Arial', sans-serif;">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light" style="padding-top: 12px !important; padding-bottom: 12px !important; background-color: #e3f2fd; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="color: #1a3a63; font-weight: bold; font-size: 1.6rem; transition: color 0.3s ease, transform 0.3s ease;">Homelinker</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="property" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Listings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Contact</a></li>
+                </ul>
+                <!-- Login & Signup buttons -->
+                <div class="ms-3">
+                    <a class="btn btn-outline-primary me-2" href="#" style="font-size: 1rem; padding: 10px 24px; border-radius: 25px; transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;">Log In</a>
+                    <a class="btn btn-outline-primary me-2" href="#" style="font-size: 1rem; padding: 10px 24px; border-radius: 25px; transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
     <!-- Banner Section -->
     <div class="banner" style="background: url('{% static 'images/banner.jpg' %}') no-repeat center center/cover; height: 450px; position: relative; display: flex; align-items: center;">
         <div class="banner-text" style="position: absolute; left: 80px; text-align: left; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); max-width: 650px; padding: 20px; line-height: 1.4; animation: fadeIn 1.2s ease-in-out forwards;">
@@ -22,7 +115,7 @@
                 Dream Realty connects you with the best properties in your area, offering a personalized home-buying experience. Whether you are looking for a cozy apartment, a sprawling estate, or a commercial space, our platform provides the tools and insights you need to make an informed decision. Start your journey to homeownership today with Dream Realty.
             </p>
         </div>
-
+        
         <!-- Property Search -->
         <div class="container mt-4">
             <div class="form-section" style="background-color: #f8f9fa; padding: 30px; margin-top: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: all 0.3s ease-in-out;">
@@ -69,7 +162,7 @@
                             <input class="form-check-input" type="checkbox" id="land" style="border-radius: 5px; cursor: pointer; margin-right: 5px;">
                             <label class="form-check-label" for="land" style="margin-left: 10px; font-size: 16px; font-weight: 400;">Land</label>
                         </div>
-                          <div class="form-check">
+                        <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="all" style="border-radius: 5px; cursor: pointer; margin-right: 5px;">
                             <label class="form-check-label" for="all" style="margin-left: 10px; font-size: 16px; font-weight: 400;">All</label>
                         </div>
@@ -79,7 +172,7 @@
                 <label for="otherPropertyType" style="font-size: 16px; font-weight: 500; margin-bottom: 5px;">Looking for something specific? Enter it below:</label>
                 <input type="text" class="form-control mb-3" placeholder="Enter property type" style="padding: 14px 18px; border: 1px solid #ced4da; border-radius: 8px; margin-bottom: 10px; transition: border-color 0.3s ease;">
 
-                 <button class="btn btn-success w-100" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px;">Show Me Properties <i class="fas fa-search" style="margin-left: 5px; font-size: 1.1rem;"></i></button>
+                <button class="btn btn-success w-100" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px;">Show Me Properties <i class="fas fa-search" style="margin-left: 5px; font-size: 1.1rem;"></i></button>
             </div>
         </div>
 
@@ -125,4 +218,7 @@
             </div>
         </div>
     </div>
-    {% endblock %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

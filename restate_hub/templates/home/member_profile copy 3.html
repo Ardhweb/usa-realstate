@@ -1,7 +1,94 @@
-{% extends 'base.html' %}
-{% block title %}Member Profile{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate App - Member Profile</title>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* CSS that cannot be easily inlined, mainly for animations, specific layout */
+        body {
+            background-color: #f2f2f2;
+            color: #1a3a63;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+       @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .navbar:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
 
-{% block content %}
+        .navbar-brand:hover {
+             color: #0d2b50;
+             transform: scale(1.05);
+        }
+
+        .navbar a.nav-link:hover {
+            color: #0d2b50;
+            transform: scale(1.1);
+        }
+
+        .navbar .btn-outline-primary:hover {
+            background-color: #1a3a63;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .navbar .btn-primary:hover {
+            background-color: #0d2b50;
+            color: white;
+             transform: scale(1.05);
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .navbar .btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+        .member-profile-main {
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           padding-top: 50px;
+           padding-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+       <nav class="navbar navbar-expand-lg navbar-light" style="padding-top: 12px !important; padding-bottom: 12px !important; background-color: #e3f2fd; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+            <div class="container">
+                <a class="navbar-brand" href="/" style="color: #1a3a63; font-weight: bold; font-size: 1.6rem; transition: color 0.3s ease, transform 0.3s ease;">Homelinker</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="/" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/signup/" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/member/" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Member Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/property/" style="color: #1a3a63; font-size: 1.1rem; transition: color 0.3s ease, transform 0.3s ease;">Properties</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
     <main class="member-profile-main">
         <div class="container">
            <h1 class="member-profile-title" style="color: #1478a7; font-weight: 700; text-align: center; margin-bottom: 30px; animation: slideInFromLeft 0.8s ease-out;">Member Profile</h1>
@@ -145,12 +232,15 @@
             </div>
         </div>
     </main>
-{% endblock %}
-{% block scripts %}
-    <script>
+     <footer class="text-center mt-5 py-3" style="background-color: #f8f9fa; margin-top: 10px; padding: 10px; text-align: center;">
+        <p>© 2024 Real Estate App</p>
+     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
         document.getElementById('has_agent').addEventListener('change', function() {
             const agentSection = document.getElementById('agent-section');
             agentSection.style.display = this.value === 'yes' ? 'block' : 'none';
         });
     </script>
-{% endblock %}
+</body>
+</html>

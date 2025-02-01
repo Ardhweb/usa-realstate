@@ -18,4 +18,4 @@ def property_page(request):
     return render(request, 'home/property_listing.html')
 
 def property_detail(request):
-    return render(request, 'home/property_detail.html')
+    return render(request, 'home/property_details.html')
