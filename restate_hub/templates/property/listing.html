@@ -11,23 +11,18 @@
         <div class="row g-3">
             <div class="col-md-6">
                 <label for="state" class="form-label fw-bold">State</label>
-                <select id="state" class="form-select">
+                <select id="state-list" class="form-select"  onchange="fetchProducts()">
                     <option value="" disabled selected>Select State</option>
-                    <option value="TX">TX</option>
-                    <option value="FL">FL</option>
-                    <option value="CA">CA</option>
-                    <option value="NY">NY</option>
+                    {% for state in states  %}
+                    <option value="{{state.id}}" >{{state.name}}</option>
+                    
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-md-6">
                 <label for="city" class="form-label fw-bold">City</label>
-                <select id="city" class="form-select">
-                    <option value="" disabled selected>Select a City</option>
-                    <option value="new-york">New York</option>
-                    <option value="los-angeles">Los Angeles</option>
-                    <option value="chicago">Chicago</option>
-                    <option value="houston">Houston</option>
-                    <option value="miami">Miami</option>
+                <select id="city-list" class="form-select">
+                 
                 </select>
             </div>
             <div class="col-12 text-center">
@@ -69,4 +64,35 @@
 </main>
 
 
+
 {% endblock content %}
+
+{% block scripts %}
+<script>
+    async function fetchProducts() {
+        // Get the selected category
+        const selectedState= document.getElementById('state-list').value;
+        try {
+            // Make the API request to fetch products based on selected category
+            const response = await fetch(`http://127.0.0.1:8000/core/get-city-bystate/${selectedState}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            // Get the product dropdown element
+            const cityDropdown = document.getElementById('city-list');
+            // Clar the existing options in the product dropdown
+            cityDropdown.innerHTML = '<option value="">Select Product</option>';
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.id;  // City ID as the value
+                option.textContent = city.name;  // City name as the display text
+                cityDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+</script>
+{% endblock scripts %}

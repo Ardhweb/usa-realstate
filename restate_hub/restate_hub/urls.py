@@ -23,6 +23,7 @@ from django.conf.urls.static import static #For Media Manging and Static step4
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
+    path('core/', include("core.urls")),
     path('accounts/', include("accounts.urls")),
     path('members/', include("membership_module.urls")),
     path('property/', include("property_module.urls")),
