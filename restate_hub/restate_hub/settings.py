@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'lender_module',
     'accounts',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

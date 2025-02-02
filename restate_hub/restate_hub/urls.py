@@ -18,7 +18,21 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings #for MEdia Manging Step4
 from django.conf.urls.static import static #For Media Manging and Static step4
-
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Real State Hub API's",
+        default_version='v1',
+        description="API documentation for your Django REST Framework project.",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@yourapi.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),  # You can change the permissions as needed
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +41,10 @@ urlpatterns = [
     path('accounts/', include("accounts.urls")),
     path('members/', include("membership_module.urls")),
     path('property/', include("property_module.urls")),
-    path('rest-api-interface/', include('restful_interface.urls')),
+    path('api-auth/', include('rest_framework.urls')), # intending to use the browsable API 
+    path('api-root/', include('apiroot.urls')), #root of restful api 
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc-docs'),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)#For Media Manging Step4
 
