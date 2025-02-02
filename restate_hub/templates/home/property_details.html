@@ -6,17 +6,22 @@
         <h1 class="mb-4 text-center" style="color: #1478a7; font-weight: 700;  animation: slideInFromLeft 0.8s ease-out;">{{ property.title }}</h1>
         <div class="row">
             <div class="col-md-6">
-                <div style="background-color: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                 <div style="background-color: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
                     <h4 style="color: #1478a7; font-weight: 700; margin-bottom: 20px;">Property Details</h4>
                     <p style="margin-bottom: 10px;"><strong>Listing ID:</strong> {{ property.id }}</p>
                     <p style="margin-bottom: 10px;"><strong>Rooms:</strong> {{ property.rooms }}</p>
+                     <p style="margin-bottom: 10px;"><strong>Reason for Selling:</strong> {{ property.reason_selling }}</p>
                     <p style="margin-bottom: 10px;"><strong>Selling Type:</strong> {{ property.selling_type }}</p>
-                     <p style="margin-bottom: 10px;"><strong>Leaseback:</strong> {{ property.leaseback }}</p>
-                     <p style="margin-bottom: 10px;"><strong>Last Remodel Month:</strong> {{ property.remodel_month }}</p>
+                    <p style="margin-bottom: 10px;"><strong>Sell Leaseback:</strong> {{ property.sell_leaseback }}</p>
+                     <p style="margin-bottom: 10px;"><strong>Leaseback Month:</strong> {{ property.leaseback_month }}</p>
+                     <p style="margin-bottom: 10px;"><strong>Listing State:</strong> {{ property.state }}</p>
                     <p style="margin-bottom: 10px;"><strong>Contact Seller:</strong> <a href="mailto:{{ property.agent_email }}" style="color: #1478a7; text-decoration: underline; transition: color 0.3s ease;">{{ property.agent_name }}</a></p>
-                </div>
+                     <div class="text-center mt-3">
+                       <a href="mailto:{{ property.agent_email }}" class="btn btn-success" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px;">Contact Seller  <i class="fas fa-envelope" style="margin-left: 5px; font-size: 1.1rem;"></i></a>
+                    </div>
+                  </div>
             </div>
-             <div class="col-md-6 d-flex justify-content-center">
+            <div class="col-md-6 d-flex justify-content-center">
                 <img src="{{ property.image.url }}" class="img-fluid rounded" alt="Property Image" style="border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); max-height: 400px; object-fit: cover;">
             </div>
         </div>
