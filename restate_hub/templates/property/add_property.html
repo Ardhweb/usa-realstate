@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Add New Property</title>{% endblock title %}
+{% block content %}
+
+<div class="container p-2 ">
+    
+
+    <form method="POST" class="">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>{{ form.property_type.label }}</label>
+                {{ form.property_type }}
+            </div>
+            <div class="col">
+                <label>{{ form.listing_type.label }}</label>
+                {{ form.listing_type }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <label>{{ form.price.label }}</label>
+                {{ form.price }}
+            </div>
+            <div class="col">
+                <label>{{ form.house_size.label }}</label>
+                {{ form.house_size }}
+            </div>
+            <div class="col">
+                <label>{{ form.lot_size.label }}</label>
+                {{ form.lot_size }}
+            </div>
+            <div class="col">
+                <label>{{ form.bedrooms.label }}</label>
+                {{ form.bedrooms }}
+            </div>
+            <div class="col">
+                <label>{{ form.bathrooms.label }}</label>
+                {{ form.bathrooms }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <label>{{ form.year_built.label }}</label>
+                {{ form.year_built }}
+            </div>
+            <div class="col">
+                <label>{{ form.listing_status.label }}</label>
+                {{ form.listing_status }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <label>{{ form.description.label }}</label>
+                {{ form.description }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <label>{{ form.country.label }}</label>
+                {{ form.country }}
+            </div>
+            <div class="col">
+                <label>{{ form.state.label }}</label>
+                {{ form.state }}
+            </div>
+            <div class="col">
+                <label>{{ form.city.label }}</label>
+                {{ form.city }}
+            </div>
+        </div>
+
+         <div class="row">
+            <div class="col">
+                <label>{{ form.street_num.label }}</label>
+                {{ form.street_num }}
+            </div>
+            <div class="col">
+                <label>{{ form.street_name.label }}</label>
+                {{ form.street_name }}
+            </div>
+            <div class="col">
+                <label>{{ form.zipcode.label }}</label>
+                {{ form.zipcode }}
+            </div>
+            {% comment %} <div class="col">
+                <label>{{ form.postal_code.label }}</label>
+                {{ form.postal_code }}
+            </div>
+            {% endcomment %}
+            <div class="col">
+                <label>{{ form.area.label }}</label>
+                {{ form.area }}
+            </div>
+           
+        </div>
+
+
+        <div class="row">
+            {% comment %} <div class="col">
+                <label>{{ form.seller.label }}</label>
+                {{ form.seller}}
+            </div> {% endcomment %}
+            <div class="col">
+                <label>{{ form.selling_type.label }}</label>
+                {{ form.selling_type}}
+            </div>
+            <div class="col">
+                <label>{{ form.sell_leaseback.label }}</label>
+                {{ form.sell_leaseback }}
+            </div>
+            <div class="col">
+                <label>{{ form.leaseback_month.label }}</label>
+                {{ form.leaseback_month }}
+            </div>
+      
+           
+        </div>
+
+        
+        <div class="row">
+           
+            <div class="col">
+                <label>{{ form.garage_num.label }}</label>
+                {{ form.garage_num}}
+            </div>
+            <div class="col">
+                <label>{{ form.hoa_fee_qtr.label }}</label>
+                {{ form.hoa_fee_qtr }}
+            </div>
+
+
+           
+      
+           
+        </div>
+
+
+        <div class="row">
+           
+            <div class="col">
+                <label>{{ form.reason_selling.label }}</label>
+                {{ form.reason_selling}}
+            </div>
+
+
+            
+
+
+         
+          
+           
+      
+           
+        </div>
+
+
+        
+        
+        
+       
+        
+      
+        
+
+          
+
+          
+       
+        <input type="submit" value="Add Property" class="btn btn-primary" />
+    </form>
+</div>
+{% endblock content %}

@@ -53,7 +53,7 @@ class PropertiesInfo(BaseModel):
         (12, '12 Months'),
     ]
 
-    property_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    property_id =  models.CharField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True,max_length=50) 
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, null=True)
     listing_type = models.CharField(max_length=20, choices=LISTING_TYPES, null=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
@@ -71,14 +71,11 @@ class PropertiesInfo(BaseModel):
     city = models.CharField(max_length=100, null=True)
     zipcode = models.CharField(max_length=10, null=True)
     state = models.CharField(max_length=50, null=True)
-    postal_code = models.CharField(max_length=20, null=True)
     country = models.CharField(max_length=100, null=True)
-    county = models.CharField(max_length=100, null=True)
     area = models.CharField(max_length=100, null=True)
-    zipcode4 = models.CharField(max_length=10, null=True)
-    feature_id = models.IntegerField(null=True)
-    image_id = models.IntegerField(null=True)# Does we assigning only single image in that case we needs to change something
-    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True)
+    feature_id = models.IntegerField(null=True, blank=True)
+    image_id = models.IntegerField(null=True, blank=True)# Does we assigning only single image in that case we needs to change something
+    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True, blank=True)
     selling_type = models.CharField(max_length=50, null=True)
     reason_selling = models.TextField(null=True)
     sell_leaseback = models.CharField(max_length=3, choices=SELL_LEASEBACK_OPTIONS, null=True)
