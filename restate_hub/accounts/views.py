@@ -46,7 +46,6 @@ def user_login(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 def new_user_register(request):
-    full_url = f"{protocol}://{domain}"
     if request.method == 'POST':
         user_form = SignupForm(request.POST)
         if user_form.is_valid ():

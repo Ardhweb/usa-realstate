@@ -27,6 +27,8 @@ urlpatterns = [
     path('accounts/', include("accounts.urls")),
     path('members/', include("membership_module.urls")),
     path('property/', include("property_module.urls")),
+    path('rest-api-interface/', include('restful_interface.urls')),
+
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)#For Media Manging Step4
 
 static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

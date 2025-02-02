@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'message_track',
     'lender_module',
     'accounts',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
