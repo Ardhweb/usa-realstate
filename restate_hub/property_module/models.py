@@ -38,8 +38,8 @@ class PropertiesInfo(BaseModel):
         (LEASED, 'Leased'),
     ]
 
-    YES = 'Yes'
-    NO = 'No'
+    YES = 'yes'
+    NO = 'no'
 
     SELL_LEASEBACK_OPTIONS = [
         (YES, 'Yes'),

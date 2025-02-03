@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from core.models import City,State,Country
+from property_module.models import PropertiesInfo
 from django.http import JsonResponse,Http404
 import json
 from property_module.forms import AddPropertiesInfoForm
@@ -7,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def property_listing(request):
     states = State.objects.all() # Get all objects for now.
-    context = {'states':states}
+    recent_properties = PropertiesInfo.objects.all()
+
+    context = {'states':states,'recent_properties':recent_properties}
     return render(request,'property/listing.html',context)
 
 
