@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from core.models import City,State,Country
-from django.http import JsonResponse
+from django.http import JsonResponse,Http404
 import json
 from property_module.forms import AddPropertiesInfoForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def property_listing(request):
     states = State.objects.all() # Get all objects for now.
@@ -10,18 +11,22 @@ def property_listing(request):
     return render(request,'property/listing.html',context)
 
 
-from django.shortcuts import render, redirect
 
+@login_required()  # Ensures user is logged in
 def add_property(request):
-    if request.method == 'POST':
-        form = AddPropertiesInfoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
+    if request.user.is_authenticated and request.user.member_type == 'seller' or request.user.member_type == 'agent':
+        if request.method == 'POST':
+            form = AddPropertiesInfoForm(request.POST)
+            if form.is_valid():
+                instance = form.save(commit=False)
+                #instance.seller = None
+                instance.save()
+                return redirect('home')
+            else:
+                print(form.errors)  # Debugging: Print form validation errors
         else:
-            print(form.errors)  # Debugging: Print form validation errors
+            form = AddPropertiesInfoForm()
+        return render(request, 'property/add_property.html', {'form': form})
     else:
-        form = AddPropertiesInfoForm()
-
-    return render(request, 'property/add_property.html', {'form': form})
+        raise Http404('Page not found')
 
