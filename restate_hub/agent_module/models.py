@@ -3,7 +3,7 @@ from core.models import BaseModel
 import shortuuid
 # Create your models here.
 class Agents(BaseModel):
-    agent_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    agent_id = models.CharField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True, max_length=50) 
     first_name = models.CharField(max_length=50,blank=False, null=True)
     last_name =  models.CharField(max_length=50,blank=False, null=True)
     phone_num =  models.IntegerField()
