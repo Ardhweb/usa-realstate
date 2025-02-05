@@ -19,3 +19,9 @@ class AddPropertiesInfoForm(forms.ModelForm):
       super().__init__(*args, **kwargs)
       for field in self.fields.values():
          field.widget.attrs.update({'class': 'form-control'})
+
+
+
+class ContactPartiesForm(forms.Form):
+   property_id = forms.CharField(widget=forms.HiddenInput(attrs={'class':'form-control',}))
+

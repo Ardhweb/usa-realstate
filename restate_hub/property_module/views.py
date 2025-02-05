@@ -44,34 +44,30 @@ from agent_module.models import Agents
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
-
+from property_module.forms import ContactPartiesForm
 
 def property_detail(request, property_id):
     property = get_object_or_404(PropertiesInfo, property_id=property_id)
-    return render(request, 'property/property_detail.html', {'property': property})
+    if request.method == 'POST':
+        forms = ContactPartiesForm(request.POST)
+        seller = property.seller #For because for nowwe sending only seller
+        print(f"{seller.email}")
+        # message = MessageTrack.objects.create(
+        #    message_type='buyer_to_seller_request',
+        #    sender_id=request.user.id if request.user.is_authenticated else None,  # Assuming user is Buyer. You'll need user auth
+        #    receiver_id=seller.id,
+        #    message_content=f"Buyer requested info for property: {property.street_name}.",
+        #  )
+        #  # Send email to seller
+        #  subject = f'Request for Property: {property.street_name}'
+        #  message_body = f'A buyer has requested information about your property: {property.street_name}. Please respond through your email'
 
-
-def contact_seller(request, property_id):
-    property = get_object_or_404(PropertiesInfo, property_id=property_id)
-    seller = property.seller
-    if not seller.agent: # If no agent
-        # Record Message
-         message = MessageTrack.objects.create(
-           message_type='buyer_to_seller_request',
-           sender_id=request.user.id if request.user.is_authenticated else None,  # Assuming user is Buyer. You'll need user auth
-           receiver_id=seller.id,
-           message_content=f"Buyer requested info for property: {property.street_name}.",
-         )
-         # Send email to seller
-         subject = f'Request for Property: {property.street_name}'
-         message_body = f'A buyer has requested information about your property: {property.street_name}. Please respond through your email'
-
-         send_mail(subject, message_body, settings.EMAIL_HOST_USER, [seller.email], fail_silently=False)
-         message.status = 'sent'
-         message.related_entity_id = seller.id
-         message.save()
-         return redirect('contact_success')  # Redirect to a success message
+        #  send_mail(subject, message_body, settings.EMAIL_HOST_USER, [seller.email], fail_silently=False)
+        #  message.status = 'sent'
+        #  message.related_entity_id = seller.id
+        #  message.save()
+        url = reverse('property_module:property-details', args=[property_id])
+        return redirect(url)
     else:
-        return redirect('property_module:property_detail', property_id=property_id)  # Redirect back to the property page since the logic is handled with the view for the button
-
+        return render(request, 'property/property_detail.html', {'property': property})
 

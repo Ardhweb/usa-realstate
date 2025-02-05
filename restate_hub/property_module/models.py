@@ -4,6 +4,15 @@ from core.models import BaseModel
 import shortuuid
 from seller_module.models import Sellers
 from agent_module.models import Agents
+import random
+import string
+import time
+def generate_unique_id(length=12):
+    """Generate a non-sequential unique ID using a timestamp and random suffix."""
+    timestamp = str(int(time.time() * 1000))  # Current timestamp in milliseconds
+    random_suffix = ''.join(random.choices(string.digits, k=length - len(timestamp)))
+    unique_id = timestamp + random_suffix
+    return unique_id
 
 class PropertiesInfo(BaseModel):
     RESIDENTIAL = 'residential'
@@ -55,6 +64,7 @@ class PropertiesInfo(BaseModel):
 
     property_id =  models.CharField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True,max_length=50) 
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, null=True)
+    listing_id = models.CharField(default=generate_unique_id(),blank=True, null=True, max_length=200)
     listing_type = models.CharField(max_length=20, choices=LISTING_TYPES, null=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
     house_size = models.FloatField(null=True)
