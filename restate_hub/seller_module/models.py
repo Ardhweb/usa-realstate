@@ -29,7 +29,7 @@ SELLING_TYPES = [
 
 
 class Sellers(BaseModel):
-    seller_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    seller_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     first_name = models.CharField(max_length=50,blank=False, null=True)
     last_name =  models.CharField(max_length=50,blank=False, null=True)
     phone_num =  models.IntegerField()
@@ -46,7 +46,7 @@ class Sellers(BaseModel):
 
 
 class ReasonSelling(BaseModel):
-    reason_selling_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    reason_selling_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     reason_selling = models.CharField(max_length=50, choices=REASON_SELLING_TYPES,blank=False, null=True)
     seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True)
 

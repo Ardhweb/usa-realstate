@@ -4,7 +4,7 @@ import shortuuid
 from agent_module.models import Agents
 # Create your models here.
 class Investors(BaseModel):
-    investor_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    investor_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     first_name = models.CharField(max_length=50,blank=False, null=True)
     last_name =  models.CharField(max_length=50,blank=False, null=True)
     phone_num =  models.IntegerField()

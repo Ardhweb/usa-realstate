@@ -8,7 +8,7 @@ import shortuuid
 from core.models import BaseModel
 
 class TitleCompany(BaseModel):
-    title_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    title_id =  models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     company_name = models.CharField(max_length=50, blank=False, null=True)
     phone_num = models.IntegerField(null=True)
     email = models.EmailField(max_length=254, null=True)

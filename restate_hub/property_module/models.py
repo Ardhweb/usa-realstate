@@ -91,13 +91,13 @@ class PropertyAgent(BaseModel):
     (SELLERREP , 'SellerRep'),
     (BUYERREP , 'BuyerRep'),
     ]
-    propertyagent_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    propertyagent_id =  models.CharField(max_length=50, default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     agent = models.ForeignKey(Agents, on_delete=models.SET_NULL,null=True)
     agent_role =  models.CharField(max_length=20, choices=AGENT_ROLE_TYPES, null=True)
 
 class PropetyFeatures(BaseModel):
-    feature_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    feature_id =  models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     feature_name = models.CharField(max_length=20, null=True) 
     property_conditions = models.CharField(max_length=20, null=True)
 
@@ -109,7 +109,7 @@ class PropertyHistory(BaseModel):
       (Price , 'Price changed'),
      (Ownership , 'Ownership changed')
     ]
-    history_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    history_id =  models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     change_date =models.DateField(auto_now=True, editable=True)
     change_type = models.CharField(max_length=20, choices=CHANGE_TYPES, null=True)
@@ -117,7 +117,7 @@ class PropertyHistory(BaseModel):
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
 
 class PropertyLocation(BaseModel):
-    location_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    location_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     city  = models.CharField(max_length=50, blank=False, null=True)
     country  = models.CharField(max_length=50, blank=False, null=True)
