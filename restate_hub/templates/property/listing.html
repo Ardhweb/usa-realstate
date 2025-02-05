@@ -34,7 +34,6 @@
             </div>
             <div class="col-12   text-center">
                 <button onclick="fetchPropertiesbycity()" class="btn btn-warning">Find Properties</button>
-                <button onclick="resetPropertyListing()" class="btn btn-danger">Reset</button>
             </div>
             
         </div>
@@ -50,25 +49,6 @@
                 </tr>
             </thead>
             <tbody class="" id="property-list">
-                {% for property in recent_properties %}
-                <tr class="">
-                    <td><img src="https://via.placeholder.com/150" alt="Property" class="img-fluid rounded"></td>
-                    <td>
-                        <p><strong>Bedrooms:</strong>{{property.bedrooms}}</p>
-                        <p><strong>Bathrooms:</strong> {{property.bathrooms}}</p>
-                        <p><strong>Garage:</strong>{{property.garage_num}}</p>
-                        <p><strong>House Size:</strong>{{property.house_size}}sqft</p>
-                        <p><strong>Selling Type:</strong> {{property.selling_type}}</p>
-                        <p><strong>Leaseback:</strong> 
-                            <select class="form-select">
-                                <option  {% if property.sell_leaseback == 'yes' %} selected {% else %}  {% endif %} value="Yes">Yes</option>
-                                <option  {% if property.sell_leaseback == 'no' %} selected {% else %} {% endif %} value="No">No</option>
-                            </select>
-                        </p>
-                    </td>
-                    <td>{{property.description}}</td>
-                </tr>
-                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -158,8 +138,6 @@
     }
 
 
-    function resetPropertyListing(){
-        window.location.reload()
-    }
+    
 </script>
 {% endblock scripts %}

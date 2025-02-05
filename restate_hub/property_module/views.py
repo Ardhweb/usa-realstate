@@ -8,9 +8,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def property_listing(request):
     states = State.objects.all() # Get all objects for now.
-    recent_properties = PropertiesInfo.objects.all()
-
-    context = {'states':states,'recent_properties':recent_properties}
+    context = {'states':states,}
     return render(request,'property/listing.html',context)
 
 
