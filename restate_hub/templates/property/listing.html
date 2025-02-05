@@ -59,7 +59,7 @@
 {% endblock content %}
 
 {% block scripts %}
-<script>
+<script> const API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
     async function fetchProducts() {
         // Get the selected category
         const selectedState= document.getElementById('state-list').value;
@@ -110,21 +110,34 @@
                 data.forEach(property => {
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
-                        <td><img src="https://via.placeholder.com/150" alt="Property" class="img-fluid rounded"></td>
-                        <td>
-                            <p><strong>Bedrooms:</strong> ${property.bedrooms}</p>
-                            <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                            <p><strong>Garage:</strong> ${property.garage_num}</p>
-                            <p><strong>House Size:</strong> ${property.house_size} sqft</p>
-                            <p><strong>Selling Type:</strong> ${property.selling_type}</p>
-                            <p><strong>Leaseback:</strong> 
-                                <select class="form-select">
-                                    <option value="Yes" ${property.sell_leaseback === "yes" ? "selected" : ""}>Yes</option>
-                                    <option value="No" ${property.sell_leaseback === "no" ? "selected" : ""}>No</option>
-                                </select>
-                            </p>
+                        <td><img src="https://via.placeholder.com/150" alt="Property" class="img-fluid rounded">
+                        <p><strong>Listing ID: </strong>#${property.id}</p>
                         </td>
-                        <td>${property.description}</td>
+                        <td>
+                            <p class="text-capitalize"><strong>Bed rooms:</strong> ${property.bedrooms}</p>
+                            <p class="text-capitalize"><strong>Bath rooms:</strong> ${property.bathrooms}</p>
+                            <p class="text-capitalize"><strong>Garage:</strong> ${property.garage_num}</p>
+                            <p><strong >House Size:</strong> ${property.house_size} sqft</p>
+                           
+ <p class="text-truncate" style="max-width: 200px;"><strong>Description:</strong> <br>${property.description}</p>
+  
+                           
+                       
+                        </td>
+                        <td> 
+                        <p class="text-capitalize"><strong>Reason Selling:</strong> ${property.reason_selling}</p>
+                         <p class="text-capitalize"><strong>Selling Type:</strong> ${property.selling_type}</p>
+                          <p class="text-capitalize"><strong>Lease back:</strong> 
+                              
+                                   <span class="text-capitalize">${property.sell_leaseback}</span>
+                                    
+                            
+                            </p>
+                          <p><strong>Leaseback month:</strong> ${property.leaseback_month}</p>
+                        <a class="btn btn-warning p-2 m-1" href="${API_ROOT}/property/details/${property.property_id}/">
+        Property Details
+    </a>
+                        </td>
                     `;
             
                     tbody.appendChild(tr);
