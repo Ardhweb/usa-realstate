@@ -41,6 +41,10 @@ def add_property(request):
 @login_required()
 def property_detail(request, property_id):
     property_obj = get_object_or_404(PropertiesInfo, property_id=property_id)
+    try:
+        messagetrack_obj = MessageTrack.objects.get(buyer=request.user.buyers, message_type='inquiry')
+    except (MessageTrack.DoesNotExist, Exception) as e:
+        messagetrack_obj = None  # No message track found, set to None
     if request.method == 'POST':
         form = ContactPartiesForm(request.POST)
         if form.is_valid():
@@ -55,7 +59,8 @@ def property_detail(request, property_id):
                 message = MessageTrack.objects.create(
                 buyer=request.user.buyers if request.user.is_authenticated else None, 
                 seller=seller,
-                message_out=message)
+                message_out=message,
+                message_type='inquiry')
                 print("InquiryEmail sent successfully to  property owner!")
             else:
                 print("Failed to send email.")
@@ -64,4 +69,4 @@ def property_detail(request, property_id):
             return redirect("home")
     else:
         form = ContactPartiesForm()
-    return render(request, 'property/property_detail.html', {'property': property_obj, 'form': form})
+    return render(request, 'property/property_detail.html', {'property': property_obj, 'form': form,'messagetrack_obj':messagetrack_obj})

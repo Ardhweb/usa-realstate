@@ -6,6 +6,9 @@ from buyer_module.models import Buyers
 from seller_module.models import Sellers
 from agent_module.models import Agents
 from lender_module.models import Lenders
+CATEGORY_CHOICES = [
+        ('inquiry', 'inquiry'),
+    ]
 class MessageTrack(models.Model):
     message_in = models.TextField() #message  memeber to Admin
     message_out = models.TextField() #message Admin to  Member
@@ -20,4 +23,8 @@ class MessageTrack(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    message_type = models.CharField(max_length=20, choices=CATEGORY_CHOICES, null=True, blank=True)
+
+
 
