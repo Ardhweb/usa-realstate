@@ -23,5 +23,5 @@ class AddPropertiesInfoForm(forms.ModelForm):
 
 
 class ContactPartiesForm(forms.Form):
-   property_id = forms.CharField(widget=forms.HiddenInput(attrs={'class':'form-control',}))
+   property_id = forms.CharField(required=False,widget=forms.HiddenInput(attrs={'class':'form-control',}))
 

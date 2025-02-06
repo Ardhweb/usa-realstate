@@ -17,7 +17,11 @@
                      <p style="margin-bottom: 10px;"><strong>Listing State:</strong> {{ property.state }}</p>
                     <p style="margin-bottom: 10px;"><strong>Contact Seller:</strong> <a href="mailto:{{ property.agent_email }}" style="color: #1478a7; text-decoration: underline; transition: color 0.3s ease;">{{ property.agent_name }}</a></p>
                      <div class="text-center mt-3">
-                       <a href="mailto:{{ property.agent_email }}" class="btn btn-success" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px;">Contact Seller  <i class="fas fa-envelope" style="margin-left: 5px; font-size: 1.1rem;"></i></a>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{form.as_p}}
+                       <input value="Contact Seller" type="submit" class="btn btn-success" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                        </form>
                     </div>
                   </div>
             </div>
