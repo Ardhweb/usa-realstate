@@ -1,3 +1,4 @@
 from django.contrib import admin
+from seller_module.models import Sellers
 
-# Register your models here.
+admin.site.register(Sellers)

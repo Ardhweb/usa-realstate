@@ -1,2 +1,156 @@
 {% extends "base.html" %}
-{% block content %}{% endblock content %}
+{% block content %}
+
+<main class="container mt-4">
+    <div class="row">
+        <div class="col">
+ <a class="btn btn-primary" href="{% url "property_module:property-add" %}"> Add New Property</a>
+        </div>
+       
+    </div>
+    
+    <section class="hero text-center mb-4">
+        <h1 class="text-primary fw-bold">Property Listings</h1>
+        <p>Find your dream home today.</p>
+    </section>
+
+    <div class="card shadow-sm p-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="state" class="form-label fw-bold">State</label>
+                <select id="state-list" class="form-select"  onchange="fetchProducts()">
+                    <option value="" disabled selected>Select State</option>
+                    {% for state in states  %}
+                    <option value="{{state.id}}" >{{state.name}}</option>
+                    
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="city" class="form-label fw-bold">City</label>
+                <select id="city-list" class="form-select">
+                 
+                </select>
+            </div>
+            <div class="col-12   text-center">
+                <button onclick="fetchPropertiesbycity()" class="btn btn-warning">Find Properties</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Property Image</th>
+                    <th>Details</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody class="" id="property-list">
+            </tbody>
+        </table>
+    </div>
+</main>
+
+
+
+{% endblock content %}
+
+{% block scripts %}
+<script> const API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
+    async function fetchProducts() {
+        // Get the selected category
+        const selectedState= document.getElementById('state-list').value;
+        try {
+            // Make the API request to fetch products based on selected category
+            const response = await fetch(`http://127.0.0.1:8000/core/get-city-bystate/${selectedState}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            // Get the product dropdown element
+            const cityDropdown = document.getElementById('city-list');
+            // Clar the existing options in the product dropdown
+            cityDropdown.innerHTML = '<option value="">Select Your City</option>';
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(city => {
+                const option = document.createElement('option');
+                //option.value = city.id;  // City ID as the value
+                option.value = city.name;
+                option.textContent = city.name;  // City name as the display text
+                cityDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+
+    //Filter the Properties by city.
+    async function fetchPropertiesbycity() {
+        // Get the selected category
+        const selectedcity= document.getElementById('city-list').value;
+        console.log("selected City:",selectedcity)
+        if(selectedcity == ""){
+            window.location.reload()
+           
+        }
+        else{
+            try {
+                // Make the API request to fetch products based on selected category
+                const response = await fetch(`http://127.0.0.1:8000/api-root/parties/properties-list/?city=${selectedcity}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch products');
+                }
+                const data = await response.json();
+                console.log(data)
+                const tbody = document.getElementById("property-list");
+                tbody.innerHTML = "";
+                data.forEach(property => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td><img src="https://via.placeholder.com/150" alt="Property" class="img-fluid rounded">
+                        <p><strong>Listing ID: </strong>#${property.listing_id}</p>
+                        </td>
+                        <td>
+                            <p class="text-capitalize"><strong>Bed rooms:</strong> ${property.bedrooms}</p>
+                            <p class="text-capitalize"><strong>Bath rooms:</strong> ${property.bathrooms}</p>
+                            <p class="text-capitalize"><strong>Garage:</strong> ${property.garage_num}</p>
+                            <p><strong >House Size:</strong> ${property.house_size} sqft</p>
+                           
+ <p class="text-truncate" style="max-width: 200px;"><strong>Description:</strong> <br>${property.description}</p>
+  
+                           
+                       
+                        </td>
+                        <td> 
+                        <p class="text-capitalize"><strong>Reason Selling:</strong> ${property.reason_selling}</p>
+                         <p class="text-capitalize"><strong>Selling Type:</strong> ${property.selling_type}</p>
+                          <p class="text-capitalize"><strong>Lease back:</strong> 
+                              
+                                   <span class="text-capitalize">${property.sell_leaseback}</span>
+                                    
+                            
+                            </p>
+                          <p><strong>Leaseback month:</strong> ${property.leaseback_month}</p>
+                        <a class="btn btn-warning p-2 m-1" href="${API_ROOT}/property/details/${property.property_id}/">
+        Property Details
+    </a>
+                        </td>
+                    `;
+            
+                    tbody.appendChild(tr);
+                });
+              
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+      
+    }
+
+
+    
+</script>
+{% endblock scripts %}

@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'message_track',
     'lender_module',
     'accounts',
+    'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -160,3 +162,10 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD") # Replace with the generated App Password
 
+# settings.py
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.ObBackend',  
+    'django.contrib.auth.backends.ModelBackend',
+   
+]

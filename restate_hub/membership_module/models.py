@@ -28,7 +28,7 @@ MEMBER_TYPES = [
 ]
 
 class MemberAddress(BaseModel):
-    maddress_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    maddress_id = models.CharField(max_length=50, default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     street_no = models.CharField(max_length=50, blank=True, null=True)
     street_name = models.CharField(max_length=500, blank=True, null=True)
@@ -42,7 +42,7 @@ class MemberAddress(BaseModel):
 
 
 class MembershipFee(BaseModel):
-    membership_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    membership_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     acct_setup_fee = models.DecimalField(max_digits=10, decimal_places=2)
     membership_fee = models.DecimalField(max_digits=10, decimal_places=2)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True) # Unncessory or above one unncessory. remove

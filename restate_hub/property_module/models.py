@@ -4,6 +4,15 @@ from core.models import BaseModel
 import shortuuid
 from seller_module.models import Sellers
 from agent_module.models import Agents
+import random
+import string
+import time
+def generate_unique_id(length=12):
+    """Generate a non-sequential unique ID using a timestamp and random suffix."""
+    timestamp = str(int(time.time() * 1000))  # Current timestamp in milliseconds
+    random_suffix = ''.join(random.choices(string.digits, k=length - len(timestamp)))
+    unique_id = timestamp + random_suffix
+    return unique_id
 
 class PropertiesInfo(BaseModel):
     RESIDENTIAL = 'residential'
@@ -38,8 +47,8 @@ class PropertiesInfo(BaseModel):
         (LEASED, 'Leased'),
     ]
 
-    YES = 'Yes'
-    NO = 'No'
+    YES = 'yes'
+    NO = 'no'
 
     SELL_LEASEBACK_OPTIONS = [
         (YES, 'Yes'),
@@ -53,8 +62,9 @@ class PropertiesInfo(BaseModel):
         (12, '12 Months'),
     ]
 
-    property_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    property_id =  models.CharField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True,max_length=50) 
     property_type = models.CharField(max_length=20, choices=PROPERTY_TYPES, null=True)
+    listing_id = models.CharField(default=generate_unique_id(),blank=True, null=True, max_length=200)
     listing_type = models.CharField(max_length=20, choices=LISTING_TYPES, null=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, null=True)
     house_size = models.FloatField(null=True)
@@ -71,14 +81,11 @@ class PropertiesInfo(BaseModel):
     city = models.CharField(max_length=100, null=True)
     zipcode = models.CharField(max_length=10, null=True)
     state = models.CharField(max_length=50, null=True)
-    postal_code = models.CharField(max_length=20, null=True)
     country = models.CharField(max_length=100, null=True)
-    county = models.CharField(max_length=100, null=True)
     area = models.CharField(max_length=100, null=True)
-    zipcode4 = models.CharField(max_length=10, null=True)
-    feature_id = models.IntegerField(null=True)
-    image_id = models.IntegerField(null=True)# Does we assigning only single image in that case we needs to change something
-    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True)
+    feature_id = models.IntegerField(null=True, blank=True)
+    image_id = models.IntegerField(null=True, blank=True)# Does we assigning only single image in that case we needs to change something
+    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True, blank=True)
     selling_type = models.CharField(max_length=50, null=True)
     reason_selling = models.TextField(null=True)
     sell_leaseback = models.CharField(max_length=3, choices=SELL_LEASEBACK_OPTIONS, null=True)
@@ -94,13 +101,13 @@ class PropertyAgent(BaseModel):
     (SELLERREP , 'SellerRep'),
     (BUYERREP , 'BuyerRep'),
     ]
-    propertyagent_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    propertyagent_id =  models.CharField(max_length=50, default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     agent = models.ForeignKey(Agents, on_delete=models.SET_NULL,null=True)
     agent_role =  models.CharField(max_length=20, choices=AGENT_ROLE_TYPES, null=True)
 
 class PropetyFeatures(BaseModel):
-    feature_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    feature_id =  models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     feature_name = models.CharField(max_length=20, null=True) 
     property_conditions = models.CharField(max_length=20, null=True)
 
@@ -112,7 +119,7 @@ class PropertyHistory(BaseModel):
       (Price , 'Price changed'),
      (Ownership , 'Ownership changed')
     ]
-    history_id =  models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    history_id =  models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     change_date =models.DateField(auto_now=True, editable=True)
     change_type = models.CharField(max_length=20, choices=CHANGE_TYPES, null=True)
@@ -120,7 +127,7 @@ class PropertyHistory(BaseModel):
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
 
 class PropertyLocation(BaseModel):
-    location_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    location_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     city  = models.CharField(max_length=50, blank=False, null=True)
     country  = models.CharField(max_length=50, blank=False, null=True)

@@ -18,13 +18,13 @@ class Tansactions(BaseModel):
     (Rent , 'rent'),
     (Lease , 'lease'),
     ]
-    transaction_id = models.UUIDField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
-    property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
-    buyer = models.ForeignKey(Buyers, on_delete=models.SET_NULL,null=True)
-    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True)
-    agent = models.ForeignKey(Agents, on_delete=models.SET_NULL,null=True)
+    transaction_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
+    property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True,blank=True)
+    buyer = models.ForeignKey(Buyers, on_delete=models.SET_NULL,null=True,blank=True)
+    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True,blank=True)
+    agent = models.ForeignKey(Agents, on_delete=models.SET_NULL,null=True,blank=True)
     transaction_type =  models.CharField(max_length=20, choices= TRANSCTION_TYPES, null=True)
     transaction_date = models.DateTimeField(auto_now_add=True,editable=True)
     sold_price = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=20,  null=True)
-    investor = models.ForeignKey(Investors, on_delete=models.SET_NULL,null=True)
+    investor = models.ForeignKey(Investors, on_delete=models.SET_NULL,null=True,blank=True)

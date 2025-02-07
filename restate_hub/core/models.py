@@ -16,14 +16,16 @@ class Country(models.Model):
     code = models.CharField(max_length=3, unique=True, null=True)  # ISO 3166-1 alpha-3 code
 
 
-class Region(models.Model):
-    name = models.CharField(max_length=100, null=True)
-    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="regions")
 
+class State(models.Model):
+    name = models.CharField(max_length=100, null=True)
+    code = models.CharField(max_length=100, null=True,blank=True)
+    country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="states")
 
 class City(models.Model):
     name = models.CharField(max_length=100, null=True)
-    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, blank=True, related_name="cities")
+    code = models.CharField(max_length=100, null=True,blank=True)
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="cities")
 
 
@@ -35,7 +37,7 @@ class Address(models.Model):
     line_1 = models.CharField(max_length=255, null=True)
     line_2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
-    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
     postal_code = models.ForeignKey(PostalCode, on_delete=models.SET_NULL, null=True, blank=True, related_name="addresses")
     

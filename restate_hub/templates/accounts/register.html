@@ -44,9 +44,9 @@
                                 <option value="{{ member_type.id }}">{{ member_type.name }}</option>
                             {% endfor %}
                             {% else %}
-                            <option value="Buyer">Buyer</option>
-                            <option value="Buyer">Seller</option>
-                            <option value="Buyer">Agent</option>
+                            <option value="buyer">Buyer</option>
+                            <option value="seller">Seller</option>
+                            <option value="agent">Agent</option>
                             {% endif %}
                         </select>
                      </div>
@@ -55,10 +55,12 @@
                         {{user_form.password}}
                         <br>
                         <small class="form-text text-muted">Password requirements: 8 characters, at least one special character, and one number.</small>
-                     </div>
+                    </div>
                       <div class="form-group">
                         <label for="password2">Confirm Password:</label>
                         {{user_form.password2}}
+                        <br>
+                        <input type="checkbox" id="togglePassword"> Show Password
                      </div>
                      <div class="form-group">
                         <label for="message">Message:</label>
@@ -69,7 +71,7 @@
                     
                     <button type="submit" class="btn btn-success  w-100 mt-2">Submit <i class="fas fa-user-plus"></i></button>
                     <p class="mt-3 text-center">
-                        Already have an account? <a href="/login" class="login-link">Log in</a>
+                        Already have an account? <a href="{% url "accounts:login" %}" class="login-link">Log in</a>
                      </p>
                 </form>
             </div>
@@ -81,6 +83,14 @@
         let  member_tyo = document.getElementById('member_type_vale')
         member_tyo.value = selectedValuemem
     });
+
+    document.getElementById('togglePassword').addEventListener('change', function () {
+        let passwordField = document.getElementById('nomd_deS8');
+        passwordField.type = this.checked ? 'text' : 'password';
+        let passwordField2 = document.getElementById('disci_R6');
+        passwordField2.type = this.checked ? 'text' : 'password';
+      });
+    
     
 </script>
 
