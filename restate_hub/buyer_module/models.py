@@ -13,7 +13,7 @@ class Buyers(BaseModel):
     join_date_at = models.DateTimeField(auto_now_add=True,editable=True)
     agent = models.ForeignKey(Agents,on_delete=models.SET_NULL, null=True, blank=True)
     business_name = models.CharField(max_length=50, blank=True, null=True)
-    user =models.OneToOneField(User,on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField(User,on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
