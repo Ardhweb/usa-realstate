@@ -42,7 +42,7 @@ def add_property(request):
 def property_detail(request, property_id):
     property_obj = get_object_or_404(PropertiesInfo, property_id=property_id)
     try:
-        messagetrack_obj = MessageTrack.objects.get(buyer=request.user.buyers, message_type='inquiry')
+        messagetrack_obj = MessageTrack.objects.get(buyer=request.user.buyers, message_type='inquiry', property=property_id)
     except (MessageTrack.DoesNotExist, Exception) as e:
         messagetrack_obj = None  # No message track found, set to None
     if request.method == 'POST':
@@ -60,7 +60,8 @@ def property_detail(request, property_id):
                 buyer=request.user.buyers if request.user.is_authenticated else None, 
                 seller=seller,
                 message_out=message,
-                message_type='inquiry')
+                message_type='inquiry',
+                property=f'{property_id}')
                 print("InquiryEmail sent successfully to  property owner!")
             else:
                 print("Failed to send email.")

@@ -25,6 +25,7 @@ class MessageTrack(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     message_type = models.CharField(max_length=20, choices=CATEGORY_CHOICES, null=True, blank=True)
+    property = models.CharField(max_length=100, null=True, blank=True) # Needs to chnage intofk
 
 
 
