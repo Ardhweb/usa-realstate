@@ -2,12 +2,16 @@
 {% block content %}
 
 <main class="container mt-4">
+    {% if request.user.member_type == 'buyer' %}
+    {% comment "Do not Display the Add Property Btn" %}{% endcomment %}
+    {% else %}
     <div class="row">
         <div class="col">
  <a class="btn btn-primary" href="{% url "property_module:property-add" %}"> Add New Property</a>
         </div>
        
     </div>
+    {% endif %}
     
     <section class="hero text-center mb-4">
         <h1 class="text-primary fw-bold">Property Listings</h1>
@@ -41,11 +45,13 @@
 
     <div class="table-responsive mt-4">
         <table class="table table-bordered table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Property Image</th>
+            <thead  class="table-light d-none">
+                <tr class="" id="theadrrow">
+                    <th>Property</th>
                     <th>Details</th>
-                    <th>Description</th>
+                    <th>More</th>
+                   
+                    
                 </tr>
             </thead>
             <tbody class="" id="property-list">
@@ -105,12 +111,16 @@
                 }
                 const data = await response.json();
                 console.log(data)
+                const thead = document.querySelector("thead"); // Selects the entire table head
                 const tbody = document.getElementById("property-list");
                 tbody.innerHTML = "";
+                if (data.length > 0) {
+                    thead.classList.remove('d-none') // Show the table header
                 data.forEach(property => {
                     const tr = document.createElement("tr");
+
                     tr.innerHTML = `
-                        <td><img src="https://via.placeholder.com/150" alt="Property" class="img-fluid rounded">
+                        <td><img src="${property.image}" alt="Property" width="250" class="img-thumbnail img-fluid rounded">
                         <p><strong>Listing ID: </strong>#${property.listing_id}</p>
                         </td>
                         <td>
@@ -142,6 +152,10 @@
             
                     tbody.appendChild(tr);
                 });
+            }else{
+                thead.style.display = "none"; // Hide the table header if no data
+            }
+                
               
             } catch (error) {
                 console.error('Error fetching products:', error);

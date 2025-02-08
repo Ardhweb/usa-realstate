@@ -66,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'restate_hub.utils.middleware.RoleBasedAccessMiddleware',
 ]
 
 ROOT_URLCONF = 'restate_hub.urls'
@@ -168,4 +169,10 @@ AUTHENTICATION_BACKENDS = [
     'accounts.backends.ObBackend',  
     'django.contrib.auth.backends.ModelBackend',
    
+]
+
+
+# In your settings.py or a separate config file
+RESTRICTED_URLS = [
+    "property-add"
 ]

@@ -20,7 +20,7 @@ def property_listing(request):
 def add_property(request):
     if request.user.is_authenticated and request.user.member_type == 'seller' or request.user.member_type == 'agent':
         if request.method == 'POST':
-            form = AddPropertiesInfoForm(request.POST)
+            form = AddPropertiesInfoForm(request.POST,request.FILES)
             if form.is_valid():
                 instance = form.save(commit=False)
                 #instance.seller = None

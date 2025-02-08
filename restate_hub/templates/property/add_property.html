@@ -4,10 +4,31 @@
 {% block content %}
 
 <div class="container p-2 ">
-    
+    {% comment %} <div class="container text-center mt-3">
+        <h2 class="mb-4">Upload Image using Drag \ n Drop</h2>
+         <form class="dropzone" id="imageDropzone"></form>
+    </div> {% endcomment %}
 
-    <form method="POST" class="">
+
+    <form method="POST" class="" enctype="multipart/form-data" id="propertyForm">
         {% csrf_token %}
+         {{form.image}}
+
+         <div class="row">
+            <div class="col">
+                <label>{{ form.country.label }}*</label>
+                {{ form.country }}
+            </div>
+            <div class="col">
+                <label>{{ form.state.label }}*</label>
+                {{ form.state }}
+            </div>
+            <div class="col">
+                <label>{{ form.city.label }}*</label>
+                {{ form.city }}
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <label>{{ form.property_type.label }}</label>
@@ -60,20 +81,7 @@
             </div>
         </div>
         
-        <div class="row">
-            <div class="col">
-                <label>{{ form.country.label }}</label>
-                {{ form.country }}
-            </div>
-            <div class="col">
-                <label>{{ form.state.label }}</label>
-                {{ form.state }}
-            </div>
-            <div class="col">
-                <label>{{ form.city.label }}</label>
-                {{ form.city }}
-            </div>
-        </div>
+        
 
          <div class="row">
             <div class="col">
@@ -271,11 +279,11 @@
             // Get the product dropdown element
            
             citiesDropdown.innerHTML = ""
-          
+            citiesDropdown.innerHTML = '<option value="">Select Your City</option>'
             // Loop through the API response data and add options to the product dropdown
             data.forEach(city => {
                 const option = document.createElement('option');
-                option.value = city.id;
+                option.value = city.name;
                 option.textContent = city.name;  // City name as the display text
                citiesDropdown.appendChild(option);
             });
@@ -286,8 +294,46 @@
 
 
     }
-    
-      
+
+    Dropzone.autoDiscover = false;
+
+    var myDropzone = new Dropzone("#imageDropzone", {
+        url: "#", // Prevent auto-upload
+        autoProcessQueue: false,
+        maxFilesize: 2,
+        acceptedFiles: "image/*",
+        dictDefaultMessage: "Drag & Drop Images Here or Click to Upload",
+
+        init: function() {
+            this.on("addedfile", function(file) {
+                console.log("File added:", file);
+
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    let base64String = event.target.result;
+
+                    // Store in localStorage (temporary)
+                    localStorage.setItem("uploadedImage", base64String);
+
+                    // Show preview
+                    document.getElementById("preview-img").src = base64String;
+                    document.getElementById("preview").style.display = "block";
+
+                    // Assign image to Django file input
+                    let djangoImageInput = document.querySelector("input[name='image']");
+                    let dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    djangoImageInput.files = dataTransfer.files;
+                };
+            });
+        }
+    });
+
+    // Clear localStorage on form submit
+    document.getElementById("propertyForm").addEventListener("submit", function() {
+        localStorage.removeItem("uploadedImage");
+    }); 
    
 </script>
 {% endblock scripts %}
