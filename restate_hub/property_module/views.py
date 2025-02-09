@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
 from property_module.utils import send_email_inquiry
+from seller_module.models import Sellers
 # Create your views here.
 def property_listing(request):
     states = State.objects.all() # Get all objects for now.
@@ -21,9 +22,10 @@ def add_property(request):
     if request.user.is_authenticated and request.user.member_type == 'seller' or request.user.member_type == 'agent':
         if request.method == 'POST':
             form = AddPropertiesInfoForm(request.POST,request.FILES)
+            seller =  Sellers.objects.get(user=request.user)
             if form.is_valid():
                 instance = form.save(commit=False)
-                #instance.seller = None
+                instance.seller = seller
                 instance.save()
                 return redirect('home')
             else:
