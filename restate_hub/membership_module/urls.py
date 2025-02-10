@@ -4,5 +4,6 @@ from . import views
 app_name="membership_module"
 
 urlpatterns = [
-    path('profile/',views.memebers_profile, name="member_profile"),
+    path('profile/',views.member_profile, name="member_profile"),
+    path('profile-success/', views.profile_success, name='profile_success'),
 ]
