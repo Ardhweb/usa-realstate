@@ -187,9 +187,61 @@
 {% endblock content %}
 
 {% block scripts %}
-
+{% include "includes/utils/select2cdn.html" %}
 <script>
+    
+    console.log(typeof jQuery !== "undefined" ? "jQuery is loaded!" : "jQuery is not loaded!");
   
+    $(document).ready(function () {
+        // Initialize all Select2 widgets on the page
+        $("select").each(function () {
+            $(this).select2({
+                theme: "bootstrap-5", // Apply Bootstrap theme
+                width: "100%", // Ensures full width inside form
+                matcher: function (params, data) {
+                    if ($.trim(params.term) === "") {
+                        return data;
+                    }
+                    if (data.text.toLowerCase().includes(params.term.toLowerCase())) {
+                        return data;
+                    }
+                    return null;
+                }
+            });
+    
+            // Apply Bootstrap form-select styles to each Select2 element
+            let select2Element = this.nextElementSibling; // Get Select2 container
+            if (select2Element && select2Element.classList.contains("select2-container")) {
+                let singleSelect = select2Element.querySelector(".select2-selection--single");
+                if (singleSelect) {
+                    singleSelect.style.setProperty(
+                        "--bs-form-select-bg-img",
+                        "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e\")"
+                    );
+                    singleSelect.style.display = "block";
+                    singleSelect.style.width = "100%";
+                    singleSelect.style.padding = ".375rem 2.25rem .375rem .75rem";
+                    singleSelect.style.fontSize = "1rem";
+                    singleSelect.style.fontWeight = "400";
+                    singleSelect.style.lineHeight = "1.5";
+                    singleSelect.style.color = "var(--bs-body-color)";
+                    singleSelect.style.backgroundColor = "var(--bs-body-bg)";
+                    singleSelect.style.backgroundImage = "var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none)";
+                    singleSelect.style.backgroundRepeat = "no-repeat";
+                    singleSelect.style.backgroundPosition = "right .75rem center";
+                    singleSelect.style.backgroundSize = "16px 12px";
+                    singleSelect.style.border = "var(--bs-border-width) solid var(--bs-border-color)";
+                    singleSelect.style.borderRadius = "var(--bs-border-radius)";
+                    singleSelect.style.transition = "border-color .15s ease-in-out, box-shadow .15s ease-in-out";
+                    singleSelect.style.WebkitAppearance = "none";
+                    singleSelect.style.MozAppearance = "none";
+                    singleSelect.style.appearance = "none";
+                    singleSelect.style.height = "37px";
+                }
+            }
+        });
+    });
+    
     document.addEventListener("DOMContentLoaded", function() {
         get_Countries()
         // Your initialization code here
@@ -335,5 +387,8 @@
         localStorage.removeItem("uploadedImage");
     }); 
    
+
+    
+  
 </script>
 {% endblock scripts %}

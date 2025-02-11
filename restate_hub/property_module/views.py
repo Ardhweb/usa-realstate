@@ -27,7 +27,7 @@ def add_property(request):
                 instance = form.save(commit=False)
                 instance.seller = seller
                 instance.save()
-                return redirect('home')
+                return redirect('property_module:property-listing')
             else:
                 print(form.errors)  # Debugging: Print form validation errors
         else:

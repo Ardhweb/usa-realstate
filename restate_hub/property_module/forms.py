@@ -11,7 +11,7 @@ class AddPropertiesInfoForm(forms.ModelForm):
       widgets ={
                'country':forms.Select(attrs={'aria-label':"Default select example",'class':'form-select', 'id':'country-list','onchange':"get_States(this.value)"}),
                'state':forms.Select(attrs={'aria-label':"Default select example",'class':'form-select form-select', 'id':'state-list','onchange':"get_Cities(this.value)"}),
-               'city':forms.Select(attrs={'aria-label':"Default select example",'class':'form-select form-control', 'id':'city-list'}),
+               'city':forms.Select(attrs={'aria-label':"Default select example",'class':'form-select form-control select2', 'id':'city-list'}),
                'image':forms.FileInput(attrs={'aria-label':"Default select example",'class':'form-select d-none', 'id':'img-single', 'name':'image'}),
                
             }
