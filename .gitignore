@@ -176,6 +176,8 @@ cython_debug/
 
 .migrations
 .migrations/** */
+.media/** */
+*/media/
 
 # Ignore all migrations folders
 **/migrations/

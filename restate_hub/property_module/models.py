@@ -84,7 +84,7 @@ class PropertiesInfo(BaseModel):
     country = models.CharField(max_length=100, null=True)
     area = models.CharField(max_length=100, null=True)
     feature_id = models.IntegerField(null=True, blank=True)
-    image_id = models.IntegerField(null=True, blank=True)# Does we assigning only single image in that case we needs to change something
+    image = models.ImageField(upload_to='property/images/')  # Store images in 'media/images/'
     seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True, blank=True)
     selling_type = models.CharField(max_length=50, null=True)
     reason_selling = models.TextField(null=True)

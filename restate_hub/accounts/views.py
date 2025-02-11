@@ -11,6 +11,11 @@ from accounts.utils import send_email_sfa
 from django.urls import reverse
 from django.utils.timezone import now
 from django.contrib import messages
+from buyer_module.models import Buyers
+from seller_module.models import Sellers
+from agent_module.models import Agents
+from django.db import transaction
+
 
 def generate_secure_otp(length=6):
     return ''.join(secrets.choice('0123456789') for _ in range(length))
@@ -49,13 +54,21 @@ def new_user_register(request):
     if request.method == 'POST':
         user_form = SignupForm(request.POST)
         if user_form.is_valid ():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(user_form.cleaned_data['password'])
-            new_user.save()
-            user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
-            if user is not None:
-                login(request, user)
-            return redirect('membership_module:member_profile')   
+            with transaction.atomic(): 
+                new_user = user_form.save(commit=False)
+                new_user.set_password(user_form.cleaned_data['password'])
+                new_user.save()
+                member = new_user.member_type
+                if member == 'buyer':
+                    current_buyer = Buyers.objects.create(user=new_user,email=new_user.email)
+                elif member == 'seller':
+                    current_seller = Sellers.objects.create(user=new_user, email=new_user.email)
+                else:
+                    print("Can't create agent ")
+                user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
+                if user is not None:
+                    login(request, user)
+                return redirect('membership_module:member_profile')   
     else:
         user_form = SignupForm()
     return render(request,'accounts/register.html',{'user_form': user_form})

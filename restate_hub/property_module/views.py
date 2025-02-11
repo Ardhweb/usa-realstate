@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse
 from property_module.utils import send_email_inquiry
+from seller_module.models import Sellers
 # Create your views here.
 def property_listing(request):
     states = State.objects.all() # Get all objects for now.
@@ -20,12 +21,13 @@ def property_listing(request):
 def add_property(request):
     if request.user.is_authenticated and request.user.member_type == 'seller' or request.user.member_type == 'agent':
         if request.method == 'POST':
-            form = AddPropertiesInfoForm(request.POST)
+            form = AddPropertiesInfoForm(request.POST,request.FILES)
+            seller =  Sellers.objects.get(user=request.user)
             if form.is_valid():
                 instance = form.save(commit=False)
-                #instance.seller = None
+                instance.seller = seller
                 instance.save()
-                return redirect('home')
+                return redirect('property_module:property-listing')
             else:
                 print(form.errors)  # Debugging: Print form validation errors
         else:
@@ -42,7 +44,7 @@ def add_property(request):
 def property_detail(request, property_id):
     property_obj = get_object_or_404(PropertiesInfo, property_id=property_id)
     try:
-        messagetrack_obj = MessageTrack.objects.get(buyer=request.user.buyers, message_type='inquiry')
+        messagetrack_obj = MessageTrack.objects.get(buyer=request.user.buyers, message_type='inquiry', property=property_id)
     except (MessageTrack.DoesNotExist, Exception) as e:
         messagetrack_obj = None  # No message track found, set to None
     if request.method == 'POST':
@@ -60,7 +62,8 @@ def property_detail(request, property_id):
                 buyer=request.user.buyers if request.user.is_authenticated else None, 
                 seller=seller,
                 message_out=message,
-                message_type='inquiry')
+                message_type='inquiry',
+                property=f'{property_id}')
                 print("InquiryEmail sent successfully to  property owner!")
             else:
                 print("Failed to send email.")
