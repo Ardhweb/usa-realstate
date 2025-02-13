@@ -19,3 +19,16 @@ def checked_email_address(value):
 
 
 
+from django.core.exceptions import ValidationError
+import re
+
+class AlphanumericPasswordValidator:
+    def validate(self, password, user=None):
+        if not re.search(r'[A-Za-z]', password) or not re.search(r'\d', password):
+            raise ValidationError(
+                "Password must contain at least one letter and one number.",
+                code='password_no_alphanumeric',
+            )
+
+    def get_help_text(self):
+        return "Your password must contain at least one letter and one number."

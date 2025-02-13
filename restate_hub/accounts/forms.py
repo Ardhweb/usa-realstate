@@ -1,6 +1,8 @@
 from django import forms
 # from django.contrib.auth.models import User
 from accounts.models import User
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='Username or Email',widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -18,11 +20,26 @@ class SignupForm(forms.ModelForm):
                 'member_type':forms.HiddenInput(attrs={'class':'form-control','id':'member_type_vale'}),
                 'message':forms.Textarea(attrs={'class':'form-control','rows':'3'}),
             }
-    def clean_password2(self):
-        cd = self.cleaned_data
-        if cd['password'] != cd['password2']:
-            raise forms.ValidationError('Passwords don\'t match.')
-        return cd['password2']
+            
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+
+        # ✅ Apply Django’s built-in password validation (length, common, numeric)
+        validate_password(password)
+
+        return password
+
+    def clean(self):
+        """Ensure both passwords match."""
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password2 = cleaned_data.get("password2")
+
+        if password and password2 and password != password2:
+            self.add_error("password2", "Passwords do not match.")
+
+        return cleaned_data
+
  
 ##PASSWORD RRESEET
 #SFA

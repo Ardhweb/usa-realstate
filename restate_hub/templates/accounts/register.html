@@ -20,9 +20,13 @@
                  <h3 class="signup-title">Create Your Account</h3>
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="messages {% if message.tags %} {{ message.tags }} {% endif %}">
-                            {{ message }}
-                        </div>
+                     
+                        <div class="alert alert-danger alert-dismissible messages {% if message.tags %} {{ message.tags }} {% endif %} fade show" role="alert">
+                           
+                                {{ message }}
+                
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
                     {% endfor %}
                 {% endif %}
                  <form method="post" class="form-style">
@@ -90,6 +94,8 @@
         let passwordField2 = document.getElementById('disci_R6');
         passwordField2.type = this.checked ? 'text' : 'password';
       });
+    
+    
     
     
 </script>
