@@ -3,6 +3,7 @@ from django import forms
 from accounts.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from .validators import validate_email_domain  # Import the validator
 
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='Username or Email',widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -20,7 +21,14 @@ class SignupForm(forms.ModelForm):
                 'member_type':forms.HiddenInput(attrs={'class':'form-control','id':'member_type_vale'}),
                 'message':forms.Textarea(attrs={'class':'form-control','rows':'3'}),
             }
-            
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        validate_email_domain(email)  # Apply custom validator
+        # Ensure email uniqueness
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already in use.")
+        return email  
+        
     def clean_password(self):
         password = self.cleaned_data.get('password')
 

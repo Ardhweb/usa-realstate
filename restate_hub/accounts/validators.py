@@ -1,22 +1,23 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 import re
-BLOCKED_TEMP_DOMAINS = {
-    "tempmail.com", "10minutemail.com", "guerrillamail.com", "mailinator.com", 
-    "fakeinbox.com", "yopmail.com", "throwawaymail.com", "maildrop.cc", "trashmail.com"
-}
 
-def checked_email_address(value):
-    email_regex = r'^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$'
-    match = re.match(email_regex, value)
+def validate_email_domain(value):
+    """Custom email validator that allows only specific domains."""
+    allowed_domains = ["example.com", "mycompany.com", "gmail.com", "outlook.com"]  # Allowed email domains
+
+    if "@" not in value:
+        raise ValidationError("Invalid email format.")
+
+    email_domain = value.split("@")[-1]
     
-    if match:
-        domain = match.group(1)
-        if domain in BLOCKED_TEMP_DOMAINS:
-            raise ValidationError(_("Emails from temporary domains are not allowed."))
-    else:
-        raise ValidationError(_("Invalid email format"))
-
+    if email_domain not in allowed_domains:
+        raise ValidationError(f"This email addres are not allowed.")
+    
+    # Optional regex validation (Example: Email must start with a letter)
+    if not re.match(r"^[a-zA-Z][\w\.-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$", value):
+        raise ValidationError("Invalid email format.")
 
 
 from django.core.exceptions import ValidationError
