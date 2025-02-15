@@ -22,7 +22,7 @@ class PropertyList(APIView):
 
         if get_city:
             properties = properties.filter(city__iexact=get_city)  # Case-insensitive filter
-
+        
         serializer = PropertiesInfoSerializer(properties, many=True)
         return Response(serializer.data)
     #How to consume this :GET /api/properties/?city=New York

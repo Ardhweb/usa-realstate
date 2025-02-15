@@ -39,6 +39,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('core/', include("core.urls")),
     path('agents/', include("agent_module.urls")),
+    path('seller/', include("seller_module.urls")),
     path('accounts/', include("accounts.urls")),
     path('members/', include("membership_module.urls")),
     path('property/', include("property_module.urls")),
