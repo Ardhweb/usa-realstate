@@ -14,7 +14,9 @@ def memebers_profile(request):
 @login_required() 
 def member_dashboard(request):
     if request.user.is_authenticated:
-        return render(request, "members/dashboard.html", {'active_page':'dashboard'})
+        seller = Sellers.objects.get(user=request.user)
+        total_property = PropertiesInfo.objects.filter(seller=seller).count()
+        return render(request, "members/dashboard.html", {'active_page':'dashboard', "total_property":total_property})
     else:
         return redirect('home')
 
@@ -50,5 +52,8 @@ def add_property(request):
     else:
         raise Http404('Page not found')
 
+@login_required()  
 def view_message(request):
     return render(request, "members/message.html", {'active_page':'view-message'})
+
+
