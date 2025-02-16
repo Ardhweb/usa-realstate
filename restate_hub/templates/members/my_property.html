@@ -1,0 +1,41 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Homelinker Dashboard|My Property {% endblock title %}
+{% block content %}
+
+<div class="container-sm px-3 py-4 mt-5 bg-body border-none rounded-3 shadow-sm">
+    <h3 class="py-2 mt-3 text-center text-md-start">My Properties</h3>
+
+    <div class="table-responsive ">
+        <table class="table align-middle table-hover ">
+            <thead class="table-light py-3">
+                <tr>
+                    <th scope="col" class="text-start">Image</th>
+                    <th scope="col" class="text-center">Listing ID</th>
+                    <th scope="col" class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in properties %}
+                <tr>
+                    <td class="text-start">
+                        <img src="{{ property.image.url }}" class="img-fluid rounded" style="height: 50px; width: auto;" alt="Image">
+                    </td>
+                    <td class="text-center">
+                        <h6 class="mb-0">{{ property.listing_id }}</h6>
+                    </td>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end gap-2 flex-nowrap">
+                            <button class="btn btn-sm">Not Active</button>
+                           
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock content %}

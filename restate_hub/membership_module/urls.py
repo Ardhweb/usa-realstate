@@ -5,4 +5,8 @@ app_name="membership_module"
 
 urlpatterns = [
     path('profile/',views.memebers_profile, name="member_profile"),
+    path('dashboard/', views.member_dashboard, name="dashboard"),
+    path('dashboard/my-property', views.my_property, name="my_property"),
+    path('dashboard/add-property', views.add_property, name="member_add_property"),
+    path('dashboard/view-message', views.view_message, name="member_message"),
 ]

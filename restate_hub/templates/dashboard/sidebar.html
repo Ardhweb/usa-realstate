@@ -1,0 +1,45 @@
+<aside class="sidebar-wrapper offcanvas offcanvas-start " tabindex="-1" id="offcanvasSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">HomeLinker</h5>
+        <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="nav winder-menu">
+            <li class="nav-item  winder-item ">
+                <a href="{% url "home" %}" class="nav-link text-reset overflow-hidden text-truncate d-block">
+                    <i class="lni lni-home-2 fs-4 d-inline-block align-middle"></i>
+                    <span class="d-inline-block align-middle ms-2 text-nowrap">Home</span>
+                </a>
+            </li>
+            <li class="nav-item  winder-item {% if active_page == 'dashboard' %}active{% endif %} ">
+                <a href="{% url "membership_module:dashboard" %}" class="nav-link text-reset overflow-hidden text-truncate d-block">
+                    <i class="lni lni-dashboard-square-1 fs-4 d-inline-block align-middle"></i>
+                    <span class="d-inline-block align-middle ms-2 text-nowrap">Dashboard</span>
+                </a>
+            </li>
+            {% if request.user.member_type == 'seller' %}
+            <li class="nav-item  winder-item {% if active_page == 'add-property' %}active{% endif %}">
+                <a href="{% url "membership_module:member_add_property" %}" class="nav-link text-reset overflow-hidden text-truncate d-block">
+                    <i class="lni lni-file-plus-circle fs-4 d-inline-block align-middle"></i>
+                    <span class="d-inline-block align-middle ms-2 text-nowrap">Add Property</span>
+                </a>
+            </li>
+            <li class="nav-item  winder-item {% if active_page == 'my-property' %}active{% endif %}">
+                <a href="{% url "membership_module:my_property" %}" class="nav-link text-reset overflow-hidden text-truncate d-block">
+                    <i class="lni lni-buildings-1 fs-4 d-inline-block align-middle"></i>
+                    <span class="d-inline-block align-middle ms-2 text-nowrap">My Property</span>
+                </a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item  winder-item {% if active_page == 'view-message' %}active{% endif %}">
+                <a href="{% url "membership_module:member_message" %}" class="nav-link text-reset overflow-hidden text-truncate d-block">
+                    <i class="lni lni-message-2 fs-4 d-inline-block align-middle"></i>
+                    <span class="d-inline-block align-middle ms-2 text-nowrap">Message</span>
+                </a>
+            </li>
+        </ul>
+        
+        
+    </div>
+</aside>

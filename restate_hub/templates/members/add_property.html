@@ -1,0 +1,364 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Add New Property{% endblock title %}
+{% block content %}
+<div class="container bg-light rounded-3 p-4 shadow">
+    <form method="POST" enctype="multipart/form-data" id="propertyForm">
+        {% csrf_token %}
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="property-details-wrapper bg-body p-3 rounded-3 shadow-sm">
+                    <h4 class="mb-3">Property Details</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.country.label }}*</label>
+                            {{ form.country }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.state.label }}*</label>
+                            {{ form.state }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.city.label }}*</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.property_type.label }}</label>
+                            {{ form.property_type }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.listing_type.label }}</label>
+                            {{ form.listing_type }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.listing_status.label }}</label>
+                            {{ form.listing_status }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.price.label }}</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.house_size.label }}</label>
+                            {{ form.house_size }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.lot_size.label }}</label>
+                            {{ form.lot_size }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.bedrooms.label }}</label>
+                            {{ form.bedrooms }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.bathrooms.label }}</label>
+                            {{ form.bathrooms }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.year_built.label }}</label>
+                            {{ form.year_built }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                     
+                        <div class="col-md-12">
+                            <label class="form-label">{{ form.description.label }}</label>
+                            {{ form.description }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="location-details-wrapper bg-body p-3 rounded-3 shadow-sm">
+                    <h4 class="mb-3">Location & Other Details</h4>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.street_num.label }}</label>
+                            {{ form.street_num }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.street_name.label }}</label>
+                            {{ form.street_name }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.zipcode.label }}</label>
+                            {{ form.zipcode }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.area.label }}</label>
+                            {{ form.area }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.garage_num.label }}</label>
+                            {{ form.garage_num }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.hoa_fee_qtr.label }}</label>
+                            {{ form.hoa_fee_qtr }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.selling_type.label }}</label>
+                            {{ form.selling_type }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.sell_leaseback.label }}</label>
+                            {{ form.sell_leaseback }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.leaseback_month.label }}</label>
+                            {{ form.leaseback_month }}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                     
+                        <div class="col-md-12">
+                            <label class="form-label">{{ form.reason_selling.label }}</label>
+                            {{ form.reason_selling }}
+                        </div>
+                    </div>
+                    
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">{{ form.image.label }}*</label>
+                            {{ form.image }}
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <input type="submit" value="Add Property" class="btn btn-primary w-50" />
+        </div>
+    </form>
+</div>
+{% endblock content %}
+
+
+{% block scripts %}
+{% include "includes/utils/select2cdn.html" %}
+<script>
+    
+    console.log(typeof jQuery !== "undefined" ? "jQuery is loaded!" : "jQuery is not loaded!");
+  
+    $(document).ready(function () {
+        // Initialize all Select2 widgets on the page
+        $("select").each(function () {
+            $(this).select2({
+                theme: "bootstrap-5", // Apply Bootstrap theme
+                width: "100%", // Ensures full width inside form
+                matcher: function (params, data) {
+                    if ($.trim(params.term) === "") {
+                        return data;
+                    }
+                    if (data.text.toLowerCase().includes(params.term.toLowerCase())) {
+                        return data;
+                    }
+                    return null;
+                }
+            });
+    
+            // Apply Bootstrap form-select styles to each Select2 element
+            let select2Element = this.nextElementSibling; // Get Select2 container
+            if (select2Element && select2Element.classList.contains("select2-container")) {
+                let singleSelect = select2Element.querySelector(".select2-selection--single");
+                if (singleSelect) {
+                    singleSelect.style.setProperty(
+                        "--bs-form-select-bg-img",
+                        "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e\")"
+                    );
+                    singleSelect.style.display = "block";
+                    singleSelect.style.width = "100%";
+                    singleSelect.style.padding = ".375rem 2.25rem .375rem .75rem";
+                    singleSelect.style.fontSize = "1rem";
+                    singleSelect.style.fontWeight = "400";
+                    singleSelect.style.lineHeight = "1.5";
+                    singleSelect.style.color = "var(--bs-body-color)";
+                    singleSelect.style.backgroundColor = "var(--bs-body-bg)";
+                    singleSelect.style.backgroundImage = "var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none)";
+                    singleSelect.style.backgroundRepeat = "no-repeat";
+                    singleSelect.style.backgroundPosition = "right .75rem center";
+                    singleSelect.style.backgroundSize = "16px 12px";
+                    singleSelect.style.border = "var(--bs-border-width) solid var(--bs-border-color)";
+                    singleSelect.style.borderRadius = "var(--bs-border-radius)";
+                    singleSelect.style.transition = "border-color .15s ease-in-out, box-shadow .15s ease-in-out";
+                    singleSelect.style.WebkitAppearance = "none";
+                    singleSelect.style.MozAppearance = "none";
+                    singleSelect.style.appearance = "none";
+                    singleSelect.style.height = "37px";
+                }
+            }
+        });
+    });
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        get_Countries()
+        // Your initialization code here
+    });
+   
+ 
+    const API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
+    const statesDropdown = document.getElementById('state-list');
+    const countryDropdown = document.getElementById('country-list');
+    const citiesDropdown = document.getElementById('city-list');
+
+    async function get_Countries() {
+        
+        try {
+            const response = await fetch(`${API_ROOT}/api-root/core/countries/`);
+    
+            if (!response.ok) {
+                throw new Error('Failed to fetch countries');
+            }
+    
+            const data = await response.json();
+           
+           
+            // Get the product dropdown element
+          
+            // Clar the existing options in the product dropdown
+           countryDropdown.innerHTML = '<option value="">Select Your Country</option>';
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(country => {
+                const option = document.createElement('option');
+                //option.value = city.id;  // City ID as the value
+                option.value = country.id;
+                option.textContent = country.name;  // City name as the display text
+               countryDropdown.appendChild(option);
+            });
+    
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        }
+    }
+   
+    async function get_States(country){
+      
+    
+        try {
+            const response = await fetch(`${API_ROOT}/api-root/core/states?country=${country}`);
+    
+            if (!response.ok) {
+                throw new Error('Failed to fetch countries');
+            }
+    
+            const data = await response.json();
+            
+           
+            // Get the product dropdown element
+          
+            statesDropdown.innerHTML = '';
+            statesDropdown.innerHTML = '<option value="">Select Your State</option>';
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state.id;
+                option.textContent = state.name;  // City name as the display text
+               statesDropdown.appendChild(option);
+            });
+    
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        }
+
+
+    }
+
+
+    async function get_Cities(state){
+        console.log(state)
+        try {
+            const response = await fetch(`${API_ROOT}/api-root/core/cities?state=${state}`);
+    
+            if (!response.ok) {
+                throw new Error('Failed to fetch cities');
+            }
+    
+            const data = await response.json();
+           
+           
+            // Get the product dropdown element
+           
+            citiesDropdown.innerHTML = ""
+            citiesDropdown.innerHTML = '<option value="">Select Your City</option>'
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.name;
+                option.textContent = city.name;  // City name as the display text
+               citiesDropdown.appendChild(option);
+            });
+    
+        } catch (error) {
+            console.error('Error fetching cities:', error);
+        }
+
+
+    }
+
+    Dropzone.autoDiscover = false;
+
+    var myDropzone = new Dropzone("#imageDropzone", {
+        url: "#", // Prevent auto-upload
+        autoProcessQueue: false,
+        maxFilesize: 2,
+        acceptedFiles: "image/*",
+        dictDefaultMessage: "Drag & Drop Images Here or Click to Upload",
+
+        init: function() {
+            this.on("addedfile", function(file) {
+                console.log("File added:", file);
+
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    let base64String = event.target.result;
+
+                    // Store in localStorage (temporary)
+                    localStorage.setItem("uploadedImage", base64String);
+
+                    // Show preview
+                    document.getElementById("preview-img").src = base64String;
+                    document.getElementById("preview").style.display = "block";
+
+                    // Assign image to Django file input
+                    let djangoImageInput = document.querySelector("input[name='image']");
+                    let dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    djangoImageInput.files = dataTransfer.files;
+                };
+            });
+        }
+    });
+
+    // Clear localStorage on form submit
+    document.getElementById("propertyForm").addEventListener("submit", function() {
+        localStorage.removeItem("uploadedImage");
+    }); 
+   
+
+    
+  
+</script>
+{% endblock scripts %}

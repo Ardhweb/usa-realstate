@@ -40,6 +40,9 @@ def add_property(request):
 
 
 
+
+
+
 @login_required()
 def property_detail(request, property_id):
     property_obj = get_object_or_404(PropertiesInfo, property_id=property_id)
