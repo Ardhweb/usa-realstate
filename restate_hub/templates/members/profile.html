@@ -104,39 +104,41 @@
     <main class="member-profile-main">
         <div class="container">
            <h1 class="member-profile-title">Member Profile</h1>
+           <form method="POST" action="{% url 'membership_module:member_profile' %}">
+                {% csrf_token %}
             <div class="member-profile-form">
                  <div class="row">
                      <div class="col-md-6">
                        <div class="form-group">
                             <label for="first_name">First Name:</label>
-                           <input type="text" id="first_name" name="first_name" class="form-control"  readonly value="{{ member.first_name }}">
+                           <input type="text" id="first_name" name="first_name" class="form-control" >
                        </div>
                        <div class="form-group">
                         <label for="street_number">Street Number:</label>
-                        <input type="text" id="street_number" name="street_number" class="form-control" readonly value="{{ member.street_number }}"> 
+                        <input type="text" id="street_number" name="street_number" class="form-control" > 
                        </div>
                        <div class="form-group">
                         <label for="phone">Phone:</label>
-                        <input type="text" id="phone" name="phone" class="form-control"  readonly value="{{ member.phone }}">
+                        <input type="text" id="phone" name="phone" class="form-control"  >
                     </div>                     
                     <div class="form-group">
                         <label for="city">City:</label>
-                        <input type="text" id="city" name="city" class="form-control" readonly value="{{ member.city }}">
+                        <input type="text" id="city" name="city" class="form-control" >
                    </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
                            <label for="last_name">Last Name:</label>
-                           <input type="text" id="last_name" name="last_name" class="form-control" readonly value="{{ member.last_name }}">
+                           <input type="text" id="last_name" name="last_name" class="form-control" >
                        </div>
                        <div class="form-group">
                         <label for="street_address">Street Address:</label>
-                       <input type="text" id="street_address" name="street_address" class="form-control"  readonly value="{{ member.street_address }}">
+                       <input type="text" id="street_address" name="street_address" class="form-control"  >
                    </div>
 
                       <div class="form-group">
                          <label for="email">Email:</label>
-                         <input type="email" id="email" name="email" class="form-control" readonly value="{{ request.user.email }}">
+                         <input type="email" id="email" name="email" class="form-control"  value="{{ request.user.email }}" >
                        </div>
                        <div class="form-group">
                     <label for="membership_type">Membership Type:</label>
@@ -150,14 +152,61 @@
                   <div class="col-md-6">
                      <div class="form-group">
                         <label for="state">State:</label>
-                         <input type="text" id="state" name="state" class="form-control" readonly value="{{ member.state }}">
+                         <input type="text" id="state" name="state" class="form-control" >
                       </div>
                   </div>
                   <div class="col-md-6">
                      <div class="form-group">
                         <label for="zip_code">Zip Code:</label>
-                         <input type="text" id="zip_code" name="zip_code" class="form-control"  readonly value="{{ member.zip_code }}">
+                         <input type="text" id="zip_code" name="zip_code" class="form-control"  >
                      </div>
+                 </div>
+                 <div class="row mt-3">
+                  <div class="col-md-6">
+                      <div class="form-group" style="margin-bottom: 1.5rem;">
+                         <label for="has_agent" style="font-weight: 500; color: #343a40;">Do you have an agent?</label>
+                           <select id="has_agent" name="has_agent" class="form-select" style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                           </select>
+                       </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group" style="margin-bottom: 1.5rem;">
+                         <label for="business_name" style="font-weight: 500; color: #343a40;">Business Name:</label>
+                        <input type="text" id="business_name" name="business_name" class="form-control"  style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                    </div>
+                  </div>
+              </div>
+                <div id="agent-section" style="display: none;">
+                    <div class="row mt-3">
+                      <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="agent_first_name" style="font-weight: 500; color: #343a40;">Agent First Name:</label>
+                            <input type="text" id="agent_first_name" name="agent_first_name" class="form-control" placeholder="Enter Agent First Name" style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                        </div>
+                     </div>
+                       <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 1.5rem;">
+                                <label for="agent_last_name" style="font-weight: 500; color: #343a40;">Agent Last Name:</label>
+                               <input type="text" id="agent_last_name" name="agent_last_name" class="form-control"  placeholder="Enter Agent Last Name" style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                          </div>
+                        </div>
+                     </div>
+                    <div class="row mt-3">
+                      <div class="col-md-6">
+                           <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label for="agent_phone" style="font-weight: 500; color: #343a40;">Agent Phone #:</label>
+                            <input type="text" id="agent_phone" name="agent_phone" class="form-control" placeholder="Enter Agent Phone #" style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                       </div>
+                      </div>
+                      <div class="col-md-6">
+                         <div class="form-group" style="margin-bottom: 1.5rem;">
+                           <label for="agent_email" style="font-weight: 500; color: #343a40;">Agent Email:</label>
+                          <input type="email" id="agent_email" name="agent_email" class="form-control"  placeholder="Enter Agent Email" style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                         </div>
+                       </div>
+                   </div>
                  </div>
                </div>
                 <div class="row mt-3">
@@ -171,13 +220,7 @@
                              </select>
                          </div>
                     </div>
-                  {% endif %}
-                    <div class="col-md-6">
-                      <div class="form-group">
-                           <label for="business_name">Business Name:</label>
-                          <input type="text" id="business_name" name="business_name" class="form-control" readonly value="{{ member.business_name }}">
-                      </div>
-                    </div>             
+                  {% endif %}            
                 </div>
                   <div id="agent-section" style="display: none;">
                       <div class="row mt-3">
@@ -214,19 +257,19 @@
                     <div class="col-md-4">
                          <div class="form-group">
                              <label for="one_time_fee">One-Time Setup Fee:</label>
-                            <input type="text" id="one_time_fee" name="one_time_fee" class="form-control"  readonly value="{{ member.one_time_fee }}">
+                            <input type="text" id="one_time_fee" name="one_time_fee" class="form-control"  >
                           </div>
                        </div>
                       <div class="col-md-4">
                        <div class="form-group">
                           <label for="monthly_fee">Monthly Subscription Fee:</label>
-                           <input type="text" id="monthly_fee" name="monthly_fee" class="form-control" readonly value="{{ member.monthly_fee }}">
+                           <input type="text" id="monthly_fee" name="monthly_fee" class="form-control" >
                          </div>
                        </div>
                      <div class="col-md-4">
                            <div class="form-group">
                               <label for="total">Total:</label>
-                              <input type="text" id="total" name="total" class="form-control"  readonly value="{{ member.total_fee }}">
+                              <input type="text" id="total" name="total" class="form-control"  >
                          </div>
                     </div>
                </div>
@@ -244,6 +287,7 @@
                      </div>
                   </div>
             </div>
+           </form>
         </div>
     </main>
    
@@ -258,3 +302,11 @@
 
 
 {% endblock content %}
+{% block scripts %}
+    <script>
+        document.getElementById('has_agent').addEventListener('change', function() {
+            const agentSection = document.getElementById('agent-section');
+            agentSection.style.display = this.value === 'yes' ? 'block' : 'none';
+        });
+    </script>
+{% endblock %}
