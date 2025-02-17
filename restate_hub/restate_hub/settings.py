@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from decouple import config
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'drf_yasg',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -183,3 +185,27 @@ AUTHENTICATION_BACKENDS = [
 RESTRICTED_URLS = [
     "property-add"
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',  # For web UI login
+        'rest_framework.authentication.BasicAuthentication',  # For basic auth (username/password)
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # For token-based auth
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # Restrict access to authenticated users
+    ),
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
