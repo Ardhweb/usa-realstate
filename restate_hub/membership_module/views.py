@@ -115,7 +115,8 @@ def member_dashboard(request):
     if request.user.is_authenticated:
         seller = Sellers.objects.get(user=request.user)
         total_property = PropertiesInfo.objects.filter(seller=seller).count()
-        return render(request, "members/dashboard.html", {'active_page':'dashboard', "total_property":total_property})
+        sold_property = PropertiesInfo.objects.filter(listing_status='sold').count()
+        return render(request, "members/dashboard.html", {'active_page':'dashboard', "total_property":total_property,'sold_property': sold_property})
     else:
         return redirect('home')
 
