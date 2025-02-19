@@ -39,7 +39,9 @@ class MemberAddress(BaseModel):
     agent = models.ForeignKey(Agents, on_delete=models.SET_NULL,null=True)
     lender_id = models.IntegerField(null=True)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True)# Unncessory or below one unncessory. remove
-
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    zip_code = models.CharField(max_length=20, null=True, blank=True)
 
 class MembershipFee(BaseModel):
     membership_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from seller_module.models import Sellers
 from property_module.models import PropertiesInfo
 from accounts.models import User
@@ -11,6 +11,24 @@ from django.contrib import messages
 from membership_module.models import MembershipFee, MemberAddress
 from buyer_module.models import Buyers
 from agent_module.models import Agents
+from django.db.models import F
+from django.forms.models import model_to_dict
+
+def generate__address(data):
+    member_address = MemberAddress.objects.create(
+        street_no=data.get("street_no"),
+        street_name=data.get("street_name"),
+        city=data.get("city"),
+        state=data.get("state"),
+        zip_code=data.get("zip_code"),
+        member_type=data.get("member_type"),
+        buyer_id = data.get('buyer_id', None),
+        seller_id = data.get('seller_id', None),
+        agent_id = data.get('agent_id', None),
+    )
+    return member_address.id
+
+
 
 
 @login_required
@@ -36,45 +54,48 @@ def member_profile(request):
         monthly_fee = request.POST.get('monthly_fee')
         total = request.POST.get('total')
         send_question = request.POST.get('send_question')
-        
         # Get the current logged-in user
         user = request.user
-
-        # Create or update the MemberAddress record
-        member_address = MemberAddress.objects.create(
-            street_no=street_number,
-            street_name=street_address,
-            city=city,
-            state=state,
-            zip_code=zip_code,
-            member_type=user.member_type,
-        )
-
-        # 🌟 **Handle Buyer Logic**
-        if user.member_type == 'Buyer':
-            buyer, created = Buyers.objects.get_or_create(user=user)
-            buyer.first_name = first_name
-            buyer.last_name = last_name
-            buyer.phone_num = phone
-            buyer.email = email
-            buyer.business_name = business_name
-            buyer.save()
-
-        # 🌟 **Handle Seller Logic**
-        elif user.member_type == 'Seller':
-            seller, created = Sellers.objects.get_or_create(user=user)
-            seller.first_name = first_name
-            seller.last_name = last_name
-            seller.phone_num = phone
-            seller.email = email
-            seller.business_name = business_name
-            seller.save()
+        address_id = None
+        address = {
+            "street_no":street_number,
+            "street_name":street_address,
+            "city":city,
+            "state":state,
+            "zip_code":zip_code,
+            "member_type":user.member_type,
+           
+        }
+       
+        match request.user.member_type:
+            case 'buyer':
+                buyer, created = Buyers.objects.get_or_create(user=request.user)
+                buyer.first_name = first_name
+                buyer.last_name = last_name
+                buyer.phone_num = phone
+                buyer.email = email
+                buyer.business_name = business_name
+                buyer.save()
+                print(buyer.id)
+                address['buyer_id'] = buyer.id
+                address_id = generate__address(address)
+            case 'seller':
+                seller, created = Sellers.objects.get_or_create(user=user)
+                seller.first_name = first_name
+                seller.last_name = last_name
+                seller.phone_num = phone
+                seller.email = email
+                seller.business_name = business_name
+                seller.save()
+                address['seller_id'] = seller.id
+                address_id = generate__address(address)
+        print(address_id)
 
         # Create the MembershipFee record
         MembershipFee.objects.create(
             acct_setup_fee=one_time_fee,
             membership_fee=monthly_fee,
-            maddress=member_address
+            maddress_id=address_id
         )
 
         # 🌟 **Handle Agent Assignment**
@@ -87,10 +108,10 @@ def member_profile(request):
             )
 
             # Link the agent to the buyer or seller
-            if user.member_type == 'Buyer':
+            if user.member_type == 'buyer':
                 buyer.agent = agent
                 buyer.save()
-            elif user.member_type == 'Seller':
+            elif user.member_type == 'seller':
                 seller.agent = agent
                 seller.save()
 
@@ -103,8 +124,24 @@ def member_profile(request):
         return redirect('membership_module:profile_success')
 
     else:
-        # GET request - render the member profile form
-        return render(request, 'members/profile.html')
+       
+        match request.user.member_type:
+            case 'buyer':
+                profile_data = Buyers.objects.get(user=request.user)
+                address = MemberAddress.objects.get(buyer_id=profile_data.id)
+                address_data = {f"{k}_address": v for k, v in model_to_dict(address).items()}
+                unified = {**model_to_dict(profile_data), **address_data}
+                print(unified)
+            case 'seller':
+                profile_data = Sellers.objects.get(user=request.user)
+                address = MemberAddress.objects.get(seller_id=profile_data.id)
+                address_data = {f"{k}_address": v for k, v in model_to_dict(address).items()}
+                unified = {**model_to_dict(profile_data), **address_data}
+                print(unified)
+            case _:
+                profile_data = None
+    return render(request, 'members/profile.html', {'profile_data':profile_data or {}, "data":unified or {}})
+
 
 def profile_success(request):
     return render(request, 'members/profile_success.html')

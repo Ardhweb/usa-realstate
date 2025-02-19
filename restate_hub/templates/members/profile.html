@@ -106,15 +106,16 @@
            <h1 class="member-profile-title">Member Profile</h1>
            <form method="POST" action="{% url 'membership_module:member_profile' %}">
                 {% csrf_token %}
+            
             <div class="member-profile-form">
                  <div class="row">
                      <div class="col-md-6">
                        <div class="form-group">
                             <label for="first_name">First Name:</label>
-                           <input type="text" id="first_name" name="first_name" class="form-control" >
+                           <input value="{{data.first_name|default:""}}" type="text" id="first_name" name="first_name" class="form-control" >
                        </div>
                        <div class="form-group">
-                        <label for="street_number">Street Number:</label>
+                        <label  value="{{data.street_no_address|default:""}}"  for="street_number">Street Number:</label>
                         <input type="text" id="street_number" name="street_number" class="form-control" > 
                        </div>
                        <div class="form-group">
@@ -129,16 +130,16 @@
                      <div class="col-md-6">
                        <div class="form-group">
                            <label for="last_name">Last Name:</label>
-                           <input type="text" id="last_name" name="last_name" class="form-control" >
+                           <input value="{{data.last_name|default:""}}"  type="text" id="last_name" name="last_name" class="form-control" >
                        </div>
                        <div class="form-group">
                         <label for="street_address">Street Address:</label>
-                       <input type="text" id="street_address" name="street_address" class="form-control"  >
+                       <input  value="{{data.street_name_address|default:""}}"  type="text" id="street_address" name="street_address" class="form-control"  >
                    </div>
 
                       <div class="form-group">
                          <label for="email">Email:</label>
-                         <input type="email" id="email" name="email" class="form-control"  value="{{ request.user.email }}" >
+                         <input  type="email" id="email" name="email" class="form-control"  value="{{ request.user.email }}" >
                        </div>
                        <div class="form-group">
                     <label for="membership_type">Membership Type:</label>
@@ -287,6 +288,8 @@
                      </div>
                   </div>
             </div>
+            
+       
            </form>
         </div>
     </main>

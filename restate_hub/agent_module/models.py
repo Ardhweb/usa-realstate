@@ -6,7 +6,7 @@ class Agents(BaseModel):
     agent_id = models.CharField(default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True, max_length=50) 
     first_name = models.CharField(max_length=50,blank=False, null=True)
     last_name =  models.CharField(max_length=50,blank=False, null=True)
-    phone_num =  models.IntegerField()
+    phone_num =  models.CharField(max_length=50,blank=False, null=True)
     email = models.EmailField(max_length=254)
     join_date_at = models.DateTimeField(auto_now_add=True,editable=True)
     business_name = models.CharField(max_length=50, blank=True, null=True)
