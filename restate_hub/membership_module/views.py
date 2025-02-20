@@ -127,18 +127,24 @@ def member_profile(request):
         match request.user.member_type:
             case 'buyer':
                 profile_data = Buyers.objects.get(user=request.user)
-                address = MemberAddress.objects.get(buyer_id=profile_data.id)
-                fee = MembershipFee.objects.get(maddress_id=address.id)
-                address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                try:
+                    address = MemberAddress.objects.get(buyer_id=profile_data.id)
+                    fee = MembershipFee.objects.get(maddress_id=address.id)
+                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
+                    fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
+                    address_data, fee_data = {}, {}
                 unified = {**model_to_dict(profile_data), **address_data,**fee_data}
                 print(unified)
             case 'seller':
                 profile_data = Sellers.objects.get(user=request.user)
-                address = MemberAddress.objects.get(seller_id=profile_data.id)
-                fee = MembershipFee.objects.get(maddress_id=address.id)
-                address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                try:
+                    address = MemberAddress.objects.get(seller_id=profile_data.id)
+                    fee = MembershipFee.objects.get(maddress_id=address.id)
+                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
+                    fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
+                    address_data, fee_data = {}, {}
                 unified = {**model_to_dict(profile_data), **address_data,**fee_data}
                 print(unified)
             case _:
