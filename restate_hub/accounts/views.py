@@ -50,30 +50,6 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'accounts/login.html', {'form': form})
 
-'''
-def new_user_register(request):
-    if request.method == 'POST':
-        user_form = SignupForm(request.POST)
-        if user_form.is_valid ():
-            with transaction.atomic(): 
-                new_user = user_form.save(commit=False)
-                new_user.set_password(user_form.cleaned_data['password'])
-                new_user.save()
-                member = new_user.member_type
-                if member == 'buyer':
-                    current_buyer = Buyers.objects.create(user=new_user,email=new_user.email)
-                elif member == 'seller':
-                    current_seller = Sellers.objects.create(user=new_user, email=new_user.email)
-                else:
-                    print("Can't create agent ")
-                user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
-                if user is not None:
-                    login(request, user)
-                return redirect('membership_module:member_profile')   
-    else:
-        user_form = SignupForm()
-    return render(request,'accounts/register.html',{'user_form': user_form})
-'''
 
 def new_user_register(request):
     if request.method == 'POST':
@@ -90,11 +66,7 @@ def new_user_register(request):
                     Sellers.objects.create(user=new_user, email=new_user.email)
                 else:
                     messages.error(request, "Invalid member type")
-                
-                user = authenticate(request, username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password'])
-                if user is not None:
-                    login(request, user)
-                return redirect('membership_module:member_profile')
+                return redirect('accounts:login')
         else:
             for field, errors in user_form.errors.items():
                 for error in errors:
