@@ -129,14 +129,18 @@ def member_profile(request):
             case 'buyer':
                 profile_data = Buyers.objects.get(user=request.user)
                 address = MemberAddress.objects.get(buyer_id=profile_data.id)
-                address_data = {f"{k}_address": v for k, v in model_to_dict(address).items()}
-                unified = {**model_to_dict(profile_data), **address_data}
+                fee = MembershipFee.objects.get(maddress_id=address.id)
+                address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
+                fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                unified = {**model_to_dict(profile_data), **address_data,**fee_data}
                 print(unified)
             case 'seller':
                 profile_data = Sellers.objects.get(user=request.user)
                 address = MemberAddress.objects.get(seller_id=profile_data.id)
-                address_data = {f"{k}_address": v for k, v in model_to_dict(address).items()}
-                unified = {**model_to_dict(profile_data), **address_data}
+                fee = MembershipFee.objects.get(maddress_id=address.id)
+                address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
+                fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                unified = {**model_to_dict(profile_data), **address_data,**fee_data}
                 print(unified)
             case _:
                 profile_data = None
