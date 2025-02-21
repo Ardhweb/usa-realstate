@@ -1,0 +1,24 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Admin Dashboard | Homelinker{% endblock title %}
+{% block content %}
+
+{% include "dashboard/cards.html" %}
+{% include "dashboard/plotly_dashboard.html" %}
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+            // Select dropdown buttons inside Plotly chart
+            let dropdowns = document.querySelectorAll(".modebar-group .dropdown-menu");
+
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.add("form-control"); // Assign Bootstrap form-control
+                dropdown.classList.add("select"); // Assign custom select class if needed
+            });
+        }, 1000); // Wait for Plotly to load
+    });
+</script>
+
+{% endblock scripts %}
