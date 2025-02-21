@@ -1,0 +1,42 @@
+{% extends "dashboard/base.html" %} 
+
+{% block title %}Accounts {% endblock title %}  
+
+{% block content %} 
+
+<div class="container bg-body rounded px-3 py-4 my-3">
+    <h2>User Accounts</h2>
+<table id="propertyTable" class="display table  w-100" >
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Active</th>
+            
+        </tr>
+    </thead>
+</table>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script>
+    const API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
+    $(document).ready(function() {
+        $('#propertyTable').DataTable({
+            ajax: `${API_ROOT}/api-root/accounts/users/`,  // Replace with your actual Django API endpoint
+            columns: [
+                { data: "id" },
+                { data: "username" },
+                { data: "email" },
+                { data: "is_active" },
+               
+            ]
+        });
+    });
+</script>
+
+{% endblock scripts %}

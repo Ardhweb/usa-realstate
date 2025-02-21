@@ -28,7 +28,7 @@ def plotly_property_new(*args, **kwargs):
     months = [now().replace(day=1) - timedelta(days=30 * i) for i in range(6)][::-1]
     property_counts = [PropertiesInfo.objects.filter(created_at__month=m.month, created_at__year=m.year).count() for m in months]
 
-    line_trace = go.Scatter(x=[m.strftime('%b %Y') for m in months], y=property_counts, mode='lines+markers', name='New Properties',line={'width': 5,'color':'#ff1d58'})
+    line_trace = go.Scatter(x=[m.strftime('%b %Y') for m in months], y=property_counts, mode='lines+markers', name='New Properties',line={'width':2,'color':'#ff1d58'})
     bar_trace = go.Bar(x=[m.strftime('%b %Y') for m in months], y=property_counts, name='New Properties')
 
     layout = go.Layout(
@@ -48,7 +48,7 @@ def plotly_property_new(*args, **kwargs):
                 ],
                 direction="down",
                 showactive=True,
-                x=0.85,  # Position to the right
+                x=0.75,  # Position to the right
                 y=1.15
             ),
             dict(
@@ -61,7 +61,7 @@ def plotly_property_new(*args, **kwargs):
                 ],
                 direction="down",
                 showactive=True,
-                x=0.100,  # Slightly to the right of the first dropdown
+                x=0.95,  # Slightly to the right of the first dropdown
                 y=1.15
             )
         ],
@@ -110,3 +110,8 @@ def membership_fee(request):
 
         context = {'form':form,"fee_structure":fee_structure}
     return render(request, "dashboard/fee_page.html",context)
+
+
+
+def accounts_page(request):
+    return render(request, "dashboard/accounts.html")
