@@ -10,7 +10,8 @@ from django.http import JsonResponse,Http404,HttpResponseNotFound
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from membership_module.models import MembershipFee, MemberAddress
+from membership_module.models import MembershipFee, MemberAddress,DefaultFeeStructure
+from dashboard.forms import FeeForm
 from buyer_module.models import Buyers
 from agent_module.models import Agents
 from django.db.models import F
@@ -76,16 +77,6 @@ def plotly_property_new(*args, **kwargs):
 
 
 
-
-
-
-
-
-
-
-
-
-
 @login_required() 
 def admin_custom_dashboard(request):
     if request.user.is_authenticated and request.user.is_superuser:
@@ -107,3 +98,15 @@ def admin_custom_dashboard(request):
     else:
          return HttpResponseNotFound(render(request, "error/404.html"))
 
+
+def membership_fee(request):
+    if request.method == "POST":
+        form = FeeForm(request.POST)
+        form.save()
+        return redirect("dashboard:membershipfee")
+    else:
+        form = FeeForm()
+        fee_structure = DefaultFeeStructure.objects.all()
+
+        context = {'form':form,"fee_structure":fee_structure}
+    return render(request, "dashboard/fee_page.html",context)

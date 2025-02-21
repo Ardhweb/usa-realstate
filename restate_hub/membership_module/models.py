@@ -49,3 +49,9 @@ class MembershipFee(BaseModel):
     membership_fee = models.DecimalField(max_digits=10, decimal_places=2)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True) # Unncessory or above one unncessory. remove
     maddress = models.ForeignKey(MemberAddress, on_delete=models.SET_NULL,null=True)
+
+
+class DefaultFeeStructure(BaseModel):
+    fee_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
+    member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True, unique=True) # Unncessory or above one unncessory. remove
+    fee = models.DecimalField(max_digits=10, decimal_places=2)

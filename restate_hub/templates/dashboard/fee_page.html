@@ -1,0 +1,72 @@
+{% extends "dashboard/base.html" %} 
+
+{% block title %} Membership Fee {% endblock title %}  
+
+{% block content %} 
+<div class="container p-4"> 
+    <form method="POST" enctype="multipart/form-data" id="propertyForm">
+        {% csrf_token %}
+
+        <div class="row justify-content-center"> 
+            <div class="col-md-8"> 
+                <div class="bg-body p-4 rounded-3 shadow-sm"> 
+                    <h4 class="mb-3 text-center">Set Default Membership Fee</h4> 
+                    
+                    <div class="row g-3"> 
+                        <div class="col-md-6"> 
+                            <label class="form-label">Select Member Role:</label> 
+                            {{ form.member_type }} 
+                        </div> 
+                        <div class="col-md-6"> 
+                            <label class="form-label">Default Fee:</label> 
+                            {{ form.fee }} 
+                        </div> 
+                    </div> 
+
+                    <div class="row mt-4"> 
+                        <div class="col text-center"> 
+                            <input type="submit" value="Save" class="btn btn-primary w-50" /> 
+                        </div> 
+                    </div> 
+
+                </div> 
+            </div> 
+        </div> 
+
+    </form> 
+</div>
+
+
+<div class="container p-4"> 
+    
+
+    <div class="container p-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Member</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fee in  fee_structure  %}
+                        <tr>
+                            <td>{{fee.id}}</td>
+                            <td>{{fee.member_type}}</td>
+                            <td>{{fee.fee}} $/</td>
+                        </tr>
+                        {% endfor %}
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+ 
+</div> 
+{% endblock content %}
