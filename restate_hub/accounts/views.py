@@ -64,6 +64,8 @@ def new_user_register(request):
                     Buyers.objects.create(user=new_user, email=new_user.email)
                 elif member == 'seller':
                     Sellers.objects.create(user=new_user, email=new_user.email)
+                elif member == 'agent':
+                    Agents.objects.create(user=new_user, email=new_user.email)
                 else:
                     messages.error(request, "Invalid member type")
                 return redirect('accounts:login')

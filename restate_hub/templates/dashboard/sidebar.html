@@ -78,6 +78,8 @@
     </div>
 
     <div class="px-3">
-        <small>Last Logged-in:<span></span></small>
+        <small class="text-muted text-monospace">Last Logged-in:<span class="text-muted"> <br> {% if request.user.is_authenticated and  request.user.is_superuser %}
+            {{user.last_login}} {% else %}
+            {% endif %}</span></small>
     </div>
 </aside>

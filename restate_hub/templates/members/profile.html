@@ -103,6 +103,7 @@
 {% if request.user.is_authenticated %}
     <main class="member-profile-main">
         <div class="container">
+          <button class="btn btn-warning" id="editButton">Edit</button>
            <h1 class="member-profile-title">Member Profile</h1>
            <form method="POST" action="{% url 'membership_module:member_profile' %}">
                 {% csrf_token %}
@@ -139,7 +140,7 @@
 
                       <div class="form-group">
                          <label for="email">Email:</label>
-                         <input  type="email" id="email" name="email" class="form-control"  value="{{ request.user.email }}" >
+                         <input disabled type="email" id="email" name="email" class="form-control no-edit"  value="{{ request.user.email }}" >
                        </div>
                        <div class="form-group">
                     <label for="membership_type">Membership Type:</label>
@@ -163,16 +164,16 @@
                      </div>
                  </div>
                  <div class="row mt-3">
-                  <div class="col-md-6">
+                  <div class="col-md-6  {% if request.user.member_type == 'agent' %}d-none {% else %}{% endif %} ">
                       <div class="form-group" style="margin-bottom: 1.5rem;">
                          <label for="has_agent" style="font-weight: 500; color: #343a40;">Do you have an agent?</label>
-                           <select id="has_agent" name="has_agent" class="form-select" style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                           <select id="has_agent" name="has_agent" class="form-select " style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
                                 <option value="no">No</option>
                                 <option value="yes">Yes</option>
                            </select>
                        </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class=" {% if request.user.member_type == 'agent' %} col-md-12 {% else %}col-md-6 {% endif %} ">
                     <div class="form-group" style="margin-bottom: 1.5rem;">
                          <label for="business_name" style="font-weight: 500; color: #343a40;">Business Name:</label>
                         <input  value="{{data.business_name|default:""}}" type="text" id="business_name" name="business_name" class="form-control"  style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
@@ -253,24 +254,25 @@
                          </div>
                      </div>
                    </div>
-
+            
                 <div class="row mt-3">
+                  <h3 class="text-center ">Subscription</h3>
                     <div class="col-md-4">
                          <div class="form-group">
                              <label for="one_time_fee">One-Time Setup Fee:</label>
-                            <input   onchange="updateTotal()" value="{{data.acct_setup_fee|default:""}}" type="text" id="one_time_fee" name="one_time_fee" class="form-control"  >
+                            <input   onchange="updateTotal()" value="{{data.acct_setup_fee|default:""}}" type="text" id="one_time_fee" name="one_time_fee" disabled class="readonly no-edit form-control"  >
                           </div>
                        </div>
                       <div class="col-md-4">
                        <div class="form-group">
                           <label for="monthly_fee">Monthly Subscription Fee:</label>
-                           <input  onchange="updateTotal()" value="{{data.membership_fee|default:""}}" type="text" id="monthly_fee" name="monthly_fee" class="form-control" >
+                           <input  onchange="updateTotal()" value="{{data.membership_fee|default:""}}" type="text" id="monthly_fee" name="monthly_fee" disabled class=" readonly form-control no-edit" >
                          </div>
                        </div>
                      <div class="col-md-4">
                            <div class="form-group">
                               <label for="total">Total:</label>
-                              <input readonly value="" type="text" id="total" name="total" class="form-control readonly"  >
+                              <input readonly value="" type="text" id="total" name="total" class="form-control readonly no-edit"  >
                          </div>
                     </div>
                </div>
@@ -324,5 +326,24 @@
       }
 
       document.addEventListener("DOMContentLoaded", updateTotal); // Run on page load
+      
+      document.querySelectorAll("input").forEach(input => input.setAttribute("disabled", "true"));
+
+      document.addEventListener("DOMContentLoaded", function () {
+        let isEditing = false; // Track edit mode
+
+        document.getElementById("editButton").addEventListener("click", function () {
+            isEditing = !isEditing; // Toggle state
+
+            document.querySelectorAll("input").forEach(input => {
+                if (!input.classList.contains("no-edit")) {
+                    input.disabled = !isEditing;
+                }
+            });
+
+            this.textContent = isEditing ? "Save" : "Edit"; // Change button text
+        });
+    });
+    
     </script>
 {% endblock %}

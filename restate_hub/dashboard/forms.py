@@ -7,7 +7,8 @@ class FeeForm(forms.ModelForm):
         fields = '__all__'
         widgets ={
                 'member_type':forms.Select(attrs={'class':'form-control form-select w-100'}),
-                'fee':forms.NumberInput(attrs={'class':'form-control  w-100'}),
+                'setup_fee':forms.NumberInput(attrs={'class':'form-control  w-100'}),\
+                'membership_fee':forms.NumberInput(attrs={'class':'form-control  w-100'}),
               
             }
         
