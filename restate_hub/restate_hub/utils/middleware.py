@@ -1,21 +1,53 @@
 from django.urls import resolve
 from django.http import HttpResponseNotFound
 from django.conf import settings
+from django.shortcuts import render,redirect
+
 
 class RoleBasedAccessMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        # Check if the user is authenticated
-        if request.user.is_authenticated:
-            # Get the current view's URL name
+        # Allow superusers to access everything
+        if request.user.is_authenticated and request.user.is_superuser:
+            return self.get_response(request)
+        
+        # Handle anonymous users
+        if not request.user.is_authenticated:
+            common_restricted_urls = getattr(settings, "COMMON_RESTRICTED_URLS", [])
             resolver_match = resolve(request.path)
             url_name = resolver_match.url_name if resolver_match else None
 
-            # If the user is a patient and the URL is restricted, return 404
-            if getattr(request.user, "role", None) == "patient":
-                if url_name in getattr(settings, "RESTRICTED_URL_NAMES", []):
-                    return HttpResponseNotFound("<h1>404 Not Found</h1>")
+            if url_name in common_restricted_urls:
+               return render(request, 'error/404.html')
 
+        return self.get_response(request)
+
+
+
+        # Get the current view's URL name
+        resolver_match = resolve(request.path)
+        url_name = resolver_match.url_name if resolver_match else None
+
+        if url_name:
+            # Common restricted URLs for all users
+            common_restricted_urls = getattr(settings, "COMMON_RESTRICTED_URLS", [])
+            if url_name in common_restricted_urls:
+                return render(request, 'error/404.html')
+
+            # Role-based restricted URLs using match-case
+            match request.user.member_type:
+                case "seller":
+                    restricted_urls = getattr(settings, "SELLER_RESTRICTED_URLS", [])
+                case "buyer":
+                    restricted_urls = getattr(settings, "BUYER_RESTRICTED_URLS", [])
+                case "agent":
+                    restricted_urls = getattr(settings, "AGENT_RESTRICTED_URLS", [])
+                case _:
+                    restricted_urls = []
+            
+            if url_name in restricted_urls:
+                return render(request, 'error/404.html')
+        
         return self.get_response(request)

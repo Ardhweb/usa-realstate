@@ -182,11 +182,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-# In your settings.py or a separate config file
-RESTRICTED_URLS = [
-    "property-add"
-]
 
+COMMON_RESTRICTED_URLS =['dashboard']
+SELLER_RESTRICTED_URLS=['property-listing']
+BUYER_RESTRICTED_URLS=["property-add"]
+AGENT_RESTRICTED_URLS=[]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
