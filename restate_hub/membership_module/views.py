@@ -33,7 +33,7 @@ def generate__address(data):
 
 
 @login_required
-def member_profile(request):DefaultFeeStructure
+def member_profile(request):
     
     if request.method == 'POST':
         # Retrieve form data from POST request
