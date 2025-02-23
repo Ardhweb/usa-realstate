@@ -14,156 +14,26 @@ from django.db.models import F
 from django.forms.models import model_to_dict
 
 def generate__address(data):
-    member_address = MemberAddress.objects.create(
+    defaults = {}
+    if "buyer_id" in data: defaults["buyer_id"] = data["buyer_id"]
+    if "seller_id" in data: defaults["seller_id"] = data["seller_id"]
+    if "agent_id" in data: defaults["agent_id"] = data["agent_id"]
+    
+    member_address, created = MemberAddress.objects.update_or_create(
         street_no=data.get("street_no"),
         street_name=data.get("street_name"),
         city=data.get("city"),
         state=data.get("state"),
         zip_code=data.get("zip_code"),
         member_type=data.get("member_type"),
-        buyer_id = data.get('buyer_id', None),
-        seller_id = data.get('seller_id', None),
-        agent_id = data.get('agent_id', None),
+        defaults=defaults
     )
+
     return member_address.id
 
 
-
-'''
 @login_required
-def member_profile(request):
-    if request.method == 'POST':
-        # Retrieve form data from POST request
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
-        street_number = request.POST.get('street_number')
-        street_address = request.POST.get('street_address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        zip_code = request.POST.get('zip_code')
-        has_agent = request.POST.get('has_agent')
-        agent_first_name = request.POST.get('agent_first_name') if has_agent == 'yes' else None
-        agent_last_name = request.POST.get('agent_last_name') if has_agent == 'yes' else None
-        agent_phone = request.POST.get('agent_phone') if has_agent == 'yes' else None
-        agent_email = request.POST.get('agent_email') if has_agent == 'yes' else None
-        business_name = request.POST.get('business_name')
-        one_time_fee = request.POST.get('one_time_fee')
-        monthly_fee = request.POST.get('monthly_fee')
-        total = request.POST.get('total')
-        send_question = request.POST.get('send_question')
-        # Get the current logged-in user
-        user = request.user
-        address_id = None
-        address = {
-            "street_no":street_number,
-            "street_name":street_address,
-            "city":city,
-            "state":state,
-            "zip_code":zip_code,
-            "member_type":user.member_type,
-           
-        }
-       
-        match request.user.member_type:
-            case 'buyer':
-                buyer, created = Buyers.objects.get_or_create(user=request.user)
-                buyer.first_name = first_name
-                buyer.last_name = last_name
-                buyer.phone_num = phone
-                buyer.email = email
-                buyer.business_name = business_name
-                buyer.save()
-                print(buyer.id)
-                address['buyer_id'] = buyer.id
-                address_id = generate__address(address)
-            case 'seller':
-                seller, created = Sellers.objects.get_or_create(user=user)
-                seller.first_name = first_name
-                seller.last_name = last_name
-                seller.phone_num = phone
-                seller.email = email
-                seller.business_name = business_name
-                seller.save()
-                address['seller_id'] = seller.id
-                address_id = generate__address(address)
-        print(address_id)
-
-        # Create the MembershipFee record
-        MembershipFee.objects.create(
-            acct_setup_fee=one_time_fee,
-            membership_fee=monthly_fee,
-            maddress_id=address_id
-        )
-
-        # 🌟 **Handle Agent Assignment**
-        if has_agent == 'yes':
-            agent, created = Agents.objects.get_or_create(
-                first_name=agent_first_name,
-                last_name=agent_last_name,
-                phone_num=agent_phone,
-                email=agent_email
-            )
-
-            # Link the agent to the buyer or seller
-            if user.member_type == 'buyer':
-                buyer.agent = agent
-                buyer.save()
-            elif user.member_type == 'seller':
-                seller.agent = agent
-                seller.save()
-
-        # Handle the message to admin (if required)
-        if send_question:
-            # Code to send message to the admin (e.g., via email or saving it to a database)
-            pass
-
-        # Redirect to the profile success page
-        return redirect('membership_module:profile_success')
-
-    else:
-      
-        match request.user.member_type:
-            case 'buyer':
-                profile_data = Buyers.objects.get(user=request.user)
-                agents = Agents.objects.get(id=profile_data.agent.id)
-                agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()}
-                try:
-                    address = MemberAddress.objects.get(buyer_id=profile_data.id)
-                    fee = MembershipFee.objects.get(maddress_id=address.id)
-                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                    fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
-                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, fee_data, agent_data = {}, {}, {}
-                unified = {**model_to_dict(profile_data), **address_data,**fee_data, **agent_data}
-            case 'seller':
-                profile_data = Sellers.objects.get(user=request.user)
-                agents = Agents.objects.get(id=profile_data.agent.id)
-             
-                agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()}
-                print(agent_data)
-                try:
-                    address = MemberAddress.objects.get(seller_id=profile_data.id)
-                    fee = MembershipFee.objects.get(maddress_id=address.id)
-                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                    fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
-                  
-                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, fee_data, agent_data = {}, {}, {}
-                unified = {**model_to_dict(profile_data), **address_data,**fee_data, **agent_data}
-                print(unified)
-            case _:
-                profile_data = None
-                unified = None
-    return render(request, 'members/profile.html', {'profile_data':profile_data or {}, "data":unified or{}})
-'''
-
-
-
-
-@login_required
-def member_profile(request):
+def member_profile(request):DefaultFeeStructure
     
     if request.method == 'POST':
         # Retrieve form data from POST request
@@ -229,7 +99,6 @@ def member_profile(request):
                 agent.email = email
                 agent.business_name = business_name
                 agent.save()
-                address['agent_id'] = seller.id
                 address_id = generate__address(address)
         # Create the MembershipFee record
         MembershipFee.objects.create(
@@ -240,10 +109,7 @@ def member_profile(request):
 
         # 🌟 **Handle Agent Assignment**
         if has_agent == 'yes':
-            agent, created = Agents.objects.get_or_create(
-                first_name=agent_first_name,
-                last_name=agent_last_name,
-                phone_num=agent_phone,
+            agent = Agents.objects.get(
                 email=agent_email
             )
 
@@ -272,10 +138,13 @@ def member_profile(request):
             case 'buyer':
                 profile_data = Buyers.objects.get(user=request.user)
                 agent_data = {}
+              
+                
                 try:
+                    agent = profile_data.agent
                     # Fetch agent and related data
-                    agents = Agents.objects.get(id=profile_data.agent.id)
-                    agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()}
+                    agents = Agents.objects.get(id=agent.id) if agent else None
+                    agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()} if agents else {}
     
                     # Fetch address and membership fee for the buyer
                     address = MemberAddress.objects.get(buyer_id=profile_data.id)
@@ -283,21 +152,24 @@ def member_profile(request):
                     address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
                     fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
                 except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, fee_data = {}, {}
+                    address_data, fee_data, agent_data = {}, {}, {}
     
                 # Start with the profile data and merge
                 unified = model_to_dict(profile_data)
                 unified.update(address_data)
                 unified.update(fee_data)
                 unified.update(agent_data)
+              
     
             case 'seller':
                 profile_data = Sellers.objects.get(user=request.user)
+                
                 agent_data = {}
                 try:
+                    agent = profile_data.agent
                     # Fetch agent and related data
-                    agents = Agents.objects.get(id=profile_data.agent.id)
-                    agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()}
+                    agents = Agents.objects.get(id=agent.id)if agent else None
+                    agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()} if agents else {}
                   
     
                     # Fetch address and membership fee for the seller
@@ -306,7 +178,24 @@ def member_profile(request):
                     address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
                     fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
                 except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, fee_data = {}, {}
+                    address_data, fee_data, agent_data = {}, {}, {}
+    
+                # Start with the profile data and merge
+                unified = model_to_dict(profile_data)
+                unified.update(address_data)
+                unified.update(fee_data)
+                unified.update(agent_data)
+            case 'agent':
+                profile_data = Agents.objects.get(user=request.user)
+                agent_data = {}
+                try:
+                    # Fetch address and membership fee for the seller
+                    address = MemberAddress.objects.get(seller_id=profile_data.id)
+                    fee = MembershipFee.objects.get(maddress_id=address.id)
+                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
+                    fee_data = {f"{k}": v for k, v in model_to_dict(fee).items()}
+                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
+                    address_data, fee_data, agent_data = {}, {}, {}
     
                 # Start with the profile data and merge
                 unified = model_to_dict(profile_data)
@@ -317,6 +206,7 @@ def member_profile(request):
             case _:
                 profile_data = None
                 unified = None
+        #print(unified)
     return render(request, 'members/profile.html', {'profile_data': profile_data or {}, "data": unified or {}})
 
 
