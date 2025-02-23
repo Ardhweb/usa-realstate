@@ -123,14 +123,22 @@
 .login-link:hover {
      color: #0d527a;
 }
+
 </style>
 {% if request.user.is_authenticated %}
+<!-- Bootstrap Alert -->
+<div id="resultMessage" class=" z-4 custom-alert alert d-none alert-dismissible fade show" role="alert">
+  <span id="alertText"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
     <main class="member-profile-main">
         <div class="container">
         
            <h1 class="member-profile-title">Member Profile</h1>
            <form id="profile-form-id" method="POST">
             {% csrf_token %}
+           
             
             <div class="member-profile-form">
                  <div class="row">
@@ -213,8 +221,8 @@
                 </div>
                
                   <div id="agent-section" style="display: none;">
-                    
-        
+                   
+         
                       <div class="row mt-3">
                        
                         
@@ -222,7 +230,9 @@
                            <div class="form-group">
                              <label for="agent_email">Agent Email:</label>
                             <input value="{{data.agents_email|default:""}}" type="email" id="agent_email" name="agent_email" class=" form-control"  placeholder="Enter Agent Email">
-                           </div>
+                            <a class="btn btn-secondary  btn-sm" id="verifyButton">Verify Agent</a> 
+                            <span id="agent-exist" class="agent-exist"></span>
+                          </div>
                          </div>
                      </div>
                    </div>
@@ -281,6 +291,74 @@
 {% endblock content %}
 {% block scripts %}
     <script>
+      const API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
+      const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+      
+      document.getElementById("verifyButton").addEventListener("click", function () {
+          let email = document.getElementById("agent_email").value;
+          let resultMessage = document.getElementById("resultMessage");
+          let alertText = document.getElementById("alertText");
+          let agentText = document.getElementById("agent-exist");
+      
+          // Clear previous result message
+          resultMessage.classList.add("d-none");
+          resultMessage.classList.remove("alert-warning", "alert-success", "alert-danger");
+          agentText.textContent = "";
+          alertText.textContent = "";
+      
+          if (!email) {
+              agentText.textContent = "⚠️ Please enter an email.";
+              alertText.textContent = "⚠️ Please enter an email.";
+              resultMessage.classList.remove("d-none");
+              resultMessage.classList.add("alert", "alert-warning", "alert-dismissible", "fade", "show");
+              return;
+          }
+      
+          // Check if the data is in sessionStorage and still valid
+          const cachedData = sessionStorage.getItem(`agent-${email}`);
+          const cachedTime = sessionStorage.getItem(`agent-time-${email}`);
+          if (cachedData && cachedTime && (Date.now() - cachedTime < CACHE_DURATION)) {
+              const data = JSON.parse(cachedData);
+              handleResponse(data); // Use cached data if available and valid
+              return;
+          }
+      
+          // Fetch data from the API if it's not cached or cache has expired
+          fetch(`${API_ROOT}/api-root/accounts/agents/?email=${email}`, {
+              method: "GET",
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Cache the successful result for later use
+              if (data.email) {
+                  sessionStorage.setItem(`agent-${email}`, JSON.stringify(data));
+                  sessionStorage.setItem(`agent-time-${email}`, Date.now().toString());
+              }
+              handleResponse(data); // Process the response
+          })
+          .catch(error => {
+              console.error("Error:", error);
+              agentText.textContent = "⚠️ Error verifying agent.";
+              alertText.textContent = "⚠️ Error verifying agent.";
+              resultMessage.classList.remove("d-none");
+              resultMessage.classList.add("alert", "alert-danger", "alert-dismissible", "fade", "show");
+          });
+      
+          function handleResponse(data) {
+              if (data.email) {
+                  agentText.textContent = `✅ Agent verified: ${data.email}`;
+                  alertText.textContent = `✅ Agent verified: ${data.email}`;
+                  resultMessage.classList.remove("d-none");
+                  resultMessage.classList.add("alert", "alert-success", "alert-dismissible", "fade", "show");
+              } else {
+                  agentText.textContent = "❌ Agent not found.";
+                  alertText.textContent = "❌ Agent not found.";
+                  resultMessage.classList.remove("d-none");
+                  resultMessage.classList.add("alert", "alert-danger", "alert-dismissible", "fade", "show");
+              }
+          }
+      });
+      
      
     
         
