@@ -88,6 +88,30 @@
     transform: scale(1.03);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
+.btn-warning {
+  background-color:rgb(206, 53, 33) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 14px 26px !important;
+  font-weight: 400 !important;
+  transition: all 0.3s ease !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.btn-warning i {
+  margin-left: 5px;
+  font-size: 1.1rem;
+}
+.btn-warning:hover {
+  background-color:rgb(206, 53, 33) !important;
+  border-color:rgb(241, 69, 69) !important;
+  color: white !important;
+  transform: scale(1.03);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 .row {
   margin-bottom: 20px;
 }
@@ -103,10 +127,10 @@
 {% if request.user.is_authenticated %}
     <main class="member-profile-main">
         <div class="container">
-          <button class="btn btn-warning" id="editButton">Edit</button>
+        
            <h1 class="member-profile-title">Member Profile</h1>
-           <form method="POST" action="{% url 'membership_module:member_profile' %}">
-                {% csrf_token %}
+           <form id="profile-form-id" method="POST">
+            {% csrf_token %}
             
             <div class="member-profile-form">
                  <div class="row">
@@ -140,11 +164,11 @@
 
                       <div class="form-group">
                          <label for="email">Email:</label>
-                         <input type="email" id="email" name="email" class="form-control " readonly value="{{ request.user.email }}" >
+                         <input type="email" id="email" name="email" class="form-control "  value="{{ request.user.email }}" >
                        </div>
                        <div class="form-group">
                     <label for="membership_type">Membership Type:</label>
-                    <input type="text" id="membership_type" name="membership_type" class="form-control" readonly value="{{ request.user.member_type }}">
+                    <input type="text" id="membership_type" name="membership_type" class="form-control"  value="{{ request.user.member_type }}">
               </div>
                     
                       
@@ -189,7 +213,7 @@
                 </div>
                
                   <div id="agent-section" style="display: none;">
-                     <a class="btn btn-warning" id="editagent">Edit Agent</a>
+                    
         
                       <div class="row mt-3">
                        
@@ -197,7 +221,7 @@
                         <div class="col-md-12">
                            <div class="form-group">
                              <label for="agent_email">Agent Email:</label>
-                            <input value="{{data.agents_email|default:""}}" type="email" id="agent_email" name="agent_email" class=" no-edit form-control"  placeholder="Enter Agent Email">
+                            <input value="{{data.agents_email|default:""}}" type="email" id="agent_email" name="agent_email" class=" form-control"  placeholder="Enter Agent Email">
                            </div>
                          </div>
                      </div>
@@ -234,7 +258,12 @@
                 </div>
                  <div class="row mt-3 mb-4">
                      <div class="col-md-12 text-center">
-                        <button type="submit" class="btn btn-success">Submit <i class="fas fa-paper-plane"></i></button>
+                      <div class="d-flex gap-2 text-center">
+                        <a class="btn btn-warning" id="editButton">Edit</a>
+                        <button id="form-0submit" class=" d-none btn btn-success">Submit</button>
+                       
+                    </div>
+                      
                      </div>
                   </div>
             </div>
@@ -252,6 +281,8 @@
 {% endblock content %}
 {% block scripts %}
     <script>
+     
+    
         
 
         function updateTotal() {
@@ -274,14 +305,20 @@
 
         document.getElementById("editButton").addEventListener("click", function () {
             isEditing = !isEditing; // Toggle state
+            
+            var sub = document.getElementById("form-0submit")
 
             document.querySelectorAll("input").forEach(input => {
                 if (!input.classList.contains("no-edit")) {
                     input.disabled = !isEditing;
                 }
             });
-
-            this.textContent = isEditing ? "Save" : "Edit"; // Change button text
+            if (isEditing) {
+              sub.classList.remove("d-none");
+          } else {
+              sub.classList.add("d-none");
+          }
+            //this.textContent = isEditing ? "Done" : "Edit"; // Change button text
         });
     });
     

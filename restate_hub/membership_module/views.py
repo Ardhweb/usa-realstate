@@ -33,8 +33,7 @@ def generate__address(data):
 
 
 @login_required
-def member_profile(request):
-    
+def member_profile(request):  
     if request.method == 'POST':
         # Retrieve form data from POST request
         first_name = request.POST.get('first_name')
@@ -101,11 +100,12 @@ def member_profile(request):
                 agent.save()
                 address_id = generate__address(address)
         # Create the MembershipFee record
-        MembershipFee.objects.create(
+        MembershipFee.objects.update_or_create(
             acct_setup_fee=one_time_fee,
             membership_fee=monthly_fee,
-            maddress_id=address_id
-        )
+            defaults = {"maddress_id":address_id})
+           
+        
 
         # 🌟 **Handle Agent Assignment**
         if has_agent == 'yes':
@@ -120,6 +120,15 @@ def member_profile(request):
             elif user.member_type == 'seller':
                 seller.agent = agent
                 seller.save()
+        else:
+             # Link the agent to the buyer or seller
+            if user.member_type == 'buyer':
+                buyer.agent = None
+                buyer.save()
+            elif user.member_type == 'seller':
+                seller.agent = None
+                seller.save()
+            
             
 
         # Handle the message to admin (if required)
