@@ -2,17 +2,6 @@
 {% block content %}
 
 <main class="container mt-4">
-    {% if request.user.member_type == 'buyer' %}
-    {% comment "Do not Display the Add Property Btn" %}{% endcomment %}
-    {% else %}
-    <div class="row">
-        <div class="col">
- <a class="btn btn-primary fw-normal" href="{% url "property_module:property-add" %}"> Add New Property</a>
-        </div>
-       
-    </div>
-    {% endif %}
-    
     <section class="hero text-center mb-4">
         <h1 class="text-primary fw-semibold">Property Listings</h1>
         <p>Find your dream home today.</p>

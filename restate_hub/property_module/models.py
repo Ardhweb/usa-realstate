@@ -7,12 +7,20 @@ from agent_module.models import Agents
 import random
 import string
 import time
+import time
+import random
+import string
+
 def generate_unique_id(length=12):
     """Generate a non-sequential unique ID using a timestamp and random suffix."""
-    timestamp = str(int(time.time() * 1000))  # Current timestamp in milliseconds
-    random_suffix = ''.join(random.choices(string.digits, k=length - len(timestamp)))
+    timestamp = str(int(time.time() * 1000))  # Milliseconds timestamp (13 digits)
+    
+    # Ensure the final ID length is exactly `length`
+    random_length = max(0, length - len(timestamp))  # Avoid negative values
+    random_suffix = ''.join(random.choices(string.digits, k=random_length))  
+
     unique_id = timestamp + random_suffix
-    return unique_id
+    return unique_id[:length] 
 
 class PropertiesInfo(BaseModel):
     RESIDENTIAL = 'residential'
