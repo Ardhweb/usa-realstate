@@ -25,6 +25,7 @@ input[type="file"]::file-selector-button {
   /* file upload button hover state */
   input[type="file"]::file-selector-button:hover {
     background-color:rgb(96, 125, 182);
+    color: #e5e7eb;
   }
   
   /* file upload button active state */
@@ -34,6 +35,10 @@ input[type="file"]::file-selector-button {
 {% endblock style %}
 {% block content %}
 <div class="container  rounded-3 p-4 ">
+    <section class="hero text-center mb-4">
+        <h1 class="text-primary fw-semibold">Add New Property</h1>
+        <p>Create an new property and filled its details  and information below.</p>
+    </section>
     <form method="POST" enctype="multipart/form-data" id="propertyForm">
         {% csrf_token %}
         

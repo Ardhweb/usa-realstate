@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+
+<main class="container mt-4">
+    {% if request.user.member_type == 'buyer' %}
+    {% comment "Do not Display the Add Property Btn" %}{% endcomment %}
+    {% else %}
+    <div class="row">
+        <div class="col">
+ <a class="btn btn-primary fw-normal" href="{% url "property_module:property-add" %}"> Add New Property</a>
+        </div>
+       
+    </div>
+    {% endif %}
+    
+    <section class="hero text-center mb-4">
+        <h1 class="text-primary fw-semibold">My Property</h1>
+        <p>Find your listed properties here.</p>
+    </section>
+
+  
+
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover">
+            <thead  class="table-light ">
+                <tr class="text-normal" id="">
+                    <th>Property</th>
+                    <th>Details</th>
+                    <th>More</th>
+                   
+                    
+                </tr>
+            </thead>
+            <tbody class="" id="">
+                {% for property in properties  %}
+                <tr>
+                <td><img src="{{property.image.url}}" alt="Property" width="250" class="img-thumbnail img-fluid rounded">
+                    <p><strong>Listing ID: </strong>#{{property.listing_id}}</p>
+                    </td>
+                    <td>
+                        <p class="text-capitalize"><strong>Bed rooms:</strong> {{property.bedrooms}}</p>
+                        <p class="text-capitalize"><strong>Bath rooms:</strong> {{property.bathrooms}}</p>
+                        <p class="text-capitalize"><strong>Garage:</strong> {{property.garage_num}}</p>
+                        <p><strong >House Size:</strong> {{property.house_size}} sqft</p>
+                       
+<p class="text-truncate" style="max-width: 200px;"><strong>Description:</strong> <br>{{property.description}}</p>
+
+                       
+                   
+                    </td>
+                    <td> 
+                    <p class="text-capitalize"><strong>Reason Selling:</strong>{{property.reason_selling}}</p>
+                     <p class="text-capitalize"><strong>Selling Type:</strong> {{property.selling_type}}</p>
+                      <p class="text-capitalize"><strong>Lease back:</strong> 
+                          
+                               <span class="text-capitalize">{{property.sell_leaseback}}</span>
+                                
+                        
+                        </p>
+                      <p><strong>Leaseback month:</strong> {{property.leaseback_month}}</p>
+                    <a class="btn btn-warning p-2 m-1" href="${API_ROOT}/property/details/${property.property_id}/">
+    Property Details
+</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+
+
+{% endblock content %}
+
+

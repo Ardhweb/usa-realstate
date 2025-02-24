@@ -3,6 +3,7 @@ from core.models import City,State,Country
 from property_module.models import PropertiesInfo
 from django.http import JsonResponse,Http404
 import json
+from django.core.exceptions import ObjectDoesNotExist
 from property_module.forms import AddPropertiesInfoForm, ContactPartiesForm
 from django.contrib.auth.decorators import login_required
 from message_track.models import MessageTrack
@@ -35,6 +36,22 @@ def add_property(request):
         return render(request, 'property/add_property.html', {'form': form})
     else:
         raise Http404('Page not found')
+
+
+from django.shortcuts import render
+from .models import Sellers, PropertiesInfo
+
+def my_property_seller(request):
+    if request.user.is_authenticated and request.user.member_type == 'seller':
+        try:
+            seller = Sellers.objects.get(user=request.user)  # This may raise Sellers.DoesNotExist
+            properties = PropertiesInfo.objects.filter(seller=seller)  # `.filter()` never raises DoesNotExist
+        except Sellers.DoesNotExist:  # Handle missing seller
+            properties = None  
+        
+        return render(request, 'property/my_property.html', {'properties': properties})
+    else:
+        return render(request, "error/404.html")
 
 
 
