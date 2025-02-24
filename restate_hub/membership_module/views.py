@@ -109,10 +109,13 @@ def member_profile(request):
 
         # 🌟 **Handle Agent Assignment**
         if has_agent == 'yes':
-            agent = Agents.objects.get(
-                email=agent_email
-            )
-
+            # agent = Agents.objects.get(
+            #     email=agent_email
+            # )
+            try:
+                agent = Agents.objects.get(email=agent_email)
+            except Agents.DoesNotExist:
+                agent = None
             # Link the agent to the buyer or seller
             if user.member_type == 'buyer':
                 buyer.agent = agent
