@@ -60,7 +60,7 @@
         const selectedState= document.getElementById('state-list').value;
         try {
             // Make the API request to fetch products based on selected category
-            const response = await fetch(`http://127.0.0.1:8000/core/get-city-bystate/${selectedState}`);
+            const response = await fetch(`${API_ROOT}/core/get-city-bystate/${selectedState}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }

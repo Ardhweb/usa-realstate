@@ -49,6 +49,7 @@ class CoreCity(APIView):
     def get(self, request, format=None):
         get_state = request.query_params.get('state', None)  # Get city from query params
         cities = City.objects.all()
+        print(get_state)
 
         if get_state:
             cities = cities.filter(state__id=get_state)  # Case-insensitive filter

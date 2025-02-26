@@ -58,7 +58,7 @@
                         
                         </p>
                       <p><strong>Leaseback month:</strong> {{property.leaseback_month}}</p>
-                    <a class="btn btn-warning p-2 m-1" href="${API_ROOT}/property/details/${property.property_id}/">
+                    <a class="btn btn-warning p-2 m-1" href="{% url "property_module:property-details"  property.property_id  %}">
     Property Details
 </a>
                     </td>
