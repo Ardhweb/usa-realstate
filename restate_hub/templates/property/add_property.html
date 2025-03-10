@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}<title>Add New Property</title>{% endblock title %}
 {% block style %}
+
 textarea {
     width: 150px;
     height: 70px;
@@ -32,6 +33,17 @@ input[type="file"]::file-selector-button {
   input[type="file"]::file-selector-button:active {
     background-color: #e5e7eb;
   }
+
+  [id^="select2-"][id$="-list-results"] {
+    overflow: scroll !important;
+    height: 15%;
+}
+
+
+  #select2-results__option:hover{
+    background-color:#d9d3d366!important;
+
+  }
 {% endblock style %}
 {% block content %}
 <div class="container  rounded-3 p-4 ">
@@ -47,13 +59,17 @@ input[type="file"]::file-selector-button {
                 <div class="property-details-wrapper bg-body p-3 rounded-3 shadow-sm">
                     <h4 class="mb-3">Property Details</h4>
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        {% comment %} <div class="col-md-4">
                             <label class="form-label">{{ form.country.label }}*</label>
                             {{ form.country }}
-                        </div>
+                        </div> {% endcomment %}
                         <div class="col-md-4">
                             <label class="form-label">{{ form.state.label }}*</label>
                             {{ form.state }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{form.county.label}}*</label>
+                            {{form.county}}
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">{{ form.city.label }}*</label>
@@ -229,6 +245,7 @@ input[type="file"]::file-selector-button {
                     );
                     singleSelect.style.display = "block";
                     singleSelect.style.width = "100%";
+                    singleSelect.style.height = "50%";
                     singleSelect.style.padding = ".375rem 2.25rem .375rem .75rem";
                     singleSelect.style.fontSize = "1rem";
                     singleSelect.style.fontWeight = "400";
@@ -252,7 +269,8 @@ input[type="file"]::file-selector-button {
     });
     
     document.addEventListener("DOMContentLoaded", function() {
-        get_Countries()
+        //get_Countries()
+        get_States();
         // Your initialization code here
     });
    
@@ -261,6 +279,7 @@ input[type="file"]::file-selector-button {
     const statesDropdown = document.getElementById('state-list');
     const countryDropdown = document.getElementById('country-list');
     const citiesDropdown = document.getElementById('city-list');
+    const countiesDropdown = document.getElementById('county-list');
 
     async function get_Countries() {
         
@@ -296,8 +315,8 @@ input[type="file"]::file-selector-button {
       
     
         try {
-            const response = await fetch(`${API_ROOT}/api-root/core/states?country=${country}`);
-    
+            //const response = await fetch(`${API_ROOT}/api-root/core/states?country=${country}`);
+            const response = await fetch(`${API_ROOT}/api-root/core/states?country=1`);
             if (!response.ok) {
                 throw new Error('Failed to fetch countries');
             }
@@ -325,10 +344,41 @@ input[type="file"]::file-selector-button {
     }
 
 
-    async function get_Cities(state){
-        console.log(state)
+    async function get_Counties(state){
         try {
-            const response = await fetch(`${API_ROOT}/api-root/core/cities?state=${state}`);
+            const response = await fetch(`${API_ROOT}/api-root/core/counties?state=${state}`);
+            //const response = await fetch(`${API_ROOT}/api-root/core/counties?state=1`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch counties');
+            }
+    
+            const data = await response.json();
+            console.log(data)
+            
+           
+            // Get the product dropdown element
+          
+            countiesDropdown.innerHTML = '';
+            countiesDropdown.innerHTML = '<option value="">Select Your County</option>';
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(county => {
+                const option = document.createElement('option');
+                option.value = county.id;
+                option.textContent = county.name;  // City name as the display text
+               countiesDropdown.appendChild(option);
+            });
+    
+        } catch (error) {
+            console.error('Error fetching counties:', error);
+        }
+
+
+    }
+
+
+    async function get_Cities(county){
+        try {
+            const response = await fetch(`${API_ROOT}/api-root/core/cities?county=${county}`);
     
             if (!response.ok) {
                 throw new Error('Failed to fetch cities');

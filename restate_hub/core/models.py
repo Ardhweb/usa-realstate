@@ -22,12 +22,17 @@ class State(models.Model):
     code = models.CharField(max_length=100, null=True,blank=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="states")
 
+class County(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True) #Local Government province
+    code = models.CharField(max_length=3, unique=True, null=True, blank=True)  # ISO 3166-1 alpha-3 code
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
+
 class City(models.Model):
     name = models.CharField(max_length=100, null=True)
     code = models.CharField(max_length=100, null=True,blank=True)
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="cities")
-
+    county = models.ForeignKey(County, on_delete=models.SET_NULL, null=True, blank=True)
 
 class PostalCode(models.Model):
     code = models.CharField(max_length=20, unique=True, null=True)

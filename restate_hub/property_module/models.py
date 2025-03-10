@@ -90,6 +90,7 @@ class PropertiesInfo(BaseModel):
     zipcode = models.CharField(max_length=10, null=True)
     state = models.CharField(max_length=50, null=True)
     country = models.CharField(max_length=100, null=True)
+    county = models.CharField(max_length=50, null=True)
     area = models.CharField(max_length=100, null=True)
     feature_id = models.IntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='property/images/')  # Store images in 'media/images/'
