@@ -98,3 +98,15 @@ python manage.py makemigrations accounts
 just use this command after follow-up
 
 ```python manage.py migrate```
+
+
+
+
+
+# Installing Dependeancy:
+
+**For Linux Based (Porduaction)**
+```pip install -r requirements.txt```
+
+**For Windows or Development**
+```pip install -r  requirements.txt```
