@@ -15,6 +15,7 @@ import os
 from dotenv import load_dotenv
 from decouple import config
 from datetime import timedelta
+from urllib.parse import urlparse
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
@@ -94,18 +95,41 @@ WSGI_APPLICATION = 'restate_hub.wsgi.application'
 
 
 # Database
+# Replace the DATABASES section of your settings.py with this
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+DB_CHOICE = os.getenv("DJANGO_DB", "default")  # Default to SQLite
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db2.sqlite3',
+if DB_CHOICE == "postgres":
+    DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
+        }
     }
-}
+    print("Using PostgreSQL for production.")
+elif DB_CHOICE == "default":
+    DATABASES = {
+        'default': {
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+            'NAME': BASE_DIR / 'db2.sqlite3',
+        }
+    }
+    print("Using SQLite for development.")
+else:
+    DATABASES = {
+        'default': {
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            'ENGINE': 'django.contrib.gis.db.backends.spatialite',
+            'NAME': BASE_DIR / 'db2.sqlite3',
+        }
+    }
+    print("Using SQLite for development.")
 
 
 # Password validation

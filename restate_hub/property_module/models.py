@@ -10,6 +10,7 @@ import time
 import time
 import random
 import string
+# from django.contrib.gis.db import models
 
 def generate_unique_id(length=12):
     """Generate a non-sequential unique ID using a timestamp and random suffix."""
@@ -138,7 +139,6 @@ class PropertyHistory(BaseModel):
 class PropertyLocation(BaseModel):
     location_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
-    city  = models.CharField(max_length=50, blank=False, null=True)
-    country  = models.CharField(max_length=50, blank=False, null=True)
-    region = models.CharField(max_length=50, blank=False, null=True)
-    postal_code = models.CharField(max_length=50, blank=False, null=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    #point = models.PointField(null=True, blank=True)
