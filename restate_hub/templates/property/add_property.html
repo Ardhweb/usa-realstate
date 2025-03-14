@@ -58,24 +58,7 @@ input[type="file"]::file-selector-button {
             <div class="col-md-6">
                 <div class="property-details-wrapper bg-body p-3 rounded-3 shadow-sm">
                     <h4 class="mb-3">Property Details</h4>
-                    <div class="row mb-3">
-                        {% comment %} <div class="col-md-4">
-                            <label class="form-label">{{ form.country.label }}*</label>
-                            {{ form.country }}
-                        </div> {% endcomment %}
-                        <div class="col-md-4">
-                            <label class="form-label">{{ form.state.label }}*</label>
-                            {{ form.state }}
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">{{form.county.label}}*</label>
-                            {{form.county}}
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">{{ form.city.label }}*</label>
-                            {{ form.city }}
-                        </div>
-                    </div>
+                   
 
                     <div class="row mb-3">
                         <div class="col-md-4">
@@ -129,12 +112,39 @@ input[type="file"]::file-selector-button {
                             {{ form.description }}
                         </div>
                     </div>
+                    <div class="row mb-3">
+                     
+                        <div class="col-md-12">
+                            <label class="form-label">{{ form.reason_selling.label }}</label>
+                            {{ form.reason_selling }}
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="col-md-6">
                 <div class="location-details-wrapper bg-body p-3 rounded-3 shadow-sm">
-                    <h4 class="mb-3">Location & Other Details</h4>
+                    <h4 class="mb-3">Address &  Other Details</h4>
+                
+                    <div class="row mb-3">
+                        {{ form.country }}
+                        {% comment %} <div class="col-md-4">
+                            <label class="form-label">{{ form.country.label }}*</label>
+                            {{ form.country }}
+                        </div>  {% endcomment %}
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.state.label }}*</label>
+                            {{ form.state }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{form.county.label}}*</label>
+                            {{form.county}}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.city.label }}*</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="form-label">{{ form.street_num.label }}</label>
@@ -180,6 +190,20 @@ input[type="file"]::file-selector-button {
                             {{ form.leaseback_month }}
                         </div>
                     </div>
+                 
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ location_form.latitude.label}}</label>
+                            {{ location_form.latitude }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">{{ location_form.longitude.label }}</label>
+                            {{ location_form.longitude }}
+                        </div>
+                        
+                    </div>
+                   
                     <div class="row mb-4 pb-3">
                         <div class="col-md-12">
                             <label class="form-label">{{ form.image.label }}: </label>
@@ -187,14 +211,6 @@ input[type="file"]::file-selector-button {
                         </div>
                         
                     </div>
-                    <div class="row mb-3">
-                     
-                        <div class="col-md-12">
-                            <label class="form-label">{{ form.reason_selling.label }}</label>
-                            {{ form.reason_selling }}
-                        </div>
-                    </div>
-                    
 
                    
 

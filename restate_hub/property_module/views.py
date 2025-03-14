@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from core.models import City,State,Country
-from property_module.models import PropertiesInfo
+from property_module.models import PropertiesInfo , PropertyLocation
 from django.http import JsonResponse,Http404
 import json
 from django.core.exceptions import ObjectDoesNotExist
-from property_module.forms import AddPropertiesInfoForm, ContactPartiesForm
+from property_module.forms import AddPropertiesInfoForm, ContactPartiesForm , PropertyLocationForm
 from django.contrib.auth.decorators import login_required
 from message_track.models import MessageTrack
 from django.core.mail import send_mail
@@ -23,17 +23,26 @@ def add_property(request):
     if request.user.is_authenticated and request.user.member_type == 'seller' or request.user.member_type == 'agent':
         if request.method == 'POST':
             form = AddPropertiesInfoForm(request.POST,request.FILES)
+            location_form = PropertyLocationForm(request.POST)
             seller =  Sellers.objects.get(user=request.user)
-            if form.is_valid():
+            if form.is_valid() and location_form.is_valid():
                 instance = form.save(commit=False)
                 instance.seller = seller
                 instance.save()
+                
+                location_instance = location_form.save(commit=False)
+                location_instance.property = instance
+                if location_form.cleaned_data['latitude'] == None and location_form.cleaned_data['longitude'] is None:
+                    return redirect('property_module:property-mine')  # Use return instead of break
+                
+                location_instance.save()
                 return redirect('property_module:property-mine')
             else:
-                print(form.errors)  # Debugging: Print form validation errors
+                print(form.errors, location_form.errors)  # Debugging: Print form validation errors
         else:
             form = AddPropertiesInfoForm()
-        return render(request, 'property/add_property.html', {'form': form})
+            location_form = PropertyLocationForm()
+        return render(request, 'property/add_property.html', {'form': form,'location_form':location_form})
     else:
         raise Http404('Page not found')
 
