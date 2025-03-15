@@ -106,7 +106,23 @@ just use this command after follow-up
 # Installing Dependeancy:
 
 **For Linux Based (Porduaction)**
-```pip install -r requirements.txt```
+```bash 
+pip install -r requirements.txt
+```
 
 **For Windows or Development**
-```pip install -r  requirements.txt```
+```bash
+pip install -r  requirements.txt
+```
+
+
+# For Dump/Load Dummy Data 
+**Dump Data** 
+```bash
+python manage.py dumpdata --natural-primary --natural-foreign --indent 4 > data.json
+```
+
+** using django dumpdata and json**
+```bash
+ python manage.py loaddata data.json
+ ```
