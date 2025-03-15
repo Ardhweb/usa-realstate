@@ -6,7 +6,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.exceptions import PermissionDenied
 
 class CoreCountry(APIView):
     ""
@@ -21,6 +23,9 @@ class CoreCountry(APIView):
         #api-root/core/countries
 
 class CoreState(APIView):
+    authentication_classes = []  # No automatic authentication
+    permission_classes = [AllowAny]  # Allow all users (authenticated or not)
+
     ""
     @swagger_auto_schema(
         operation_description="This endpoint returns a list of all authors objects from records that we have.",
@@ -39,6 +44,9 @@ class CoreState(APIView):
 
 
 class CoreCounty(APIView):
+    authentication_classes = []  # No automatic authentication
+    permission_classes = [AllowAny]  # Allow all users (authenticated or not)
+
     ""
     @swagger_auto_schema(
         operation_description="This endpoint returns a list of all the counties or any specific county objects from records that we have to  respactive there state.",
@@ -56,9 +64,12 @@ class CoreCounty(APIView):
 
 
 class CoreCity(APIView):
+    authentication_classes = []  # No automatic authentication
+    permission_classes = [AllowAny]  # Allow all users (authenticated or not)
+
     ""
     @swagger_auto_schema(
-        operation_description="This endpoint returns a list of all authors objects from records that we have.",
+        operation_description="This endpoint returns a list of all authors objects from records that we have. filter by  county hit this api-root/core/cities/?county=id , for state replace county with state.",
         responses={200: "Return all authors list via GET Method."}
     )
     def get(self, request, format=None):
@@ -75,7 +86,7 @@ class CoreCity(APIView):
 
         serializer = CoreCitySerializer(cities, many=True)
         return Response(serializer.data)
-        #api-root/core/states/?country=1
+        #api-root/core/cities/?county=1 && api-root/core/cities/?state=1
 
 
 

@@ -19,7 +19,7 @@ label{
         <div class="row g-3">
             <div class="col-md-3">
                 <label for="state" class="form-label">State</label>
-                <select id="state-list" class="form-select"  onchange="fetchProducts()">
+                <select id="state-list" class="form-select"  onchange="fetchCounties()">
                     <option value="" disabled selected>Select State</option>
                     {% for state in states  %}
                     <option value="{{state.id}}" >{{state.name}}</option>
@@ -30,7 +30,7 @@ label{
 
             <div class="col-md-3">
                 <label for="county" class="form-label">County</label>
-                <select id="county-list" class="form-select" >
+                <select id="county-list" class="form-select" onchange="fetchCity()" >
                     <option value="" disabled selected>Select County</option>
                  
                 </select>
@@ -60,6 +60,20 @@ label{
         </div>
     </div>
 
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <!-- Dropdown to select items per page -->
+        <div>
+            <label for="per-page" class="me-2">Show per page:</label>
+            <select id="per-page" class="form-select d-inline-block w-auto" onchange="updatePerPage(this.value)">
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+    
+     
+    </div>
+    
     <div class="table-responsive mt-4">
         <table class="table table-bordered table-hover">
             <thead  class="table-light d-none">
@@ -74,7 +88,11 @@ label{
             <tbody class="" id="property-list">
             </tbody>
         </table>
+
+      
+
     </div>
+    <div id="pagination-buttons" class="m-3 text-center"></div>
 </main>
 
 
@@ -83,25 +101,58 @@ label{
 
 {% block scripts %}
 <script> const API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
-    async function fetchProducts() {
+   
+   
+    async function fetchCounties() {
         // Get the selected category
         const selectedState= document.getElementById('state-list').value;
         try {
             // Make the API request to fetch products based on selected category
-            const response = await fetch(`${API_ROOT}/core/get-city-bystate/${selectedState}`);
+          
+            const response = await fetch(`${API_ROOT}/api-root/core/counties?state=${selectedState}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch products');
             }
             const data = await response.json();
             // Get the product dropdown element
-            const cityDropdown = document.getElementById('city-list');
+            const countyDropdown = document.getElementById('county-list');
             // Clar the existing options in the product dropdown
-            cityDropdown.innerHTML = '<option value="">Select Your City</option>';
+            countyDropdown.innerHTML = '<option value="">Select Your County</option>';
+            // Loop through the API response data and add options to the product dropdown
+            data.forEach(county => {
+                const option = document.createElement('option');
+                option.value = county.id;  // County ID as the value
+              
+                option.textContent = county.name;  // County name as the display text
+                countyDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+
+
+    async function fetchCity() {
+        // Get the selected category
+        const selectedCounty= document.getElementById('county-list').value;
+        try {
+            // Make the API request to fetch products based on selected category
+          
+            const response = await fetch(`${API_ROOT}/api-root/core/cities?county=${selectedCounty}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            const data = await response.json();
+            
+            // Get the product dropdown element
+            const cityDropdown = document.getElementById('city-list');
+            // Clear the existing options in the product dropdown
+            cityDropdown.innerHTML = '<option value="">Select Your County</option>';
             // Loop through the API response data and add options to the product dropdown
             data.forEach(city => {
                 const option = document.createElement('option');
-                //option.value = city.id;  // City ID as the value
-                option.value = city.name;
+                option.value = city.name;  // City name as the value
+                
                 option.textContent = city.name;  // City name as the display text
                 cityDropdown.appendChild(option);
             });
@@ -110,32 +161,40 @@ label{
         }
     }
 
-    //Filter the Properties by city.
-    async function fetchPropertiesbycity() {
-        // Get the selected category
-        const selectedcity= document.getElementById('city-list').value;
-        console.log("selected City:",selectedcity)
-        if(selectedcity == ""){
-            window.location.reload()
-           
-        }
-        else{
-            try {
-                // Make the API request to fetch products based on selected category
-                const response = await fetch(`http://127.0.0.1:8000/api-root/parties/properties-list/?city=${selectedcity}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch products');
-                }
-                const data = await response.json();
-                console.log(data)
-                const thead = document.querySelector("thead"); // Selects the entire table head
-                const tbody = document.getElementById("property-list");
-                tbody.innerHTML = "";
-                if (data.length > 0) {
-                    thead.classList.remove('d-none') // Show the table header
-                data.forEach(property => {
-                    const tr = document.createElement("tr");
+   
+// Global variable to track current page
+let current_page = 1;
+let perpage = 10;
 
+async function updatePerPage(value) {
+    perpage = 20// Update per-page value
+    await fetchPropertiesbycity(current_page, perpage); // Keep the same page
+}
+
+async function fetchPropertiesbycity(page = 1, perpage) {
+    currentPage = page; // Update current page
+    const selectedcity = document.getElementById('city-list').value;
+
+    if (selectedcity == "") {
+        window.location.reload();
+    } else {
+        try {
+            const response = await fetch(`${API_ROOT}/api-root/parties/properties-list/?city=${selectedcity}&page=${page}&perpage=${perpage}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch properties');
+            }
+            const data = await response.json();
+            console.log("API Response:", data);
+
+            const thead = document.querySelector("thead");
+            const tbody = document.getElementById("property-list");
+            tbody.innerHTML = "";
+
+            if (data.results && data.results.length > 0) {
+                thead.classList.remove('d-none');
+
+                data.results.forEach(property => {
+                    const tr = document.createElement("tr");
                     tr.innerHTML = `
                         <td><img src="${property.image}" alt="Property" width="250" class="img-thumbnail img-fluid rounded">
                         <p><strong>Listing ID: </strong>#${property.listing_id}</p>
@@ -145,41 +204,46 @@ label{
                             <p class="text-capitalize"><strong>Bath rooms:</strong> ${property.bathrooms}</p>
                             <p class="text-capitalize"><strong>Garage:</strong> ${property.garage_num}</p>
                             <p><strong >House Size:</strong> ${property.house_size} sqft</p>
-                           
- <p class="text-truncate" style="max-width: 200px;"><strong>Description:</strong> <br>${property.description}</p>
-  
-                           
-                       
+                            <p class="text-truncate" style="max-width: 200px;"><strong>Description:</strong> <br>${property.description}</p>
                         </td>
                         <td> 
                         <p class="text-capitalize"><strong>Reason Selling:</strong> ${property.reason_selling}</p>
-                         <p class="text-capitalize"><strong>Selling Type:</strong> ${property.selling_type}</p>
-                          <p class="text-capitalize"><strong>Lease back:</strong> 
-                              
-                                   <span class="text-capitalize">${property.sell_leaseback}</span>
-                                    
-                            
-                            </p>
-                          <p><strong>Leaseback month:</strong> ${property.leaseback_month}</p>
+                        <p class="text-capitalize"><strong>Selling Type:</strong> ${property.selling_type}</p>
+                        <p class="text-capitalize"><strong>Lease back:</strong> <span class="text-capitalize">${property.sell_leaseback}</span></p>
+                        <p><strong>Leaseback month:</strong> ${property.leaseback_month}</p>
                         <a class="btn btn-warning p-2 m-1" href="${API_ROOT}/property/details/${property.property_id}/">
-        Property Details
-    </a>
+                            Property Details
+                        </a>
                         </td>
                     `;
-            
                     tbody.appendChild(tr);
                 });
-            }else{
-                thead.style.display = "none"; // Hide the table header if no data
+
+                // Update pagination buttons
+                updatePaginationButtons(data.previous, data.next);
+            } else {
+                thead.style.display = "none";
+                document.getElementById("pagination-buttons").innerHTML = ""; // Hide pagination buttons if no data
             }
-                
-              
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            }
+            
+        } catch (error) {
+            console.error('Error fetching properties:', error);
         }
-      
     }
+}
+
+function updatePaginationButtons(previous, next) {
+    const paginationDiv = document.getElementById("pagination-buttons");
+    paginationDiv.innerHTML = ""; // Clear old buttons
+
+    if (previous) {
+        paginationDiv.innerHTML += `<button class="btn btn-warning btn-sm me-2 " onclick="fetchPropertiesbycity(${currentPage - 1})">Previous</button>`;
+    }
+    if (next) {
+        paginationDiv.innerHTML += `<button class="btn btn-warning btn-sm ms-2" onclick="fetchPropertiesbycity(${currentPage + 1})">Next</button>`;
+    }
+}
+
 
 
     
