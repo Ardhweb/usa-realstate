@@ -10,9 +10,7 @@ import time
 import time
 import random
 import string
-from django.contrib.gis.db import models
-from django.contrib.gis.geos import Point
-from django.contrib.gis.measure import D
+
 
 def generate_unique_id(length=12):
     """Generate a non-sequential unique ID using a timestamp and random suffix."""
@@ -104,7 +102,12 @@ class PropertiesInfo(BaseModel):
     leaseback_month = models.FloatField(choices=LEASEBACK_MONTHS, null=True)
     garage_num = models.IntegerField(null=True)
     hoa_fee_qtr = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-
+   
+    
+    def save(self, *args, **kwargs):
+        if self.latitude is not None and self.longitude is not None:
+            self.point = Point(self.longitude, self.latitude)  # (lng, lat)
+        super().save(*args, **kwargs)
 
 class PropertyAgent(BaseModel):
     SELLERREP = 'SellerRep'
@@ -137,15 +140,3 @@ class PropertyHistory(BaseModel):
     change_type = models.CharField(max_length=20, choices=CHANGE_TYPES, null=True)
     previous_price = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
-
-class PropertyLocation(BaseModel):
-    location_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
-    property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
-    latitude = models.FloatField(null=True, blank=True)
-    longitude = models.FloatField(null=True, blank=True)
-    point = models.PointField(geography=True, blank=True, null=True)
-    
-    def save(self, *args, **kwargs):
-        if self.latitude is not None and self.longitude is not None:
-            self.point = Point(self.longitude, self.latitude)  # (lng, lat)
-        super().save(*args, **kwargs)

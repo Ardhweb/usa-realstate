@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied
 
+
 class PropertyList(APIView):
     authentication_classes = []  # No automatic authentication
     permission_classes = [AllowAny]  # Allow all users (authenticated or not)
@@ -26,6 +27,7 @@ class PropertyList(APIView):
     def get(self, request, format=None):
         get_city = request.query_params.get('city', None)  # Get city from query params
         get_pagesize = request.query_params.get('perpage',10)
+
         # Validate before conversion
         if get_pagesize.isdigit():  
             get_pagesize = int(get_pagesize)
@@ -38,8 +40,10 @@ class PropertyList(APIView):
         if get_city:
             properties = properties.filter(city__iexact=get_city)  # Case-insensitive filter
         
-        # serializer = PropertiesInfoSerializer(properties, many=True)
-        # return Response(serializer.data)
+
+           
+
+      
          # Implement pagination
         paginator = PageNumberPagination()
         paginator.page_size = get_pagesize # Set default page size

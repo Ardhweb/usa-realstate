@@ -1,5 +1,5 @@
 from django import forms
-from property_module.models import PropertiesInfo,PropertyLocation
+from property_module.models import PropertiesInfo
 class SearchPropertyForm(forms.Form):
    pass
 
@@ -32,17 +32,7 @@ class AddPropertiesInfoForm(forms.ModelForm):
             field.required = True
 
 
-class PropertyLocationForm(forms.ModelForm):
 
-   class Meta:
-      model = PropertyLocation
-      fields = ['latitude', 'longitude']
-      widgets ={
-               'latitude':forms.NumberInput(attrs={"step": "any", 'class':'form-control', }),
-               'longitude':forms.NumberInput(attrs={"step": "any", 'class':'form-control', }),
-              
-               
-            }
 
 class ContactPartiesForm(forms.Form):
    property_id = forms.CharField(required=False,widget=forms.HiddenInput(attrs={'class':'form-control',}))

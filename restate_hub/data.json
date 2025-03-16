@@ -1,4 +1,12 @@
+Using PostgreSQL for production.
 [
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
 {
     "model": "contenttypes.contenttype",
     "fields": {
@@ -23,27 +31,6 @@
 {
     "model": "contenttypes.contenttype",
     "fields": {
-        "app_label": "accounts",
-        "model": "user"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "accounts",
-        "model": "userprofile"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "admin",
-        "model": "logentry"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
         "app_label": "sessions",
         "model": "session"
     }
@@ -59,6 +46,20 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "core",
+        "model": "state"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "core",
+        "model": "county"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "core",
         "model": "city"
     }
 },
@@ -67,13 +68,6 @@
     "fields": {
         "app_label": "core",
         "model": "postalcode"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "core",
-        "model": "region"
     }
 },
 {
@@ -115,13 +109,6 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "property_module",
-        "model": "propetyfeatures"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "property_module",
         "model": "propertiesinfo"
     }
 },
@@ -130,6 +117,13 @@
     "fields": {
         "app_label": "property_module",
         "model": "propertyagent"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "property_module",
+        "model": "propetyfeatures"
     }
 },
 {
@@ -177,6 +171,13 @@
 {
     "model": "contenttypes.contenttype",
     "fields": {
+        "app_label": "membership_module",
+        "model": "defaultfeestructure"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
         "app_label": "agent_module",
         "model": "agents"
     }
@@ -206,6 +207,20 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "accounts",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "accounts",
+        "model": "userprofile"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "fields": {
+        "app_label": "accounts",
         "model": "singlefactoremailotp"
     }
 },
@@ -213,21 +228,7 @@
     "model": "contenttypes.contenttype",
     "fields": {
         "app_label": "core",
-        "model": "state"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "membership_module",
-        "model": "defaultfeestructure"
-    }
-},
-{
-    "model": "contenttypes.contenttype",
-    "fields": {
-        "app_label": "core",
-        "model": "county"
+        "model": "region"
     }
 },
 {
@@ -1535,6 +1536,396 @@
     }
 },
 {
+    "model": "property_module.propertiesinfo",
+    "pk": 18,
+    "fields": {
+        "created_at": "2025-03-15T14:00:00Z",
+        "updated_at": "2025-03-15T14:00:00Z",
+        "property_id": "171049272522",
+        "property_type": "single family",
+        "listing_id": "listing_11",
+        "listing_type": "residential",
+        "price": "320000.00",
+        "house_size": 2500.0,
+        "lot_size": 6500.0,
+        "bedrooms": 4,
+        "bathrooms": 3.0,
+        "year_built": 2017,
+        "description": "Spacious modern home in a quiet neighborhood",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T14:00:00Z",
+        "listing_updated_date": "2025-03-15T14:00:00Z",
+        "street_num": "890",
+        "street_name": "Magnolia St",
+        "city": "Birmingham",
+        "zipcode": "35203",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Downtown",
+        "feature_id": null,
+        "image": "property/images/sample11.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Job relocation",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": 2,
+        "hoa_fee_qtr": "320.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 19,
+    "fields": {
+        "created_at": "2025-03-15T14:10:00Z",
+        "updated_at": "2025-03-15T14:10:00Z",
+        "property_id": "171049272523",
+        "property_type": "townhome",
+        "listing_id": "listing_12",
+        "listing_type": "residential",
+        "price": "220000.00",
+        "house_size": 1600.0,
+        "lot_size": 3500.0,
+        "bedrooms": 3,
+        "bathrooms": 2.5,
+        "year_built": 2015,
+        "description": "Charming townhome near shopping centers",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T14:10:00Z",
+        "listing_updated_date": "2025-03-15T14:10:00Z",
+        "street_num": "456",
+        "street_name": "Oakwood Ave",
+        "city": "Birmingham",
+        "zipcode": "35205",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Midtown",
+        "feature_id": null,
+        "image": "property/images/sample12.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Family downsizing",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": 1,
+        "hoa_fee_qtr": "280.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 20,
+    "fields": {
+        "created_at": "2025-03-15T14:20:00Z",
+        "updated_at": "2025-03-15T14:20:00Z",
+        "property_id": "171049272524",
+        "property_type": "condo",
+        "listing_id": "listing_13",
+        "listing_type": "residential",
+        "price": "275000.00",
+        "house_size": 1400.0,
+        "lot_size": null,
+        "bedrooms": 2,
+        "bathrooms": 2.0,
+        "year_built": 2021,
+        "description": "Luxury high-rise condo with city views",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T14:20:00Z",
+        "listing_updated_date": "2025-03-15T14:20:00Z",
+        "street_num": "789",
+        "street_name": "Skyline Blvd",
+        "city": "Birmingham",
+        "zipcode": "35209",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Uptown",
+        "feature_id": null,
+        "image": "property/images/sample13.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Upgrading to larger space",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": 1,
+        "hoa_fee_qtr": "250.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 21,
+    "fields": {
+        "created_at": "2025-03-15T14:30:00Z",
+        "updated_at": "2025-03-15T14:30:00Z",
+        "property_id": "171049272525",
+        "property_type": "single family",
+        "listing_id": "listing_14",
+        "listing_type": "residential",
+        "price": "450000.00",
+        "house_size": 3000.0,
+        "lot_size": 8000.0,
+        "bedrooms": 5,
+        "bathrooms": 4.0,
+        "year_built": 2019,
+        "description": "Large family home with backyard pool",
+        "listing_status": "pending",
+        "listing_created_date": "2025-03-15T14:30:00Z",
+        "listing_updated_date": "2025-03-15T14:30:00Z",
+        "street_num": "123",
+        "street_name": "Crestwood Dr",
+        "city": "Birmingham",
+        "zipcode": "35212",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Suburbs",
+        "feature_id": null,
+        "image": "property/images/sample14.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Moving to another state",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": 3,
+        "hoa_fee_qtr": "400.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 22,
+    "fields": {
+        "created_at": "2025-03-15T14:40:00Z",
+        "updated_at": "2025-03-15T14:40:00Z",
+        "property_id": "171049272526",
+        "property_type": "land",
+        "listing_id": "listing_15",
+        "listing_type": "land",
+        "price": "180000.00",
+        "house_size": null,
+        "lot_size": 22000.0,
+        "bedrooms": null,
+        "bathrooms": null,
+        "year_built": null,
+        "description": "Vacant lot available for commercial use",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T14:40:00Z",
+        "listing_updated_date": "2025-03-15T14:40:00Z",
+        "street_num": "678",
+        "street_name": "Main Hwy",
+        "city": "Birmingham",
+        "zipcode": "35214",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Business District",
+        "feature_id": null,
+        "image": "property/images/sample15.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Investment opportunity",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": null,
+        "hoa_fee_qtr": null
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 23,
+    "fields": {
+        "created_at": "2025-03-15T14:50:00Z",
+        "updated_at": "2025-03-15T14:50:00Z",
+        "property_id": "171049272527",
+        "property_type": "industrial",
+        "listing_id": "listing_16",
+        "listing_type": "industrial",
+        "price": "950000.00",
+        "house_size": 6000.0,
+        "lot_size": 18000.0,
+        "bedrooms": null,
+        "bathrooms": null,
+        "year_built": 2015,
+        "description": "Modern warehouse in industrial zone",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T14:50:00Z",
+        "listing_updated_date": "2025-03-15T14:50:00Z",
+        "street_num": "890",
+        "street_name": "Industrial Park",
+        "city": "Birmingham",
+        "zipcode": "35217",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Industrial Zone",
+        "feature_id": null,
+        "image": "property/images/sample16.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Business expansion",
+        "sell_leaseback": "yes",
+        "leaseback_month": 10.0,
+        "garage_num": null,
+        "hoa_fee_qtr": null
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 24,
+    "fields": {
+        "created_at": "2025-03-15T15:00:00Z",
+        "updated_at": "2025-03-15T15:00:00Z",
+        "property_id": "171049272528",
+        "property_type": "single family",
+        "listing_id": "listing_17",
+        "listing_type": "residential",
+        "price": "370000.00",
+        "house_size": 2600.0,
+        "lot_size": 7000.0,
+        "bedrooms": 4,
+        "bathrooms": 3.5,
+        "year_built": 2018,
+        "description": "Elegant home with a spacious deck",
+        "listing_status": "sold",
+        "listing_created_date": "2025-03-15T15:00:00Z",
+        "listing_updated_date": "2025-03-15T15:00:00Z",
+        "street_num": "234",
+        "street_name": "Hillside Dr",
+        "city": "Birmingham",
+        "zipcode": "35218",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "West Side",
+        "feature_id": null,
+        "image": "property/images/sample17.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Moving abroad",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": 2,
+        "hoa_fee_qtr": "310.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 25,
+    "fields": {
+        "created_at": "2025-03-15T15:10:00Z",
+        "updated_at": "2025-03-15T15:10:00Z",
+        "property_id": "171049272529",
+        "property_type": "townhome",
+        "listing_id": "listing_18",
+        "listing_type": "residential",
+        "price": "205000.00",
+        "house_size": 1450.0,
+        "lot_size": 2700.0,
+        "bedrooms": 3,
+        "bathrooms": 2.0,
+        "year_built": 2016,
+        "description": "Affordable townhome near parks",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T15:10:00Z",
+        "listing_updated_date": "2025-03-15T15:10:00Z",
+        "street_num": "567",
+        "street_name": "Green St",
+        "city": "Birmingham",
+        "zipcode": "35221",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "East Side",
+        "feature_id": null,
+        "image": "property/images/sample18.jpg",
+        "seller": 6,
+        "selling_type": "for rent",
+        "reason_selling": "Temporary job transfer",
+        "sell_leaseback": "yes",
+        "leaseback_month": 6.0,
+        "garage_num": 1,
+        "hoa_fee_qtr": "190.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 26,
+    "fields": {
+        "created_at": "2025-03-15T15:20:00Z",
+        "updated_at": "2025-03-15T15:20:00Z",
+        "property_id": "171049272530",
+        "property_type": "condo",
+        "listing_id": "listing_19",
+        "listing_type": "residential",
+        "price": "255000.00",
+        "house_size": 1350.0,
+        "lot_size": null,
+        "bedrooms": 2,
+        "bathrooms": 1.5,
+        "year_built": 2020,
+        "description": "Stylish condo in a gated community",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T15:20:00Z",
+        "listing_updated_date": "2025-03-15T15:20:00Z",
+        "street_num": "910",
+        "street_name": "Lakeside Dr",
+        "city": "Birmingham",
+        "zipcode": "35223",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "Lake District",
+        "feature_id": null,
+        "image": "property/images/sample19.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Lifestyle change",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": 1,
+        "hoa_fee_qtr": "230.00"
+    }
+},
+{
+    "model": "property_module.propertiesinfo",
+    "pk": 27,
+    "fields": {
+        "created_at": "2025-03-15T15:30:00Z",
+        "updated_at": "2025-03-15T15:30:00Z",
+        "property_id": "171049272531",
+        "property_type": "land",
+        "listing_id": "listing_20",
+        "listing_type": "land",
+        "price": "220000.00",
+        "house_size": null,
+        "lot_size": 30000.0,
+        "bedrooms": null,
+        "bathrooms": null,
+        "year_built": null,
+        "description": "Perfect land for new construction",
+        "listing_status": "active",
+        "listing_created_date": "2025-03-15T15:30:00Z",
+        "listing_updated_date": "2025-03-15T15:30:00Z",
+        "street_num": "3456",
+        "street_name": "Sunset Blvd",
+        "city": "Birmingham",
+        "zipcode": "35226",
+        "state": "Alabama",
+        "country": "USA",
+        "county": "Jefferson County",
+        "area": "New Development Area",
+        "feature_id": null,
+        "image": "property/images/sample20.jpg",
+        "seller": 6,
+        "selling_type": "for sale",
+        "reason_selling": "Retirement investment",
+        "sell_leaseback": "no",
+        "leaseback_month": null,
+        "garage_num": null,
+        "hoa_fee_qtr": null
+    }
+},
+{
     "model": "membership_module.memberaddress",
     "pk": 1,
     "fields": {
@@ -2066,6 +2457,50 @@
 {
     "model": "auth.permission",
     "fields": {
+        "name": "Can add log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": [
+            "admin",
+            "logentry"
+        ],
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
         "name": "Can add permission",
         "content_type": [
             "auth",
@@ -2198,138 +2633,6 @@
 {
     "model": "auth.permission",
     "fields": {
-        "name": "Can add user",
-        "content_type": [
-            "accounts",
-            "user"
-        ],
-        "codename": "add_user"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change user",
-        "content_type": [
-            "accounts",
-            "user"
-        ],
-        "codename": "change_user"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete user",
-        "content_type": [
-            "accounts",
-            "user"
-        ],
-        "codename": "delete_user"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view user",
-        "content_type": [
-            "accounts",
-            "user"
-        ],
-        "codename": "view_user"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can add user profile",
-        "content_type": [
-            "accounts",
-            "userprofile"
-        ],
-        "codename": "add_userprofile"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change user profile",
-        "content_type": [
-            "accounts",
-            "userprofile"
-        ],
-        "codename": "change_userprofile"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete user profile",
-        "content_type": [
-            "accounts",
-            "userprofile"
-        ],
-        "codename": "delete_userprofile"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view user profile",
-        "content_type": [
-            "accounts",
-            "userprofile"
-        ],
-        "codename": "view_userprofile"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can add log entry",
-        "content_type": [
-            "admin",
-            "logentry"
-        ],
-        "codename": "add_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change log entry",
-        "content_type": [
-            "admin",
-            "logentry"
-        ],
-        "codename": "change_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete log entry",
-        "content_type": [
-            "admin",
-            "logentry"
-        ],
-        "codename": "delete_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view log entry",
-        "content_type": [
-            "admin",
-            "logentry"
-        ],
-        "codename": "view_logentry"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
         "name": "Can add session",
         "content_type": [
             "sessions",
@@ -2418,6 +2721,94 @@
 {
     "model": "auth.permission",
     "fields": {
+        "name": "Can add state",
+        "content_type": [
+            "core",
+            "state"
+        ],
+        "codename": "add_state"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change state",
+        "content_type": [
+            "core",
+            "state"
+        ],
+        "codename": "change_state"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete state",
+        "content_type": [
+            "core",
+            "state"
+        ],
+        "codename": "delete_state"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view state",
+        "content_type": [
+            "core",
+            "state"
+        ],
+        "codename": "view_state"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add county",
+        "content_type": [
+            "core",
+            "county"
+        ],
+        "codename": "add_county"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change county",
+        "content_type": [
+            "core",
+            "county"
+        ],
+        "codename": "change_county"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete county",
+        "content_type": [
+            "core",
+            "county"
+        ],
+        "codename": "delete_county"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view county",
+        "content_type": [
+            "core",
+            "county"
+        ],
+        "codename": "view_county"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
         "name": "Can add city",
         "content_type": [
             "core",
@@ -2501,50 +2892,6 @@
             "postalcode"
         ],
         "codename": "view_postalcode"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can add region",
-        "content_type": [
-            "core",
-            "region"
-        ],
-        "codename": "add_region"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change region",
-        "content_type": [
-            "core",
-            "region"
-        ],
-        "codename": "change_region"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete region",
-        "content_type": [
-            "core",
-            "region"
-        ],
-        "codename": "delete_region"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view region",
-        "content_type": [
-            "core",
-            "region"
-        ],
-        "codename": "view_region"
     }
 },
 {
@@ -2770,50 +3117,6 @@
 {
     "model": "auth.permission",
     "fields": {
-        "name": "Can add propety features",
-        "content_type": [
-            "property_module",
-            "propetyfeatures"
-        ],
-        "codename": "add_propetyfeatures"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change propety features",
-        "content_type": [
-            "property_module",
-            "propetyfeatures"
-        ],
-        "codename": "change_propetyfeatures"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete propety features",
-        "content_type": [
-            "property_module",
-            "propetyfeatures"
-        ],
-        "codename": "delete_propetyfeatures"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view propety features",
-        "content_type": [
-            "property_module",
-            "propetyfeatures"
-        ],
-        "codename": "view_propetyfeatures"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
         "name": "Can add properties info",
         "content_type": [
             "property_module",
@@ -2897,6 +3200,50 @@
             "propertyagent"
         ],
         "codename": "view_propertyagent"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add propety features",
+        "content_type": [
+            "property_module",
+            "propetyfeatures"
+        ],
+        "codename": "add_propetyfeatures"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change propety features",
+        "content_type": [
+            "property_module",
+            "propetyfeatures"
+        ],
+        "codename": "change_propetyfeatures"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete propety features",
+        "content_type": [
+            "property_module",
+            "propetyfeatures"
+        ],
+        "codename": "delete_propetyfeatures"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view propety features",
+        "content_type": [
+            "property_module",
+            "propetyfeatures"
+        ],
+        "codename": "view_propetyfeatures"
     }
 },
 {
@@ -3166,6 +3513,50 @@
 {
     "model": "auth.permission",
     "fields": {
+        "name": "Can add default fee structure",
+        "content_type": [
+            "membership_module",
+            "defaultfeestructure"
+        ],
+        "codename": "add_defaultfeestructure"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change default fee structure",
+        "content_type": [
+            "membership_module",
+            "defaultfeestructure"
+        ],
+        "codename": "change_defaultfeestructure"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete default fee structure",
+        "content_type": [
+            "membership_module",
+            "defaultfeestructure"
+        ],
+        "codename": "delete_defaultfeestructure"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view default fee structure",
+        "content_type": [
+            "membership_module",
+            "defaultfeestructure"
+        ],
+        "codename": "view_defaultfeestructure"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
         "name": "Can add agents",
         "content_type": [
             "agent_module",
@@ -3342,6 +3733,94 @@
 {
     "model": "auth.permission",
     "fields": {
+        "name": "Can add user",
+        "content_type": [
+            "accounts",
+            "user"
+        ],
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change user",
+        "content_type": [
+            "accounts",
+            "user"
+        ],
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete user",
+        "content_type": [
+            "accounts",
+            "user"
+        ],
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view user",
+        "content_type": [
+            "accounts",
+            "user"
+        ],
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can add user profile",
+        "content_type": [
+            "accounts",
+            "userprofile"
+        ],
+        "codename": "add_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can change user profile",
+        "content_type": [
+            "accounts",
+            "userprofile"
+        ],
+        "codename": "change_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can delete user profile",
+        "content_type": [
+            "accounts",
+            "userprofile"
+        ],
+        "codename": "delete_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
+        "name": "Can view user profile",
+        "content_type": [
+            "accounts",
+            "userprofile"
+        ],
+        "codename": "view_userprofile"
+    }
+},
+{
+    "model": "auth.permission",
+    "fields": {
         "name": "Can add single factor email otp",
         "content_type": [
             "accounts",
@@ -3386,133 +3865,45 @@
 {
     "model": "auth.permission",
     "fields": {
-        "name": "Can add state",
+        "name": "Can add region",
         "content_type": [
             "core",
-            "state"
+            "region"
         ],
-        "codename": "add_state"
+        "codename": "add_region"
     }
 },
 {
     "model": "auth.permission",
     "fields": {
-        "name": "Can change state",
+        "name": "Can change region",
         "content_type": [
             "core",
-            "state"
+            "region"
         ],
-        "codename": "change_state"
+        "codename": "change_region"
     }
 },
 {
     "model": "auth.permission",
     "fields": {
-        "name": "Can delete state",
+        "name": "Can delete region",
         "content_type": [
             "core",
-            "state"
+            "region"
         ],
-        "codename": "delete_state"
+        "codename": "delete_region"
     }
 },
 {
     "model": "auth.permission",
     "fields": {
-        "name": "Can view state",
+        "name": "Can view region",
         "content_type": [
             "core",
-            "state"
+            "region"
         ],
-        "codename": "view_state"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can add default fee structure",
-        "content_type": [
-            "membership_module",
-            "defaultfeestructure"
-        ],
-        "codename": "add_defaultfeestructure"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change default fee structure",
-        "content_type": [
-            "membership_module",
-            "defaultfeestructure"
-        ],
-        "codename": "change_defaultfeestructure"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete default fee structure",
-        "content_type": [
-            "membership_module",
-            "defaultfeestructure"
-        ],
-        "codename": "delete_defaultfeestructure"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view default fee structure",
-        "content_type": [
-            "membership_module",
-            "defaultfeestructure"
-        ],
-        "codename": "view_defaultfeestructure"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can add county",
-        "content_type": [
-            "core",
-            "county"
-        ],
-        "codename": "add_county"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can change county",
-        "content_type": [
-            "core",
-            "county"
-        ],
-        "codename": "change_county"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can delete county",
-        "content_type": [
-            "core",
-            "county"
-        ],
-        "codename": "delete_county"
-    }
-},
-{
-    "model": "auth.permission",
-    "fields": {
-        "name": "Can view county",
-        "content_type": [
-            "core",
-            "county"
-        ],
-        "codename": "view_county"
+        "codename": "view_region"
     }
 },
 {
