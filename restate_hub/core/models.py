@@ -1,7 +1,9 @@
 from django.db import models
 
 # Create your models here.
-
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,12 +29,20 @@ class County(models.Model):
     code = models.CharField(max_length=3, unique=True, null=True, blank=True)  # ISO 3166-1 alpha-3 code
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
 
+    
 class City(models.Model):
     name = models.CharField(max_length=100, null=True)
     code = models.CharField(max_length=100, null=True,blank=True)
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True, blank=True, related_name="cities")
     county = models.ForeignKey(County, on_delete=models.SET_NULL, null=True, blank=True)
+    point = models.PointField(geography=True, blank=True, null=True)   # City center coordinates
+    
+    def save(self, *args, **kwargs):
+        # Ensure we have a valid point
+        if not self.location:
+            self.location = Point(0, 0)  # Default if missing
+        super().save(*args, **kwargs)
 
 class PostalCode(models.Model):
     code = models.CharField(max_length=20, unique=True, null=True)

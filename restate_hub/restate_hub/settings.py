@@ -104,7 +104,8 @@ DB_CHOICE = os.getenv("DJANGO_DB", "default")  # Default to SQLite
 if DB_CHOICE == "postgres":
     DATABASES = {
         'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        # 'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',  # PostGIS backend
         'NAME': tmpPostgres.path.replace('/', ''),
         'USER': tmpPostgres.username,
         'PASSWORD': tmpPostgres.password,

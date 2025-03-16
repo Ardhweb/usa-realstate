@@ -10,7 +10,9 @@ import time
 import time
 import random
 import string
-# from django.contrib.gis.db import models
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 
 def generate_unique_id(length=12):
     """Generate a non-sequential unique ID using a timestamp and random suffix."""
@@ -141,4 +143,9 @@ class PropertyLocation(BaseModel):
     property = models.ForeignKey(PropertiesInfo, on_delete=models.SET_NULL,null=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    #point = models.PointField(null=True, blank=True)
+    point = models.PointField(geography=True, blank=True, null=True)
+    
+    def save(self, *args, **kwargs):
+        if self.latitude is not None and self.longitude is not None:
+            self.point = Point(self.longitude, self.latitude)  # (lng, lat)
+        super().save(*args, **kwargs)
