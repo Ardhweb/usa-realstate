@@ -237,3 +237,7 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+
+
+HELCIM_API_KEY = os.getenv("HELCIM_API_KEY")
+HELCIM_API_URL = os.getenv("HELCIM_API_URL")
