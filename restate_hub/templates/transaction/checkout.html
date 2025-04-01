@@ -2,4 +2,80 @@
 
 {% block content %}
 <h1>Checkout</h1>
-{% endblock content %}
+
+<!-- Helcim Pay Script -->
+<script type="text/javascript" src="https://secure.helcim.app/helcim-pay/services/start.js"></script>
+
+<!-- Pay Now Link -->
+<a class="btn btn-primary" href="javascript: appendHelcimPayIframe(checkoutToken)">Add Credit Card / Checkout</a>
+
+
+<script>
+  // Define the checkout token properly as a string
+  let checkoutToken = `{{checkoutcode}}` // Need to  hide and encrypt  from backened
+
+  // Pay Now button click event
+  document.getElementById("pay-now").addEventListener("click", function(event) {
+    event.preventDefault();
+    appendHelcimPayIframe(checkoutToken);
+  });
+
+  // Listen for transaction status updates
+  window.addEventListener("message", (event) => {
+    const helcimPayJsIdentifierKey = "helcim-pay-js-" + checkoutToken;
+
+    if (event.data.eventName === helcimPayJsIdentifierKey) {
+      if (event.data.eventStatus === "ABORTED") {
+        console.error("Transaction failed!", event.data.eventMessage);
+      } 
+      if (event.data.eventStatus === "SUCCESS") {
+        console.log("Transaction success!", event.data.eventMessage);
+      }
+    }
+  });
+</script>
+
+<!-- Helcim Pay Additional Script -->
+<script type="text/javascript" src="https://secure.myhelcim.com/js/version2.js"></script>
+
+
+
+<br>
+<h3>Subscribe membership plan:</h3>
+<button class="btn btn-danger" id="fetchButton">Subscribe</button>
+{% csrf_token %}
+<p id="output"></p>
+<script>
+  function getCSRFToken() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    return csrfToken;
+}
+  document.getElementById("fetchButton").addEventListener("click", function() {
+      fetch("http://127.0.0.1:8000/api-root/transactions/subscription-api/", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCSRFToken()
+          },
+          body: JSON.stringify({
+              //key1: "value1",
+              //key2: "value2"
+          }) // Adjust data as needed
+      })
+      .then(response => {
+        if (response.status === 401) {
+            // If the response is 401 (Unauthorized), redirect the user to the login page
+            window.location.href = '/accounts/login';  // Redirect URL
+        } else {
+            return response.json();  // Process the response if not 401
+        }
+    }) // Parse JSON response
+      .then(data => {
+          document.getElementById("output").textContent = data.message;
+          console.log(data); // Log response to console
+      })
+      .catch(error => console.error("Error fetching data:", error));
+  });
+</script>
+
+    {% endblock content %}

@@ -57,6 +57,12 @@ def member_profile(request):
         send_question = request.POST.get('send_question')
         # Get the current logged-in user
         user = request.user
+        #update user fields
+        user.first_name = first_name
+        user.last_name = last_name
+        user.contact_no  = phone
+        user.save()
+        
         address_id = None
         address = {
             "street_no":street_number,
@@ -71,10 +77,10 @@ def member_profile(request):
         match request.user.member_type:
             case 'buyer':
                 buyer, created = Buyers.objects.get_or_create(user=request.user)
-                buyer.first_name = first_name
-                buyer.last_name = last_name
-                buyer.phone_num = phone
-                buyer.email = email
+                # buyer.first_name = first_name
+                # buyer.last_name = last_name
+                # buyer.phone_num = phone
+                # buyer.email = email
                 buyer.business_name = business_name
                 buyer.save()
                 print(buyer.id)
@@ -82,20 +88,20 @@ def member_profile(request):
                 address_id = generate__address(address)
             case 'seller':
                 seller, created = Sellers.objects.get_or_create(user=user)
-                seller.first_name = first_name
-                seller.last_name = last_name
-                seller.phone_num = phone
-                seller.email = email
+                # seller.first_name = first_name
+                # seller.last_name = last_name
+                # seller.phone_num = phone
+                # seller.email = email
                 seller.business_name = business_name
                 seller.save()
                 address['seller_id'] = seller.id
                 address_id = generate__address(address)
             case 'agent':
                 agent, created = Agents.objects.get_or_create(user=user)
-                agent.first_name = first_name
-                agent.last_name = last_name
-                agent.phone_num = phone
-                agent.email = email
+                # agent.first_name = first_name
+                # agent.last_name = last_name
+                # agent.phone_num = phone
+                # agent.email = email
                 agent.business_name = business_name
                 agent.save()
                 address_id = generate__address(address)

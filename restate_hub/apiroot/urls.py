@@ -4,5 +4,6 @@ urlpatterns = [
     path('parties/', include('apiroot.parties.urls')),  # Include app1 API URLs
     path('core/', include('apiroot.core.urls')),  # Include app1 API URLs
     path('accounts/', include('apiroot.accounts.urls')),  # Include app1 API URLs
+    path('transactions/', include('apiroot.transactions.urls')),  # Include app1 API URLs
  
 ]

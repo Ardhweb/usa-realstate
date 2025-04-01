@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'rest_framework_simplejwt',
     'dashboard',
+ 
 ]
 
 MIDDLEWARE = [
@@ -216,8 +217,8 @@ AGENT_RESTRICTED_URLS=['property-mine']
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+         'rest_framework.authentication.BasicAuthentication',  # For basic auth (username/password)
         'rest_framework.authentication.SessionAuthentication',  # For web UI login
-        'rest_framework.authentication.BasicAuthentication',  # For basic auth (username/password)
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # For token-based auth
     ),
     'DEFAULT_PERMISSION_CLASSES': (
