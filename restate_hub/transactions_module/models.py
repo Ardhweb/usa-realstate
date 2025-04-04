@@ -10,6 +10,7 @@ from property_module.models import PropertiesInfo
 import shortuuid
 from membership_module.models import MembershipFee
 from accounts.models import User
+from django.utils import timezone
 
 class Tansactions(BaseModel):
     Sale = 'sale'
@@ -58,5 +59,15 @@ class SubscriptionTransaction(BaseModel):
         transaction_id = models.CharField(max_length=100, blank=True, null=True)  # Helcim reference
         payment_method = models.CharField(max_length=50, choices=[("CARD", "Card"), ("ACH", "ACH")])
         card_last4 = models.CharField(max_length=4, blank=True, null=True)  # Last 4 digits of card
-
         is_first_payment = models.BooleanField(default=False)
+
+
+class HelcimInfo(models.Model):
+    customerId = models.CharField(max_length=200, blank=True, null=True)
+    customercode  =  models.CharField(max_length=200, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_helcim_account')
+    signup_date = models.DateField(auto_now_add=True)  # Stores the date when the record is created
+    cancellation_trigger_date = models.DateField(null=True, blank=True)  # Optional field
+    is_subscribed = models.BooleanField(default=False)
+    subscriptionId = models.IntegerField(null=True,blank=True)
+  

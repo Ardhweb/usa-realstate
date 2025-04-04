@@ -81,39 +81,77 @@ class CustomerDataService:
 
 
 from django.http import JsonResponse
-def create_customer_helcim(usr_data=None, api_token=None):
-    url = "https://api.helcim.com/v2/customers/"
+
+
+def get_customer(api_token=None,usr_id=None):
     
-    if not usr_data["email"] or usr_data["email"].strip() == "":
-        return JsonResponse({"error": "email not provided"})
-    else:
-        # Construct the payload dynamically
-        payload = {
-            "billingAddress": {
-                "name": usr_data.get("full_name", ""),  # Assigning contact or business name
-                "street1": usr_data.get("street1", ""),  # Combining multiple fields for street address
-                "street2": usr_data.get("street2", ""),
-                "city": usr_data.get("city", ""),
-                "province": usr_data.get("province", ""),  # State abbreviation (e.g., GA, NY)
-                "country": usr_data.get("country", "USA"),  # Default to USA
-                "postalCode": usr_data.get("postal_code", ""),
-                "phone": usr_data.get("phone", ""),
-                "email": usr_data.get("email", ""),
-            },
-            "customerCode": usr_data.get("customerCode", ""),
-            "contactName": usr_data.get("full_name", ""),  # Use full_name for contact
-            "businessName": usr_data.get("full_name", ""),  # If it's a business, assign full_name
-        }
-        
-        headers = {
-            "accept": "application/json",
-            "content-type": "application/json",
-            "api-token": api_token  # API token should be passed dynamically
-        }
-        
+    url = f"https://api.helcim.com/v2/customers/CST{usr_id}"
+    
+    headers = {
+        "accept": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    print(response.text)
+    return response.text
+
+
+import requests
+import json
+from django.http import JsonResponse
+from django.conf import settings  # Ensure settings is imported
+
+def create_customer_helcim(usr_data=None):
+    url = "https://api.helcim.com/v2/customers/"
+
+    if not usr_data or not usr_data.get("email") or usr_data["email"].strip() == "":
+        return {"error": "email not provided", "status_code": 400}
+
+    # Keep payload as it is
+    payload = {
+        # "billingAddress": {
+        #     "name": usr_data.get("full_name", ""),  # Assigning contact or business name
+        #     "street1": usr_data.get("street1", ""),  # Combining multiple fields for street address
+        #     "street2": usr_data.get("street2", ""),
+        #     "city": usr_data.get("city", ""),
+        #     "province": usr_data.get("province", ""),  # State abbreviation (e.g., GA, NY)
+        #     "country": usr_data.get("country", "USA"),  # Default to USA
+        #     "postalCode": usr_data.get("postal_code", ""),
+        #     "phone": usr_data.get("phone", ""),
+        #     "email": usr_data.get("email", ""),
+        # },
+        "customerCode": usr_data.get("customerCode", ""),
+        "contactName": usr_data.get("full_name", ""),  # Use full_name for contact
+        #"businessName": usr_data.get("full_name", ""),  # If it's a business, assign full_name
+    }
+
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN  # Ensure this is correctly set
+    }
+
+    try:
         response = requests.post(url, json=payload, headers=headers)
-        
-        print(response.text)
+        print("API Response Text:", response.text)  # Debugging
+
+        response.raise_for_status()  # Raises an exception for HTTP errors (4xx, 5xx)
+
+        try:
+            response_dict = response.json()  # Parse response as JSON
+        except json.JSONDecodeError:
+            print("Error decoding JSON:", response.text)
+            return {"error": "Invalid JSON response", "status_code": response.status_code, "raw_response": response.text}
+
+        return {"data": response_dict, "status_code": response.status_code}  # Return both response and status code
+
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return {"error": str(e), "status_code": 500}  # Return error message with status code
+
+
 
 
 
@@ -209,3 +247,22 @@ def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
     response = requests.post(url, json=payload, headers=headers)
     
     print(response.text)
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        print("API Response Text:", response.text)  # Debugging
+
+        response.raise_for_status()  # Raises an exception for HTTP errors (4xx, 5xx)
+
+        try:
+            response_dict = response.json()  # Parse response as JSON
+        except json.JSONDecodeError:
+            print("Error decoding JSON:", response.text)
+            return {"error": "Invalid JSON response", "status_code": response.status_code, "raw_response": response.text}
+
+        return {"data": response_dict, "status_code": response.status_code}  # Return both response and status code
+
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return {"error": str(e), "status_code": 500}  # Return error message with status code
+
+

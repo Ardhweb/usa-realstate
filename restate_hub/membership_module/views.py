@@ -7,7 +7,7 @@ from django.http import JsonResponse,Http404
 import json
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from membership_module.models import MembershipFee, MemberAddress,DefaultFeeStructure
+from membership_module.models import MembershipFee, MemberAddress
 from buyer_module.models import Buyers
 from agent_module.models import Agents
 from django.db.models import F
@@ -60,7 +60,7 @@ def member_profile(request):
         #update user fields
         user.first_name = first_name
         user.last_name = last_name
-        user.contact_no  = phone
+        #user.contact_no  = phone # getting error 
         user.save()
         
         address_id = None
@@ -225,6 +225,7 @@ def member_profile(request):
                 profile_data = None
                 unified = None
         #print(unified)
+    
     return render(request, 'members/profile.html', {'profile_data': profile_data or {}, "data": unified or {}})
 
 

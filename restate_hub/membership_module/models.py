@@ -7,14 +7,14 @@ from seller_module.models import Sellers
 from investors_module.models import Investors
 from agent_module.models import Agents
 
-Seller = 'Seller'
-Buyer = 'Buyer'
-Agent = 'Agent'
-Home_Inspector = 'Home_Inspector'
-Appraiser = 'Appraiser'
-Title_Company = 'Title_Company'
-Contractor = 'Contractor'
-Lender = 'Lender'
+Seller = 'seller'
+Buyer = 'buyer'
+Agent = 'agent'
+Home_Inspector = 'home_inspector'
+Appraiser = 'appraiser'
+Title_Company = 'title_company'
+Contractor = 'contractor'
+Lender = 'lender'
 
 MEMBER_TYPES = [
     (Seller, 'seller'),
@@ -42,6 +42,10 @@ class MemberAddress(BaseModel):
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
     zip_code = models.CharField(max_length=20, null=True, blank=True)
+    state_two_code = models.CharField(max_length=5, null=True,blank=True)
+    
+    
+
 
 class MembershipFee(BaseModel):
     membership_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
@@ -52,8 +56,16 @@ class MembershipFee(BaseModel):
     next_due = models.DateField(null=True, blank=True)  # Allows NULL values
     last_due = models.DateField(null=True, blank=True)  # Allows NULL values
 
-class DefaultFeeStructure(BaseModel):
+class SubscriptionPlans(BaseModel):
     fee_id = models.CharField(max_length=50,default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True, unique=True) # Unncessory or above one unncessory. remove
     setup_fee = models.DecimalField(max_digits=10, decimal_places=2)
-    membership_fee =  models.DecimalField(max_digits=10, decimal_places=2)
+    monthly_fee =  models.DecimalField(max_digits=10, decimal_places=2)
+    paymentPlan = models.IntegerField(blank=True,null=True)
+
+    def __str__(self):
+        return self.member_type
+    
+
+
+

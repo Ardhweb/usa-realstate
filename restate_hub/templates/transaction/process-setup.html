@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+   
+    <div class="" >
+        <p class="text-center p-4">Step 1 & 2 </p>
+        <h3 class="text-center mb-4">Your Membership Plans</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="d-flex flex-row gap-3 flex-wrap">
+                {% for plans in plans %}
+                <div class="card text-center p-4 shadow-sm 
+                    {% if request.user.member_type == plans.member_type %}border border-primary {% else %}  opacity-50 pointer-events-none{% endif %}">
+                    <h3 class="fw-bold text-capitalize">{{ plans.member_type }} Plan</h3>
+                    <p class="fs-5 text-muted">Connect and buy your dream house.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-check-circle-fill text-success"></i> No Ads</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i> Search and Find</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i> Hassle Free</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i>Premium location's</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i> One Time Setup ${{plans.setup_fee}}</li>
+                    </ul>
+                    <h2 class="fw-bold">${{plans.monthly_fee}}<span class="fs-6 text-muted">/month</span></h2>
+                </div>
+                {% endfor %}
+            </div>
+            
+          
+              
+            
+          
+            
+            
+              <button type="submit" class="btn btn-primary w-100 mt-3">Continue</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

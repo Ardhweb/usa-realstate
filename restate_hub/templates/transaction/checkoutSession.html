@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Checkout</h1>
+
+<!-- Helcim Pay Script -->
+<script type="text/javascript" src="https://secure.helcim.app/helcim-pay/services/start.js"></script>
+
+<div class="d-flex flex-column justify-content-center align-items-center vh-50">
+  <p>Step 3</p>
+  <div class="card text-center shadow-lg p-3 mb-5 bg-white rounded">
+    <div class="card-body">
+      <h5 class="card-title">Complete Your Billing</h5>
+      <p class="card-text">Click the button below to proceed with adding your credit card through Helcim.</p>
+
+      <!-- Loader -->
+      <div id="loader" class="d-none text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Processing...</span>
+        </div>
+        <p>Processing your payment...</p>
+      </div>
+
+      <!-- Pay Now Button -->
+      <button id="pay-now" class="btn btn-primary w-100 mt-3">Add Your Credit Card</button>
+    </div>
+  </div>
+</div>
+<script>
+  let API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
+  let checkoutToken = null;
+  const payNowButton = document.getElementById("pay-now");
+  const loader = document.getElementById("loader");
+
+  function showLoader() {
+    loader.classList.remove("d-none");
+    payNowButton.disabled = true;  // Disable button
+  }
+
+  function hideLoader() {
+    loader.classList.add("d-none");
+    payNowButton.disabled = false;  // Re-enable button
+  }
+
+  async function getCheckoutCard() {
+    showLoader();
+    let apiUrl = `${API_ROOT}/api-root/transactions/checkout-card`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        checkoutToken = data.data;
+        hideLoader();
+        return true;
+
+    } catch (error) {
+        console.error('Error fetching checkout token:', error);
+        hideLoader();
+        return false;
+    }
+  }
+
+  async function subscribeUser() {
+    let apiUrl = `${API_ROOT}/api-root/transactions/subscription-api/`;  // Adjust the endpoint based on your Django setup
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                //"Authorization": `Bearer ${authToken}` // Pass the authentication token
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Subscription successful:", data);
+            alert(`Subscription Successful! ID: ${data.subscription_id}`);
+        } else {
+            console.error("Subscription failed:", data);
+            alert(`Subscription Failed: ${data.error}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+    }
+}
+
+
+  payNowButton.addEventListener("click", async function(event) {
+    event.preventDefault();
+    payNowButton.disabled = true;  // Disable button immediately
+
+    const tokenFetched = await getCheckoutCard();
+
+    if (tokenFetched) {
+      showLoader();
+      appendHelcimPayIframe(checkoutToken, { allowExit: false });  // Prevent manual exit
+    } else {
+      alert("Failed to fetch checkout token. Please try again.");
+      payNowButton.disabled = false;  // Re-enable button if token fetch fails
+    }
+  });
+
+  window.addEventListener("message", (event) => {
+    const helcimPayJsIdentifierKey = "helcim-pay-js-" + checkoutToken;
+
+    if (event.data.eventName === helcimPayJsIdentifierKey) {
+      switch (event.data.eventStatus) {
+        case "SUCCESS":
+          console.log("Transaction successful!", event.data.eventMessage);
+          hideLoader();
+          subscribeUser()
+          //window.location.href = "/profile/"; 
+          break;
+
+        case "ABORTED":
+          console.error("Transaction aborted!", event.data.eventMessage);
+          alert("Payment was declined! Please try again.");
+          hideLoader(); 
+          break;
+
+        case "HIDE":
+          console.log("User closed the confirmation screen.");
+          hideLoader();  
+          break;
+
+        default:
+          console.warn("Unhandled event:", event.data.eventStatus);
+      }
+    }
+  });
+</script>
+
+
+
+<script type="text/javascript" src="https://secure.myhelcim.com/js/version2.js"></script>
+
+{% endblock content %}

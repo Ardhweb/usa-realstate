@@ -15,6 +15,8 @@ from buyer_module.models import Buyers
 from seller_module.models import Sellers
 from agent_module.models import Agents
 from django.db import transaction
+from transactions_module.helcim import create_customer_helcim
+from transactions_module.models import HelcimInfo
 
 
 def generate_secure_otp(length=6):
@@ -61,11 +63,11 @@ def new_user_register(request):
                 new_user.save()
                 member = new_user.member_type
                 if member == 'buyer':
-                    Buyers.objects.create(user=new_user, email=new_user.email)
+                    Buyers.objects.create(user=new_user)
                 elif member == 'seller':
-                    Sellers.objects.create(user=new_user, email=new_user.email)
+                    Sellers.objects.create(user=new_user)
                 elif member == 'agent':
-                    Agents.objects.create(user=new_user, email=new_user.email)
+                    Agents.objects.create(user=new_user)
                 else:
                     messages.error(request, "Invalid member type")
                 return redirect('accounts:login')
