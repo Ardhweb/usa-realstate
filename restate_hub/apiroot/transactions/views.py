@@ -104,9 +104,9 @@ def subscription_api(request):
         match response.status_code:
             case 201:
                 print("✅ Success! Subscription created successfully.")
-                
                 hInfo.is_subscribed = True
                 hInfo.subscriptionId = subscription_id
+                hInfo.subscription_status = 'active'
                 hInfo.save()
             case 400:
                 print("⚠️ Bad Request! There may be missing or incorrect parameters.")
