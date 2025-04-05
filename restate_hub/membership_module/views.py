@@ -146,7 +146,7 @@ def member_profile(request):
             pass
 
         # Redirect to the profile success page
-        return redirect('membership_module:profile_success')
+        return redirect('membership_module:member_profile')
     else:
         profile_data = None
         unified = None

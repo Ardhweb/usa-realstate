@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Checkout</h1>
-
 <!-- Helcim Pay Script -->
 <script type="text/javascript" src="https://secure.helcim.app/helcim-pay/services/start.js"></script>
-
 <div class="d-flex flex-column justify-content-center align-items-center vh-50">
   <p>Step 3</p>
   <div class="card text-center shadow-lg p-3 mb-5 bg-white rounded">
@@ -20,13 +17,22 @@
         </div>
         <p>Processing your payment...</p>
       </div>
+      {% csrf_token %}
 
       <!-- Pay Now Button -->
       <button id="pay-now" class="btn btn-primary w-100 mt-3">Add Your Credit Card</button>
+      
+      {% if request.user.user_helcim_account.is_subscribed == False %}
+      <button type="button" class="btn btn-warning w-100 mt-3" onclick="subscribeUser()">Activate Subscription</button>
+      {% endif %}
     </div>
   </div>
 </div>
 <script>
+  function getCSRFToken() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    return csrfToken;
+}
   let API_ROOT = "{{ request.scheme }}://{{ request.get_host }}";
   let checkoutToken = null;
   const payNowButton = document.getElementById("pay-now");
@@ -76,6 +82,7 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                 "X-CSRFToken": getCSRFToken(),
                 //"Authorization": `Bearer ${authToken}` // Pass the authentication token
             }
         });

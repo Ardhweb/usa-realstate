@@ -284,12 +284,19 @@
            </form>
         </div>
     </main>
+    
    
     {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
   <div class="container mt-5 pb-3">
+  
+
+
+
+
+
     <div class="d-flex align-items-start">
       <div class="nav flex-column nav-pills me-3 fs-5 card rounded p-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <button class="nav-link text-center py-3 w-100" id="v-pills-billing-tab" data-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="false">
@@ -306,27 +313,34 @@
          
             <div class="tab-pane fade" id="v-pills-billing" role="tabpanel" aria-labelledby="v-pills-billing-tab">
                 <h3>Billing Setup</h3>
-               
-               
-
                 {% with request.user|get_member:request.user.member_type as member %}
-    {% if request.user.first_name   %}
-    {% if request.user.user_helcim_account is None %}
-    <div class="form-group">
-        <label for="phone">Setup Billing</label>
-        <a href="{% url 'transactions_module:process_setup' %}" class="btn btn-danger">Proceed Setup</a>
-    </div>
-{% else %}
-    <div class="form-group">
-        <label for="">Add Card</label>
-        <a href="{% url 'transactions_module:process_checkout_add_card' %}" class="btn btn-danger">Add Credit Card</a>
-    </div>
-{% endif %}
-    {% else %}
-        <p>No address and names found.</p>
-        <p class="alert alert-danger">  Please update your profile and address above.</p>
-    {% endif %}
-{% endwith %}
+                {% if request.user.first_name and request.user.last_name and request.user.email %}
+                    {% if request.user.user_helcim_account and  request.user.user_helcim_account.is_subscribed %}
+                        <div class="form-group">
+                            <label for="">Add Card</label>
+                            <a href="{% url 'transactions_module:process_checkout_add_card' %}" class="btn btn-danger">
+                                Add Credit Card
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label for="phone">Setup Billing</label>
+                            <a href="{% url 'transactions_module:process_setup' %}" class="btn btn-danger">
+                                Proceed Setup
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p>No address and names found.</p>
+                    <p class="alert alert-danger">Please update your profile and address above.</p>
+                {% endif %}
+
+
+
+                
+                {% endwith %}
+           
+            
 
               
 

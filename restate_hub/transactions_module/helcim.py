@@ -197,10 +197,10 @@ def checkout_session(api_token=None, usr_id=None,*args, **kwargs):
     }
     
     response = requests.post(url, json=payload, headers=headers)
-    print(response.text)
+    #(response.text)
     response_dict = json.loads(response.text)
     checkout_token = response_dict["checkoutToken"]
-    print(checkout_token)
+    #print(checkout_token)
     return checkout_token
 
 
@@ -235,7 +235,7 @@ def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
                 "setupAmount": 0.2,
                 "recurringAmount": 0,
                 "withFreeTrialPeriod": False,
-                "dateActivated": f"{dateActive}"
+                "dateActivated": dateActive,
             }, { "paymentMethod": "card" }] }
     headers = {
         "accept": "application/json",
@@ -266,3 +266,15 @@ def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
         return {"error": str(e), "status_code": 500}  # Return error message with status code
 
 
+def test_connection():
+  
+    url = "https://api.helcim.com/v2/connection-test"
+    
+    headers = {
+        "accept": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    print(response.text)
