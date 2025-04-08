@@ -118,7 +118,7 @@ def member_profile(request):
         send_question = request.POST.get('send_question')
 
         #validation:
-        validation_errors = validate_fields(request, first_name, last_name, phone, email, 
+        validation_errors = validate_fields(request, first_name, last_name, phone, 
                                     street_number, street_address, city, 
                                     state, zip_code, business_name)
         if validation_errors:  # If there are errors, redirect back to the profile page
