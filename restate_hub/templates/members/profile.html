@@ -1,6 +1,6 @@
 
 {% extends "base.html" %}
-{% load custom_filters %}
+
 {% comment %} {% load disable_contextmenu_click %} {% endcomment %}
 {% block title %}
 <title>Member's Profile</title>
@@ -290,8 +290,8 @@
 
 
     <div class="d-flex align-items-start">
-      <div class="nav flex-column nav-pills me-3 fs-5 card rounded p-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link text-center py-3 w-100" id="v-pills-billing-tab" data-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="false">
+      <div class="nav flex-column nav-pills me-3 fs-5 card rounded p-1 vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <button class="nav-link text-center py-3 w-100 active" id="v-pills-billing-tab" data-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="true">
             Billing
         </button>
     
@@ -300,42 +300,117 @@
         </button>
     </div>
     
-        <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-content flex-fill" id="v-pills-tabContent">
            
          
-            <div class="tab-pane fade" id="v-pills-billing" role="tabpanel" aria-labelledby="v-pills-billing-tab">
+            <div class="tab-pane fade w-100 show active" id="v-pills-billing" role="tabpanel" aria-labelledby="v-pills-billing-tab">
                 <h3>Billing Setup</h3>
-                {% with request.user|get_member:request.user.member_type as member %}
-                {% if request.user.first_name and request.user.last_name and request.user.email %}
-                    {% if request.user.user_helcim_account and  request.user.user_helcim_account.is_subscribed %}
-                        <div class="form-group">
-                            <label for="">Add Card</label>
-                            <a href="{% url 'transactions_module:process_checkout_add_card' %}" class="btn btn-danger">
-                                Add Credit Card
-                            </a>
-                        </div>
-                    {% else %}
-                        <div class="form-group">
-                            <label for="phone">Setup Billing</label>
-                            <a href="{% url 'transactions_module:process_setup' %}" class="btn btn-danger">
-                                Proceed Setup
-                            </a>
-                        </div>
-                    {% endif %}
-                {% else %}
-                    <p>No address and names found.</p>
-                    <p class="alert alert-danger">Please update your profile and address above.</p>
+               
+                {% if request.user.user_helcim_account.subscriptionId is None and request.user.user_helcim_account.is_subscribed == False %}
+
+
+                <div class="card shadow-lg border-0">
+                    <div class="card-body text-center p-4">
+                       
+                        <h5 class="card-title text-primary fw-semibold">Activate Your Membership</h5>
+                        <p class="card-text text-muted">
+                            Please complete your billing steps by adding your credit card to activate your membership plan.
+                        </p>
+                        <a href="{% url 'transactions_module:process_checkout_add_card' %}" class="btn btn-primary btn-md">
+                            <i class="fas fa-credit-card me-2"></i> Add Credit Card
+                        </a>
+                      
+                    </div>
+                </div>
                 {% endif %}
+
+                
+                {%if not request.user.user_helcim_account  %}
+                   <!-- This renders when address, full name exist, and user_helcim_account does not exist -->
+                    <div class="card shadow-lg border-0">
+                        <div class="card-body text-center p-4">
+                            <h5 class="card-title text-primary fw-semibold">Proceed to Activate Your Membership</h5>
+                            <p class="card-text text-muted">
+                                Please complete your billing steps to activate your membership plan.
+                            </p>
+                            <a href="{% url 'transactions_module:process_setup' %}" class="btn btn-primary btn-md">
+                                <i class="fas fa-user-check me-2"></i> Continue to Setup
+                            </a>
+                        </div>
+                    </div>
+                 
+                {% endif %}
+             
+   
+           
 
 
 
                 
-                {% endwith %}
-           
+
+
+                {% if request.user.user_helcim_account and request.user.user_helcim_account.is_subscribed == True and request.user.user_helcim_account.subscriptionId is not None %}
+
+                <div class="card shadow-sm border-0 p-3 mb-3">
+                    <!-- Subscription Header -->
+                    <div class="d-flex justify-content-between align-items-center pb-2 border-bottom">
+                        <p style="color: #6c757d; font-weight: 300; margin-bottom: 0;">Current Plan</p>
+                        <a href="#" style="color: #007bff; text-decoration: none; font-weight:300;">Manage Your Subscription</a>
+                    </div>
             
-
-              
-
+                    <!-- Subscription Details -->
+                    <div class="pt-3 ">
+                        <h6 class="py-3 text-captilize" style="font-size: 1.3rem; font-weight: 500; color: #343a40; margin-bottom: 0.5rem;">
+                            {{request.user.member_type}} Membership  
+                            {% if request.user.user_helcim_account.subscription_status == 'active' %}
+                            <span class="badge rounded-pill text-bg-success">Active</span>
+                            {% else %}
+                            <span class="badge rounded-pill text-bg-danger">De-active</span>
+                            {% endif %}
+                        </h6>
+                        <p style="color: #6c757d; margin-bottom: 0;">You'll be charged a monthly subscription via Helcim.</p>
+                    </div>
+                </div>
+            
+                <div class="card shadow-sm border-0 p-3 mb-3">
+                    <!-- Payment Method Header -->
+                    <div class="d-flex justify-content-between align-items-center pb-2 border-bottom">
+                        <p style="color: #6c757d; font-weight: 300; margin-bottom: 0;">Payment Method</p>
+                        <a href="{% url 'transactions_module:process_checkout_add_card' %}" style="color: #007bff; text-decoration: none; font-weight:300;">Add/Update Card</a>
+                    </div>
+            
+                    <!-- Payment Details -->
+                    <div class="pt-3 ">
+                        {% if request.user.user_helcim_account.subscriptionId %}
+                        <p class="py-3" style="font-weight: 400; color: #343a40; margin-bottom: 0.5rem;">
+                            Data...
+                        </p>
+                        {% else %}
+                        <p class="py-3" style="font-weight: 400; color: #343a40; margin-bottom: 0.5rem;">
+                            No Card has been added here.
+                        </p>
+                        {% endif %}
+                        <p style="color: #6c757d; margin-bottom: 0;">Please keep your card info updated before expiration.</p>
+                    </div>
+                </div>
+            
+                {% if request.user.user_helcim_account.subscription_status == 'active' %}
+                <div class="card shadow-sm border-0 p-3">
+                    <!-- Next Due Header -->
+                    <div class="d-flex justify-content-between align-items-center pb-2 border-bottom">
+                        <p style="color: #6c757d; font-weight: 300; margin-bottom: 0;">Next Due</p>
+                    </div>
+            
+                    <!-- Next Due Date -->
+                    <div class="pt-3 ">
+                        <p class="py-3" style="font-weight: 400; color: #343a40; margin-bottom: 0.5rem;">
+                            2025 / 06 / 08 
+                        </p>
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+            
                
             </div>
          
@@ -369,12 +444,6 @@
         
     </div>
 </div>
-
-
-
-  
-
-
 
 
 

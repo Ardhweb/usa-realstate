@@ -223,6 +223,7 @@ def member_profile(request):
                     address = MemberAddress.objects.get(buyer_id=profile_data.id)
                 
                     address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
+                  
                    
                 except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
                     address_data, agent_data = {}, {}
@@ -230,10 +231,8 @@ def member_profile(request):
                 # Start with the profile data and merge
                 unified = model_to_dict(profile_data)
                 unified.update(address_data)
-               
                 unified.update(agent_data)
               
-    
             case 'seller':
                 profile_data = Sellers.objects.get(user=request.user)
                 
@@ -273,13 +272,13 @@ def member_profile(request):
                 # Start with the profile data and merge
                 unified = model_to_dict(profile_data)
                 unified.update(address_data)
-                
                 unified.update(agent_data)
     
             case _:
                 profile_data = None
                 unified = None
         #print(unified)
+        
     
     return render(request, 'members/profile.html', {'profile_data': profile_data or {}, "data": unified or {}})
 

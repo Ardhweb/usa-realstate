@@ -69,11 +69,12 @@ class HelcimInfo(models.Model):
         ('Cancelled','cancelled')
     )
     customerId = models.CharField(max_length=200, blank=True, null=True)
-    customercode  =  models.CharField(max_length=200, blank=True, null=True)
+    customercode  =  models.CharField(max_length=200, blank=True, null=True, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user_helcim_account')
     signup_date = models.DateField(auto_now_add=True)  # Stores the date when the record is created
     cancellation_trigger_date = models.DateField(null=True, blank=True)  # Optional field
     is_subscribed = models.BooleanField(default=False)
     subscriptionId = models.IntegerField(null=True,blank=True)
     subscription_status = models.CharField(max_length=50, null=True, blank=True, choices=subscription_status )
-  
+    is_default_card = models.BooleanField(default=False)
+    default_card_exp = models.DateField(auto_now=True, null=True)
