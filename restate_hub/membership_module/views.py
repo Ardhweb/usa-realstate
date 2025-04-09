@@ -29,6 +29,7 @@ def generate__address(data):
         state=data.get("state"),
         zip_code=data.get("zip_code"),
         member_type=data.get("member_type"),
+        user_id=data.get('user_id'),
         defaults=defaults
     )
 
@@ -145,6 +146,7 @@ def member_profile(request):
             "state":state,
             "zip_code":zip_code,
             "member_type":user.member_type,
+            "user_id":request.user.id,
            
         }
        
