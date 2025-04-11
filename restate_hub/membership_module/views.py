@@ -324,7 +324,7 @@ def member_profile(request):
         #update user fields
         user.first_name = first_name
         user.last_name = last_name
-        #user.contact_no  = phone # getting error 
+        user.contact_no  = phone # getting error 
         user.save()
         
         address_id = None

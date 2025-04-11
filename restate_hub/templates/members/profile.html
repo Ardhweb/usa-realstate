@@ -168,12 +168,12 @@
                        </div>
                        <div class="form-group">
                         <label for="phone">Phone:</label>
-                        <input value="{{request.user.member_address.phone_num|default:""}}" type="text" id="phone" name="phone" class="form-control"  >
+                        <input value="{{request.user.member_address.phone_num|default:""}}" type="tel"  pattern="^\d{15}$" id="phone" name="phone" class="form-control"  >
                     </div>                     
-                    <div class="form-group">
-                        <label for="city">City:</label>
-                        <input value="{{request.user.member_address.city|default:""}}" type="text" id="city" name="city" class="form-control" >
-                   </div>
+                   <div class="form-group">
+                        <label for="state">State:</label>
+                         <input value="{{request.user.member_address.state|default:""}}" type="text" id="state" name="state" class="form-control" >
+                    </div>
                      </div>
                      <div class="col-md-6">
                        <div class="form-group">
@@ -199,10 +199,10 @@
                  </div>
                <div class="row mt-3">
                   <div class="col-md-6">
-                     <div class="form-group">
-                        <label for="state">State:</label>
-                         <input value="{{request.user.member_address.state|default:""}}" type="text" id="state" name="state" class="form-control" >
-                      </div>
+                      <div class="form-group">
+                        <label for="city">City:</label>
+                        <input value="{{request.user.member_address.city|default:""}}" type="text" id="city" name="city" class="form-control" >
+                   </div>
                   </div>
                   <div class="col-md-6">
                      <div class="form-group">
@@ -326,7 +326,7 @@
                 {% endif %}
 
                 
-                {%if not request.user.user_helcim_account  %}
+                {%if not request.user.user_helcim_account and request.user.member_address  %}
                    <!-- This renders when address, full name exist, and user_helcim_account does not exist -->
                     <div class="card shadow-lg border-0">
                         <div class="card-body text-center p-4">
@@ -339,6 +339,8 @@
                             </a>
                         </div>
                     </div>
+                {% elif not request.user.member_address  %}
+                <p>Please Update Your Profile and Your Address before proceeding!</p>
                  
                 {% endif %}
              
@@ -373,7 +375,7 @@
                     </div>
                 </div>
             
-                <div class="card shadow-sm border-0 p-3 mb-3">
+                {% comment %} <div class="card shadow-sm border-0 p-3 mb-3">
                     <!-- Payment Method Header -->
                     <div class="d-flex justify-content-between align-items-center pb-2 border-bottom">
                         <p style="color: #6c757d; font-weight: 300; margin-bottom: 0;">Payment Method</p>
@@ -394,7 +396,7 @@
                         <p style="color: #6c757d; margin-bottom: 0;">Please keep your card info updated before expiration.</p>
                     </div>
                 </div>
-            
+             {% endcomment %}
                 {% if request.user.user_helcim_account.subscription_status == 'active' %}
                 <div class="card shadow-sm border-0 p-3">
                     <!-- Next Due Header -->

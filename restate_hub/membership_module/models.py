@@ -34,10 +34,6 @@ class MemberAddress(BaseModel):
     street_no = models.CharField(max_length=50, blank=True, null=True)
     street_name = models.CharField(max_length=500, blank=True, null=True)
     suite_no = models.CharField(max_length=50, blank=True, null=True)
-    buyer = models.ForeignKey(Buyers, on_delete=models.SET_NULL,null=True,related_name='buyer_address')
-    seller = models.ForeignKey(Sellers, on_delete=models.SET_NULL,null=True,related_name='seller_address')
-    investor =models.ForeignKey(Investors, on_delete=models.SET_NULL,null=True,related_name='investor_address')
-    agent = models.ForeignKey(Agents, on_delete=models.SET_NULL,null=True,related_name='agent_address')
     lender_id = models.IntegerField(null=True)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True)# Unncessory or below one unncessory. remove
     city = models.CharField(max_length=100, null=True, blank=True)

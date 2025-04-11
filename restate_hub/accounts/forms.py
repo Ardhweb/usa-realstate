@@ -54,3 +54,5 @@ class SignupForm(forms.ModelForm):
 
 class OTPVerificationForm(forms.Form):
     otp = forms.IntegerField(widget=forms.HiddenInput(attrs={'id': 'passing-navel', 'class': 'form-control d-none',}))
+
+

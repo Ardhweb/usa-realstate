@@ -3,9 +3,9 @@ import json
 from django.conf import settings
 import uuid
 #customers
-import requests
-from django.conf import settings
-
+from urllib.parse import urlencode
+from django.http import JsonResponse
+ 
 def generate_idempotency_key():
     return str(uuid.uuid4()).replace("-", "")[:25]
 
@@ -42,10 +42,7 @@ def generate_full_uuid():
 uuid_25 = generate_alphanumeric_uuid_25()
 full_uuid = generate_full_uuid()
 
-print("Custom 25-char Alphanumeric UUID:", uuid_25)
-print("Full UUID:", full_uuid)
 
-from urllib.parse import urlencode
 
 class CustomerDataService:
     def __init__(self, user):
@@ -80,7 +77,7 @@ class CustomerDataService:
 
 
 
-from django.http import JsonResponse
+
 
 
 def get_customer(api_token=None,usr_id=None):
@@ -98,10 +95,7 @@ def get_customer(api_token=None,usr_id=None):
     return response.text
 
 
-import requests
-import json
-from django.http import JsonResponse
-from django.conf import settings  # Ensure settings is imported
+# Ensure settings is imported
 
 def create_customer_helcim(usr_data=None):
     url = "https://api.helcim.com/v2/customers/"
