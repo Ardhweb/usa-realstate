@@ -17,10 +17,10 @@ from django.contrib import messages
 
 
 def generate__address(data):
-    defaults = {}
-    if "buyer_id" in data: defaults["buyer_id"] = data["buyer_id"]
-    if "seller_id" in data: defaults["seller_id"] = data["seller_id"]
-    if "agent_id" in data: defaults["agent_id"] = data["agent_id"]
+    # defaults = {}
+    # if "buyer_id" in data: defaults["buyer_id"] = data["buyer_id"]
+    # if "seller_id" in data: defaults["seller_id"] = data["seller_id"]
+    # if "agent_id" in data: defaults["agent_id"] = data["agent_id"]
     
     member_address, created = MemberAddress.objects.update_or_create(
         street_no=data.get("street_no"),
@@ -30,7 +30,7 @@ def generate__address(data):
         zip_code=data.get("zip_code"),
         member_type=data.get("member_type"),
         user_id=data.get('user_id'),
-        defaults=defaults
+        # defaults=defaults
     )
 
     return member_address.id
@@ -97,7 +97,7 @@ def validate_fields(request, first_name=None, last_name=None, phone=None,
 
 
 
-
+'''
 @login_required
 def member_profile(request):  
     if request.method == 'POST':
@@ -283,6 +283,119 @@ def member_profile(request):
         
     
     return render(request, 'members/profile.html', {'profile_data': profile_data or {}, "data": unified or {}})
+'''
+
+
+
+@login_required
+def member_profile(request):  
+    if request.method == 'POST':
+        # Retrieve form data from POST request
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        street_number = request.POST.get('street_number')
+        street_address = request.POST.get('street_address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+        has_agent = request.POST.get('has_agent')
+        agent_first_name = request.POST.get('agent_first_name') if has_agent == 'yes' else None
+        agent_last_name = request.POST.get('agent_last_name') if has_agent == 'yes' else None
+        agent_phone = request.POST.get('agent_phone') if has_agent == 'yes' else None
+        agent_email = request.POST.get('agent_email') if has_agent == 'yes' else None
+        business_name = request.POST.get('business_name')
+        send_question = request.POST.get('send_question')
+
+        #validation:
+        validation_errors = validate_fields(request, first_name, last_name, phone, 
+                                    street_number, street_address, city, 
+                                    state, zip_code, business_name)
+        if validation_errors:  # If there are errors, redirect back to the profile page
+            return redirect('membership_module:member_profile')
+        
+        
+        # Proceed with saving data since validation passed
+        
+
+        
+        # Get the current logged-in user
+        user = request.user
+        #update user fields
+        user.first_name = first_name
+        user.last_name = last_name
+        #user.contact_no  = phone # getting error 
+        user.save()
+        
+        address_id = None
+        address = {
+            "street_no":street_number,
+            "street_name":street_address,
+            "city":city,
+            "state":state,
+            "zip_code":zip_code,
+            "member_type":user.member_type,
+            "user_id":request.user.id,
+           
+        }
+       
+        match request.user.member_type:
+            case 'buyer':
+                buyer, created = Buyers.objects.get_or_create(user=request.user)
+                buyer.business_name = business_name
+                buyer.save()
+                print(buyer.id)
+                #address['buyer_id'] = buyer.id
+                address_id = generate__address(address)
+            case 'seller':
+                seller, created = Sellers.objects.get_or_create(user=user)
+                seller.business_name = business_name
+                seller.save()
+                #address['seller_id'] = seller.id
+                address_id = generate__address(address)
+            case 'agent':
+                agent, created = Agents.objects.get_or_create(user=user)
+                agent.business_name = business_name
+                agent.save()
+                address_id = generate__address(address)
+      
+        # 🌟 **Handle Agent Assignment**
+        if has_agent == 'yes':
+            # agent = Agents.objects.get(
+            #     email=agent_email
+            # )
+            try:
+                agent = Agents.objects.get(email=agent_email)
+            except Agents.DoesNotExist:
+                agent = None
+            # Link the agent to the buyer or seller
+            if user.member_type == 'buyer':
+                buyer.agent = agent
+                buyer.save()
+            elif user.member_type == 'seller':
+                seller.agent = agent
+                seller.save()
+        else:
+             # Link the agent to the buyer or seller
+            if user.member_type == 'buyer':
+                buyer.agent = None
+                buyer.save()
+            elif user.member_type == 'seller':
+                seller.agent = None
+                seller.save()
+            
+            
+
+        # Handle the message to admin (if required)
+        if send_question:
+            # Code to send message to the admin (e.g., via email or saving it to a database)
+            pass
+
+        # Redirect to the profile success page
+        return redirect('membership_module:member_profile')
+    else:
+        return render(request, 'members/profile.html')
+
 
 
 

@@ -30,7 +30,7 @@ MEMBER_TYPES = [
 
 class MemberAddress(BaseModel):
     maddress_id = models.CharField(max_length=50, default=shortuuid.ShortUUID().random(length=22), editable=False, blank=True, null=True) 
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="user_address")
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, related_name="member_address")
     street_no = models.CharField(max_length=50, blank=True, null=True)
     street_name = models.CharField(max_length=500, blank=True, null=True)
     suite_no = models.CharField(max_length=50, blank=True, null=True)

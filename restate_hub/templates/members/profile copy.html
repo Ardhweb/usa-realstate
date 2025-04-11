@@ -130,7 +130,6 @@
 </style>
 {% if request.user.is_authenticated %}
 <div class="container p-2">
-
 {% if messages %}
     {% for message in messages %}
     <div class="alert alert-warning alert-dismissible fade show {% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
@@ -164,15 +163,15 @@
                        </div>
                        <div class="form-group">
                         <label   for="street_number">Street Number:</label>
-                        <input  value="{{request.user.member_address.street_no|default:""}}" type="text" id="street_number" name="street_number" class="form-control" > 
+                        <input  value="{{data.street_no|default:""}}" type="text" id="street_number" name="street_number" class="form-control" > 
                        </div>
                        <div class="form-group">
                         <label for="phone">Phone:</label>
-                        <input value="{{request.user.member_address.phone_num|default:""}}" type="text" id="phone" name="phone" class="form-control"  >
+                        <input value="{{data.phone_num|default:""}}" type="text" id="phone" name="phone" class="form-control"  >
                     </div>                     
                     <div class="form-group">
                         <label for="city">City:</label>
-                        <input value="{{request.user.member_address.city|default:""}}" type="text" id="city" name="city" class="form-control" >
+                        <input value="{{data.city|default:""}}" type="text" id="city" name="city" class="form-control" >
                    </div>
                      </div>
                      <div class="col-md-6">
@@ -182,7 +181,7 @@
                        </div>
                        <div class="form-group">
                         <label for="street">Street Address:</label>
-                       <input  value="{{request.user.member_address.street_name|default:""}}"  type="text" id="street" name="street_address" class="form-control"  >
+                       <input  value="{{data.street_name|default:""}}"  type="text" id="street" name="street_address" class="form-control"  >
                    </div>
 
                       <div class="form-group">
@@ -201,13 +200,13 @@
                   <div class="col-md-6">
                      <div class="form-group">
                         <label for="state">State:</label>
-                         <input value="{{request.user.member_address.state|default:""}}" type="text" id="state" name="state" class="form-control" >
+                         <input value="{{data.state|default:""}}" type="text" id="state" name="state" class="form-control" >
                       </div>
                   </div>
                   <div class="col-md-6">
                      <div class="form-group">
                         <label for="zip_code">Zip Code:</label>
-                         <input value="{{request.user.member_address.zip_code|default:""}}" type="text" id="zip_code" name="zip_code" class="form-control"  >
+                         <input value="{{data.zip_code|default:""}}" type="text" id="zip_code" name="zip_code" class="form-control"  >
                      </div>
                  </div>
                  
@@ -221,7 +220,7 @@
                              <select disabled id="has_agent" name="has_agent" class="form-select">
                               
                               <option value="no">No</option>
-                                  <option {% if request.user.member_address.agents_email %} selected {% endif %} value="yes">Yes</option>
+                                  <option {% if data.agents_email %} selected {% endif %} value="yes">Yes</option>
                               
                              </select>
                          </div>
@@ -230,7 +229,7 @@
                   <div class=" {% if request.user.member_type == 'agent' %} col-md-12 {% else %}col-md-6 {% endif %} ">
                     <div class="form-group" style="margin-bottom: 1.5rem;">
                          <label for="business_name" style="font-weight: 500; color: #343a40;">Business Name:</label>
-                        <input  value="{{request.user.member_address.business_name|default:""}}" type="text" id="business_name" name="business_name" class="form-control"  style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                        <input  value="{{data.business_name|default:""}}" type="text" id="business_name" name="business_name" class="form-control"  style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
                     </div>
                   </div>            
                 </div>
@@ -244,7 +243,7 @@
                         <div class="col-md-12">
                            <div class="form-group">
                              <label for="agent_email">Agent Email:</label>
-                            <input value="{{request.user.member_address.agents_email|default:""}}" type="email" id="agent_email" name="agent_email" class=" form-control"  placeholder="Enter Agent Email">
+                            <input value="{{data.agents_email|default:""}}" type="email" id="agent_email" name="agent_email" class=" form-control"  placeholder="Enter Agent Email">
                             <a class="btn btn-secondary  btn-sm" id="verifyButton">Verify Agent</a> 
                             <span id="agent-exist" class="agent-exist"></span>
                           </div>
@@ -292,7 +291,7 @@
 
     <div class="d-flex align-items-start">
       <div class="nav flex-column nav-pills me-3 fs-5 card rounded p-1 vh-100" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link text-center py-3 w-100 active" id="v-pills-billing-tab" request.user.member_address-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="true">
+        <button class="nav-link text-center py-3 w-100 active" id="v-pills-billing-tab" data-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="true">
             Billing
         </button>
     
