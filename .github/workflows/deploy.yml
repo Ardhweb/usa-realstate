@@ -1,15 +1,14 @@
-name: Deploy to Render on PR merge from ardhweb
+name: Deploy to Render on ardhweb Merge to Main
 
 on:
   pull_request:
-    types:
-      - closed
+    types: [closed]
     branches:
-      - main
+      - main 
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'ardhweb'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && github.event.pull_request.head.ref == 'ardhweb'
     runs-on: ubuntu-latest
 
     steps:
