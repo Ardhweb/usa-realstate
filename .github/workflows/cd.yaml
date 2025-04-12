@@ -14,4 +14,4 @@ jobs:
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
-          curl "$deploy_url"
+          curl "https://api.render.com/deploy/srv-cvsvso95pdvs739d634g?key=BzYC-5dmnUE"
