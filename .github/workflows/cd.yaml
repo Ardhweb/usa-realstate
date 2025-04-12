@@ -1,17 +1,18 @@
-# .github/workflows/ci.yml
+name: Deploy to Render
 
 on:
-  pull_request:
   push:
     branches: [main]
+  pull_request:
 
 jobs:
-  ci:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy
+      - name: Trigger Render Deploy Hook
         if: github.ref == 'refs/heads/main'
-        env:
-          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
-          curl "https://api.render.com/deploy/srv-cvsvso95pdvs739d634g?key=BzYC-5dmnUE"
+          curl "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
