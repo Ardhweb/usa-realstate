@@ -2,15 +2,33 @@ name: Deploy to Render
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Check if merge is from ardhweb
+        id: check_merge
+        run: |
+          echo "Checking if last merge was from ardhweb..."
+          MERGE_MSG=$(git log -1 --pretty=%B)
+          echo "Last commit message: $MERGE_MSG"
+          if [[ "$MERGE_MSG" == *"Merge branch 'ardhweb'"* ]] || [[ "$MERGE_MSG" == *"Merge pull request"* && "$MERGE_MSG" == *"ardhweb"* ]]; then
+            echo "✅ Merge is from ardhweb"
+            echo "merge_matched=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Not a merge from ardhweb"
+            echo "merge_matched=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Trigger Render Deploy Hook
-        if: github.ref == 'refs/heads/main'
+        if: steps.check_merge.outputs.merge_matched == 'true'
         run: curl "$RENDER_DEPLOY_HOOK"
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
