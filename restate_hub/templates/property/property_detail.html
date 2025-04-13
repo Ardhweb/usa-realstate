@@ -3,65 +3,122 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h1 class="mb-4 text-center" style="color: #1478a7; font-weight: 700;  animation: slideInFromLeft 0.8s ease-out;">{{ property.title }}</h1>
-        <div class="row">
-            <div class="col-md-6">
-                 <div style="background-color: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                    <h4 style="color: #1478a7; font-weight: 700; margin-bottom: 20px;">Property Details</h4>
-                    <p style="margin-bottom: 10px;"><strong>Listing ID:</strong> {{ property.listing_id}}</p>
-                    <p style="margin-bottom: 10px;"><strong>Rooms:</strong> {{ property.rooms }}</p>
-                     <p style="margin-bottom: 10px;"><strong>Reason for Selling:</strong> {{ property.reason_selling }}</p>
-                    <p style="margin-bottom: 10px;"><strong>Selling Type:</strong> {{ property.selling_type }}</p>
-                    <p style="margin-bottom: 10px;"><strong>Sell Leaseback:</strong> {{ property.sell_leaseback }}</p>
-                     <p style="margin-bottom: 10px;"><strong>Leaseback Month:</strong> {{ property.leaseback_month }}</p>
-                     <p style="margin-bottom: 10px;"><strong>Listing State:</strong> {{ property.state }}</p>
-                     <div class="text-center mt-3">
+        <!-- Back button row -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <a href="#" class="d-flex align-items-center text-decoration-none" style="color: #1478a7; font-weight: 600;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#1478a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="ms-2">Back to property listing page</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Property header section -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="border rounded p-3 shadow-sm" style="background-color: #f8fbff;">
+                    <h3 style="color: #1478a7; font-weight: 700;">${{ property.price }}</h3>
+                    <p class="mb-1">{{ property.street_number }} {{ property.street_name }}, {{ property.city }}, {{ property.state }} {{ property.zipcode }}</p>
+                    <p>{{ property.county }} County</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <div class="border rounded p-3 text-center shadow-sm" style="background-color: #e6f3f8; border: 1px solid #d0e6f0 !important;">
+                            <strong>Reason for Selling:</strong>
+                            <p class="mb-0 mt-2">{{ property.reason_selling }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="border rounded p-3 text-center shadow-sm" style="background-color: #e6f3f8; border: 1px solid #d0e6f0 !important;">
+                            <strong>Selling Type:</strong>
+                            <p class="mb-0 mt-2">{{ property.selling_type }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="border rounded p-3 text-center shadow-sm" style="background-color: #e6f3f8; border: 1px solid #d0e6f0 !important;">
+                            <strong>Sell Leaseback:</strong>
+                            <p class="mb-0 mt-2">{{ property.sell_leaseback }}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="border rounded p-3 text-center shadow-sm" style="background-color: #e6f3f8; border: 1px solid #d0e6f0 !important;">
+                            <strong>Leaseback Month:</strong>
+                            <p class="mb-0 mt-2">{{ property.leaseback_month }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Property details section -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="border rounded p-3 shadow-sm" style="background-color: #f8fbff; border: 1px solid #d0e6f0 !important;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-2"><strong>Listing id:</strong></p>
+                            <p class="mb-2"><strong>Bedroom:</strong></p>
+                            <p class="mb-2"><strong>Bathroom:</strong></p>
+                            <p class="mb-2"><strong>House sqft:</strong></p>
+                            <p class="mb-2"><strong>Year built:</strong></p>
+                            <p class="mb-2"><strong>Garage:</strong></p>
+                            <p class="mb-2"><strong>School district:</strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-2">{{ property.listing_id }}</p>
+                            <p class="mb-2">{{ property.bedrooms }}</p>
+                            <p class="mb-2">{{ property.bathrooms }}</p>
+                            <p class="mb-2">{{ property.house_size }}</p>
+                            <p class="mb-2">{{ property.year_built }}</p>
+                            <p class="mb-2">{{ property.garage }}</p>
+                            <p class="mb-2">{{ property.school_district|default:"N/A" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="border rounded p-3 text-center shadow-sm" style="background-color: #e6f3f8; border: 1px solid #d0e6f0 !important;">
+                            <strong class="mb-0">Listing Status</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
                         <form method="POST">
                             {% csrf_token %}
                             {{form.as_p}}
-                        {% if request.user.member_type == 'buyer' %}
-                        {% if messagetrack_obj %}
-                        <div class="d-grid gap-2">
-                            <button class='btn-left btn btn-warning disabled border '>waiting for seller respsone.</button>
-                          </div>
-                        {% else %} 
-                        <input value="Contact Seller" type="submit" class="btn btn-success" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px;">
-                       {% endif %} 
-                        {% endif %}
-                    </form>
+                            {% if request.user.member_type == 'buyer' %}
+                                {% if messagetrack_obj %}
+                                <div class="d-grid gap-2">
+                                    <button class='btn-left btn btn-warning border shadow-sm' style="background-color: #ffc107; color: #212529; font-weight: 600; padding: 10px 15px; border-radius: 8px;">Waiting for seller response</button>
+                                </div>
+                                {% else %} 
+                                <input value="Contact Seller" type="submit" class="btn btn-success shadow-sm" style="background-color: #1478a7 !important; border-color: #1478a7 !important; color: #fff !important; border-radius: 10px !important; padding: 14px 26px !important; font-weight: 600 !important; transition: all 0.3s ease !important; display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%;">
+                                {% endif %} 
+                            {% endif %}
+                        </form>
                     </div>
-                  </div>
-            </div>
-            <div class="col-md-6 d-flex justify-content-center">
-                <img src="{{ property.image.url }}" class="img-fluid rounded" alt="Property Image" style="border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); max-height: 400px; object-fit: cover;">
-            </div>
-        </div>
-
-       <div style="background-color: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-top: 20px;">
-            <h4 class="mt-4" style="color: #1478a7; font-weight: 700; margin-bottom: 20px;">Location Information</h4>
-             <p style="margin-bottom: 10px;"><strong>Address:</strong> {{ property.street_number }} {{ property.street_name }}, {{ property.city }}, {{ property.state }}, {{ property.zipcode }}</p>
-            <p style="margin-bottom: 10px;"><strong>Country:</strong> {{ property.country }}</p>
-        </div>
-
-         <div style="background-color: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-top: 20px;">
-            <h4 class="mt-4" style="color: #1478a7; font-weight: 700; margin-bottom: 20px;">Additional Features</h4>
-            <div class="row">
-               <div class="col-md-6">
-                 <p style="margin-bottom: 10px;"><strong>Bedrooms:</strong> {{ property.bedrooms }}</p>
-                  <p style="margin-bottom: 10px;"><strong>Garage:</strong> {{ property.garage }}</p>
-                  <p style="margin-bottom: 10px;"><strong>HOA:</strong> {{ property.hoa }}</p>
-               </div>
-               <div class="col-md-6">
-                   <p style="margin-bottom: 10px;"><strong>Bathrooms:</strong> {{ property.bathrooms }}</p>
-                  <p style="margin-bottom: 10px;"><strong>House Size:</strong> {{ property.house_size }} sqft</p>
-                    <p style="margin-bottom: 10px;"><strong>Year Built:</strong> {{ property.year_built }}</p>
-               </div>
+                </div>
+                <div class="border rounded p-3 mt-2 shadow-sm" style="background-color: #f8fbff; border: 1px solid #d0e6f0 !important;">
+                    <strong>Property description</strong>
+                    <p class="mt-2">{{ property.description }}</p>
+                </div>
             </div>
         </div>
-
-        <div style="background-color: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-top: 20px; margin-bottom: 30px;">
-           <h4 class="mt-4" style="color: #1478a7; font-weight: 700; margin-bottom: 20px;">Description</h4>
-           <p>{{ property.description }}</p>
+        
+        <!-- Property image section -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="border rounded p-3 text-center shadow-sm" style="height: 200px; background-color: #f8fbff; border: 1px solid #d0e6f0 !important;">
+                    <img src="{{ property.image.url }}" class="img-fluid" alt="Property Image" style="max-height: 150px; object-fit: cover;">
+                </div>
+            </div>
         </div>
+        
+      
     </div>
 {% endblock %}

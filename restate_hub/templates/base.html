@@ -4,444 +4,890 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   {% block title %}{% endblock title %}
+    {% block title %}{% endblock title %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
  
     {% include "includes/utils/dropzone.html" %}
 </head>
 <style>
     {% block style %}{% endblock style %}
+    
+    /* Reset and General Styling */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        font-family: "Kanit", sans-serif;
+        font-weight: 300 !important;
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    /* Nature-inspired background elements */
+    body:before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "images/leaves-pattern.png" %}') repeat;
+        opacity: 0.03;
+        z-index: -1;
+    }
+    
+    .btn {
+        font-weight: 300 !important;
+    }
+    
+    /* Enhanced Nature-Inspired Navbar */
+    .navbar {
+        padding: 1px 0 !important;
+        background: linear-gradient(135deg, rgba(227, 253, 245, 0.95) 0%, rgba(227, 242, 253, 0.95) 100%);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(144, 238, 144, 0.3);
+    }
+    
+    /* Nature-inspired decorative element for navbar */
+    .navbar:before {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(90deg, transparent, #4CAF50, #8BC34A, #CDDC39, transparent);
+        opacity: 0.6;
+    }
+    
+    .navbar:hover {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Animated leaf elements for navbar */
+    .navbar .leaf-decoration {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background: url('{% static "images/leaf-icon.svg" %}') no-repeat center center;
+        background-size: contain;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+    
+    .navbar .leaf-left {
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%) rotate(-15deg);
+        animation: floatLeaf 8s ease-in-out infinite;
+    }
+    
+    .navbar .leaf-right {
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%) rotate(15deg) scaleX(-1);
+        animation: floatLeaf 7s ease-in-out infinite 1s;
+    }
+    
+    @keyframes floatLeaf {
+        0%, 100% { transform: translateY(-50%) rotate(-15deg) translateX(0); }
+        50% { transform: translateY(-50%) rotate(-5deg) translateX(5px); }
+    }
+    
+    /* Navbar brand */
+    .navbar-brand {
+        color: #2E7D32;
+        font-weight: 600;
+        font-size: 1.7rem;
+        transition: all 0.4s ease;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        padding-left: 10px;
+        position: relative;
+    }
+    
+    .navbar-brand:before {
+        content: "🌿";
+        font-size: 1.4rem;
+        margin-right: 8px;
+        display: inline-block;
+        transform: translateY(2px);
+    }
+    
+    .navbar-brand:hover {
+        color: #1B5E20;
+        transform: scale(1.05);
+    }
+    
+    /* Animated underline effect for navbar links */
+    .navbar a.nav-link {
+        color: #2E7D32;
+        font-size: 1.1rem;
+        margin: 0 5px;
+        padding: 8px 15px;
+        position: relative;
+        transition: all 0.3s ease;
+        font-weight: 400;
+    }
+    
+    .navbar a.nav-link:before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #4CAF50, #8BC34A);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+    
+    .navbar a.nav-link:hover {
+        color: #1B5E20;
+        transform: translateY(-2px);
+    }
+    
+    .navbar a.nav-link:hover:before {
+        width: 80%;
+        opacity: 1;
+    }
+    
+    /* Eco-friendly Button Styles */
+    .navbar .btn {
+        font-size: 1rem;
+        padding: 10px 24px;
+        border-radius: 25px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .navbar .btn-outline-primary {
+        border: 2px solid #43A047;
+        color: #2E7D32;
+        background: rgba(255, 255, 255, 0.7);
+    }
+    
+    .navbar .btn-primary {
+        background: linear-gradient(135deg, #43A047 0%, #388E3C 100%);
+        border: none;
+        color: white;
+        box-shadow: 0 4px 10px rgba(67, 160, 71, 0.3);
+    }
+    
+    /* Button hover effects */
+    .navbar .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+        color: white;
+        border-color: transparent;
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(67, 160, 71, 0.4);
+    }
+    
+    .navbar .btn-primary:hover {
+        background: linear-gradient(135deg, #388E3C 0%, #1B5E20 100%);
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.5);
+    }
+    
+    /* Button ripple effect */
+    .navbar .btn:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+    }
+    
+    .navbar .btn:focus:not(:active)::after {
+        animation: ripple 1s ease-out;
+    }
+    
+    @keyframes ripple {
+        0% {
+            transform: scale(0, 0);
+            opacity: 0.5;
+        }
+        100% {
+            transform: scale(20, 20);
+            opacity: 0;
+        }
+    }
+    
+    /* Responsive Navbar */
+    @media (max-width: 991px) {
+        .navbar-nav {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+        }
+    
+        .navbar .btn {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .navbar .leaf-decoration {
+            display: none;
+        }
+    }
+    
+    /* Enhanced Banner Section with Nature Elements */
+    .banner {
+        background: url("{% static 'images/banner.jpg' %}") no-repeat center center/cover;
+        height: 500px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-bottom: 5px solid rgba(76, 175, 80, 0.3);
+    }
+    
+    /* Nature overlay */
+    .banner:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(25, 58, 25, 0.5) 0%, rgba(33, 76, 33, 0.3) 100%);
+        z-index: 1;
+    }
+    
+    /* Animated leaves falling */
+    .banner .leaves {
+        position: absolute;
+        top: -100px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+    
+    .banner .leaf {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: url('{% static "images/leaf.svg" %}') no-repeat center center;
+        background-size: contain;
+        opacity: 0.7;
+        animation: falling linear infinite;
+    }
+    
+    .banner .leaf:nth-child(1) {
+        left: 10%;
+        animation-duration: 15s;
+        animation-delay: 0s;
+    }
+    
+    .banner .leaf:nth-child(2) {
+        left: 30%;
+        animation-duration: 12s;
+        animation-delay: 2s;
+    }
+    
+    .banner .leaf:nth-child(3) {
+        left: 50%;
+        animation-duration: 18s;
+        animation-delay: 5s;
+    }
+    
+    .banner .leaf:nth-child(4) {
+        left: 70%;
+        animation-duration: 16s;
+        animation-delay: 1s;
+    }
+    
+    .banner .leaf:nth-child(5) {
+        left: 90%;
+        animation-duration: 14s;
+        animation-delay: 3s;
+    }
+    
+    @keyframes falling {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.7;
+        }
+        100% {
+            transform: translateY(700px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    .banner-text {
+        position: relative;
+        left: 80px;
+        max-width: 650px;
+        padding: 30px;
+        color: white;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        z-index: 3;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 15px;
+        backdrop-filter: blur(5px);
+        border-left: 4px solid rgba(76, 175, 80, 0.7);
+        animation: fadeInSlideUp 1.2s ease-in-out forwards;
+    }
+    
+    @keyframes fadeInSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .banner-text h2 {
+        margin: 0 0 15px 0;
+        font-size: 3.5rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        font-family: 'Playfair Display', serif;
+        color: #ffffff;
+    }
+    
+    .banner-text h2::first-letter {
+        color: #8BC34A;
+        font-size: 4.2rem;
+        text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+    }
+    
+    .banner-text p {
+        margin-top: 20px;
+        font-size: 1.3rem;
+        font-weight: 400;
+        line-height: 1.6;
+    }
+    
+    .banner-text a {
+        color: #CDDC39;
+        text-decoration: underline;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .banner-text a:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+    
+    /* Banner responsive adjustments */
+    @media (max-width: 768px) {
+        .banner {
+            height: 400px;
+        }
+        
+        .banner-text {
+            left: 0;
+            margin: 0 20px;
+            padding: 20px;
+        }
+        
+        .banner-text h2 {
+            font-size: 2.5rem;
+        }
+        
+        .banner-text p {
+            font-size: 1.1rem;
+        }
+    }
+    
+    /* Dropzone styling */
+    .dropzone {
+        border: 2px dashed #43A047 !important;
+        border-radius: 10px;
+        background: rgba(248, 249, 250, 0.9);
+        padding: 40px;
+        font-size: 1.2rem;
+        color: #2E7D32;
+        transition: all 0.3s ease;
+    }
+    
+    .dropzone:hover {
+        background-color: rgba(233, 236, 239, 0.9);
+        border-color: #388E3C !important;
+        transform: scale(1.02);
+    }
+    
     .no-style {
         border: none !important;
         background: none !important;
         box-shadow: none !important;
     }
-
-    .dropzone {
-        border: 2px dashed #007bff !important;
-        border-radius: 10px;
-        background: #f8f9fa;
-        padding: 40px;
-        font-size: 1.2rem;
-        color: #007bff;
+    
+    /* Card Styling with nature theme */
+    .form-section {
+        background-color: rgba(248, 249, 250, 0.9);
+        padding: 35px;
+        margin-top: 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        transition: all 0.4s ease-in-out;
+        border-top: 5px solid rgba(76, 175, 80, 0.7);
+        position: relative;
+        overflow: hidden;
     }
-    .dropzone:hover {
-        background-color: #e9ecef;
+    
+    /* Nature-inspired corner decorations */
+    .form-section:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 60px;
+        height: 60px;
+        background: url('{% static "images/leaf-corner.svg" %}') no-repeat top right;
+        background-size: contain;
+        opacity: 0.15;
+        pointer-events: none;
     }
-/* General Styling */
-body {
-  background-color: #f2f2f2; /* or #e9ecef or #f0f0f0 */
-  color: #1a3a63;
-  font-family: "Kanit", serif;
-  font-weight:200!important;
-
-}
-
-.btn{
-    font-weight:200!important;
-}
-
-/* Navbar background and padding */
-.navbar {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-    background-color: #e3f2fd;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease; /* Smooth transition */
-}
-.navbar:hover{
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* Navbar brand */
-.navbar-brand {
-    color: #1a3a63;
-    font-weight: bold;
-    font-size: 1.6rem;
-    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition and scale */
-}
-
-.navbar-brand:hover {
-    color: #0d2b50;
-    transform: scale(1.05);
-}
-
-/* Navbar links */
-.navbar a.nav-link {
-    color: #1a3a63;
-    font-size: 1.1rem;
-    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition and scale */
-}
-
-.navbar a.nav-link:hover {
-    color: #0d2b50;
-    transform: scale(1.1);
-}
-
-/* Button Styles */
-.navbar .btn {
-    font-size: 1rem;
-    padding: 10px 24px;
-    border-radius: 25px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-}
-
-/* Button hover effects */
-.navbar .btn-outline-primary:hover {
-    background-color: #1a3a63;
-    color: white;
-    transform: scale(1.05);
-}
-
-.navbar .btn-primary:hover {
-    background-color: #0d2b50;
-    color: white;
-    transform: scale(1.05);
-}
-
-/* Responsive Navbar */
-@media (max-width: 991px) {
-    .navbar-nav {
-        text-align: center;
-        margin-top: 15px;
+    
+    .form-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     }
-
-    .navbar .btn {
+    
+    .form-section h5 {
+        color: #2E7D32;
+        font-weight: 600;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+        position: relative;
+    }
+    
+    .form-section h5:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 50px;
+        height: 2px;
+        background: #43A047;
+    }
+    
+    .form-section label {
+        font-size: 20px;
+        font-weight: 400;
+        margin-bottom: 8px;
+        color: #2c3e50;
+    }
+    
+    .form-check-label {
+        margin-left: 8px;
+        font-size: 15px;
+        font-weight: 400;
+        color: #34495e;
+    }
+    
+    /* Form controls with nature-inspired focus states */
+    .form-section input[type="text"],
+    .form-section select.form-select,
+    .form-section textarea {
+        padding: 14px 18px;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+    
+    .form-section input[type="text"]:focus,
+    .form-section select.form-select:focus,
+    .form-section textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        border-color: #43A047;
+        background-color: #fff;
+    }
+    
+    /* Placeholder styling */
+    textarea::placeholder,
+    input::placeholder {
+        font-size: 14px;
+        color: #95a5a6;
+        font-style: italic;
+    }
+    
+    /* Checkbox styling */
+    .form-check-input {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-right: 6px;
+        border: 1px solid #bdc3c7;
+    }
+    
+    .form-check-input:checked {
+        background-color: #43A047;
+        border-color: #43A047;
+    }
+    
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        border-color: #43A047;
+    }
+    
+    /* Container spacing */
+    .container {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    
+    /* Nature-themed buttons */
+    .btn-primary {
+        background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+        border: none;
+        color: #fff;
+        border-radius: 8px;
+        padding: 12px 28px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #388E3C 0%, #1B5E20 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(46, 125, 50, 0.4);
+    }
+    
+    .btn-primary:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.4);
+    }
+    
+    .btn-outline-primary {
+        background: transparent;
+        border: 2px solid #43A047;
+        color: #2E7D32;
+        border-radius: 8px;
+        padding: 12px 28px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-primary:hover {
+        background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+        color: #fff;
+        border-color: transparent;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(46, 125, 50, 0.4);
+    }
+    
+    /* Property Grid with hover effects */
+    .property-grid {
+        transition: all 0.4s ease-in-out;
+        margin-bottom: 30px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        position: relative;
+    }
+    
+    .property-grid:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .property-grid img {
+        border-radius: 12px 12px 0 0;
         width: 100%;
-        margin-top: 10px;
+        height: 220px;
+        object-fit: cover;
+        transition: all 0.5s ease;
     }
-}
-
-/* Banner Section */
-.banner {
-    background: url("{% static 'images/banner.jpg' %}") no-repeat center center/cover;
-    height: 450px;
-    position: relative;
-    display: flex; /* Keep flexbox for vertical centering */
-    align-items: center;
-   /* Remove justify-content: center; */ /* Remove Horizontal centering */
-}
-
-.banner-text {
-    position: absolute;
-    left: 80px; /* Position it on left with a little space */
-    text-align: left; /* Text aligns to the left */
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-    max-width: 650px;
-    padding: 20px;
-    line-height: 1.4;
-    animation: fadeIn 1.2s ease-in-out forwards;
-}
-
-/* Specific Styles for h2 and p within .banner-text */
-.banner-text h2 {
-    margin: 0 0 15px 0;
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.banner-text p {
-    margin-top: 20px;
-    font-size: 1.3rem;
-    font-weight: 400;
-}
-
-.banner-text a {
-    color: #aaf0ff;
-    text-decoration: underline;
-    transition: color 0.3s ease;
-}
-
-.banner-text a:hover {
-    color: #fff;
-}
-/* Keyframes for fade in animation*/
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-/* Card Styling */
-.form-section {
-    background-color: #f8f9fa;
-    padding: 30px;
-    margin-top: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease-in-out;
-    /* example, can be number of pixels like 800px */
-}
-
-.form-section h5 {
-    color: #186faf;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.form-section label {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.form-check-label {
-    margin-left: 8px;
-    font-size: 15px;
-    font-weight: 400;
-}
-
-textarea::placeholder,
-input::placeholder {
-    font-size: 14px;
-    color: #6c757d;
-}
-
-/* Adjust margin for the parent container to bring everything down */
-.container {
-    margin-top: 30px;
-}
-.container .property-grid{
-    transition: all 0.3s ease-in-out;
-}
-.container .property-grid:hover{
-   transform: scale(1.03);
-   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.form-section h5 {
-    color: #1478a7;
-}
-
-.btn-primary {
-    background-color: #1478a7;
-    border-color: #1478a7;
-    color: #fff;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #0d527a;
-    border-color: #0d527a;
-    transform: scale(1.05)
-}
-
-.btn-outline-primary {
-    border-color: #1478a7;
-    color: #1478a7;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-outline-primary:hover {
-    background-color: #1478a7;
-    color: #fff;
-    border-color: #1478a7;
-    transform: scale(1.05)
-}
-/* Property Grid */
-.property-grid img {
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    height: auto;
-    transition: all 0.3s ease; /* Smooth transition */
-}
-
-.property-grid p {
-    text-align: center;
-    font-weight: 600;
-    margin-top: 10px;
-    color: #1a3a63;
-    font-size: 1.1rem;
-}
-
-
-.description {
-    margin: 40px 0; /* Changed to only top/bottom margin */
-    text-align: left;
-    font-family: 'Arial', sans-serif;
-    line-height: 1.8;
-    max-width: 100%; /* Set to full width of the container */
-    width: 100%;  /* Ensure it stretches to the full width */
-    display: block; /* Revert to block display */
-}
-
-.title {
-    font-size: 2.4rem;
-    font-weight: bold;
-    margin-bottom: 25px;
-    color: #333;
-    /* text-align: left;   Already aligning to left */
-    margin-bottom: 70px;
-    animation: slideInFromLeft 0.8s ease-out;
-}
-
-/*Animation for title*/
-@keyframes slideInFromLeft {
-    0% {
-      transform: translateX(-100px);
-      opacity: 0;
+    
+    .property-grid:hover img {
+        transform: scale(1.05);
     }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
+    
+    .property-info {
+        padding: 20px;
+        background: #fff;
+        border-radius: 0 0 12px 12px;
     }
-  }
-
-.quote {
-    font-size: 1.3rem;
-    font-style: italic;
-    color: #555;
-    margin: 25px 0;
-    border-left: 4px solid #2196f3;
-    padding-left: 18px;
-    text-align: left;
-    margin-bottom: 70px;
-    animation: slideInFromRight 0.8s ease-out;
-}
-
-/*Animation for quote*/
-@keyframes slideInFromRight {
-    0% {
-      transform: translateX(100px);
-      opacity: 0;
+    
+    .property-grid p {
+        text-align: center;
+        font-weight: 500;
+        margin: 10px 0 5px;
+        color: #2c3e50;
+        font-size: 1.2rem;
     }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
+    
+    .property-grid .price {
+        color: #2E7D32;
+        font-weight: 600;
+        font-size: 1.3rem;
+        display: block;
+        text-align: center;
+        margin-top: 5px;
     }
-  }
-
-.quote .author {
-    display: block;
-    margin-top: 12px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-    text-align: right;
-}
-
-.about-text {
-    font-size: 1.2rem;
-    color: #333;
-    margin-top: 30px;
-    text-align: justify;
-    animation: fadeIn 1s ease-out;
-}
-.btn-success:hover {
-    background-color: #0d527a !important;
-    border-color: #0d527a !important;
-    color: white !important;
-}
-/* General Input and Select Styles */
-.form-section input[type="text"],
-.form-section select.form-select {
-    padding: 14px 18px;
-    border: 1px solid #ced4da;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    transition: border-color 0.3s ease;
-}
-
-.form-section input[type="text"]:focus,
-.form-section select.form-select:focus{
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(20, 120, 167, 0.25); /* subtle highlight on focus */
-  border-color:#1478a7;
-}
-
-/* Checkbox Style */
-.form-check-input {
-    border-radius: 5px; /* More rounded */
-    cursor: pointer; /* Improve the user experience */
-    margin-right: 5px;
-}
-
-.form-check-input:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(20, 120, 167, 0.25);
-}
-
-/* Form-section Style */
-.form-section {
-    background-color: #f8f9fa;
-    padding: 30px;
-    margin-top: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease-in-out;
-}
-.form-section:hover{
-    transform: scale(1.01);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-}
-
-/* Specific Form Element Adjustments */
-.form-section h5 {
-    color: #1478a7;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-.form-section label {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-.form-check-label {
-    margin-left: 10px;
-    font-size: 16px;
-    font-weight: 400;
-}
-
-/* Button styles */
-.btn-success {
-    background-color: #1478a7 !important;
-    border-color: #1478a7 !important;
-    color: #fff !important;
-    border-radius: 10px !important;
-    padding: 14px 26px !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease !important;
-    display: flex; /* To align icon and text */
-    align-items: center;
-    justify-content: center;
-    gap: 5px; /* space between icon and text */
-}
-.btn-success i{
-    margin-left: 5px; /* Space between the icon and the text */
-    font-size: 1.1rem;
-}
-
-
-.btn-success:hover {
-    background-color: #0d527a !important;
-    border-color: #0d527a !important;
-    color: white !important;
-    transform: scale(1.03);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-.row {
-    margin-bottom: 20px;
-}
-
+    
+    .property-grid .location {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    
+    .property-grid .location i {
+        margin-right: 5px;
+        color: #43A047;
+    }
+    
+    /* Nature-themed quote and title sections */
+    .description {
+        margin: 60px 0;
+        text-align: left;
+        line-height: 1.8;
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 70px;
+        color: #2c3e50;
+        position: relative;
+        padding-bottom: 15px;
+        font-family: 'Playfair Display', serif;
+        animation: slideInFromLeft 0.8s ease-out;
+    }
+    
+    .title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #43A047, #8BC34A);
+        border-radius: 2px;
+    }
+    
+    .title:before {
+        content: "🌿";
+        position: absolute;
+        left: -40px;
+        top: 5px;
+        font-size: 30px;
+        opacity: 0.7;
+    }
+    
+    @keyframes slideInFromLeft {
+        0% {
+            transform: translateX(-100px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    .quote {
+        font-size: 1.4rem;
+        font-style: italic;
+        color: #34495e;
+        margin: 35px 0 70px;
+        padding: 25px 25px 25px 30px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        position: relative;
+        border-left: 5px solid #43A047;
+        animation: slideInFromRight 0.8s ease-out;
+    }
+    
+    .quote:before {
+        content: """;
+        position: absolute;
+        top: 0;
+        left: 10px;
+        font-size: 80px;
+        color: rgba(76, 175, 80, 0.2);
+        font-family: 'Playfair Display', serif;
+        line-height: 1;
+    }
+    
+    @keyframes slideInFromRight {
+        0% {
+            transform: translateX(100px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    .quote .author {
+        display: block;
+        margin-top: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2E7D32;
+        text-align: right;
+    }
+    
+    .about-text {
+        font-size: 1.2rem;
+        color: #34495e;
+        margin-top: 40px;
+        text-align: justify;
+        line-height: 1.8;
+        animation: fadeIn 1s ease-out;
+    }
+    
+    /* Enhanced Success Button */
+    .btn-success {
+        background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%) !important;
+        border: none !important;
+        color: #fff !important;
+        border-radius: 10px !important;
+        padding: 14px 30px !important;
+        font-weight: 500 !important;
+        transition: all 0.4s ease !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3) !important;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-success i {
+        margin-left: 5px;
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-success:hover {
+        background: linear-gradient(135deg, #388E3C 0%, #1B5E20 100%) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4) !important;
+    }
+    
+    .btn-success:hover i {
+        transform: translateX(3px);
+    }
+    
+    .btn-success:after {
+        content: "";
+        position: absolute;
+        width: 30px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg);
+        left: -100px;
+        top: -50px;
+        transition: all 0.7s ease;
+    }
+    
+    .btn-success:hover:after {
+        left: 120%;
+    }
+    
+    /* Footer with nature theme */
+    .footer {
+        background: linear-gradient(135deg, rgba(46, 125, 50, 0.95) 0%, rgba(56, 142, 60, 0.95) 100%);
+        color: #fff;
+        padding: 60px 0 30px;
+        position: relative;
+        margin-top: 100px;
+        border-top: 5px solid rgba(139, 195, 74, 0.5);
+    }
+    
+    .footer:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('{% static "images/leaves-pattern.png" %}') repeat;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .footer .container {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .footer h4 {
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+        padding-bottom: 10px;
+        position: relative;
+        font-weight: 500;
+    }
+    
+    .footer h4:after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 50px;
+        height: 2px;
+        background: #CDDC39;
+    }
+    
+    .footer ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .footer ul li {
+        margin-bottom: 12px;
+    }
+    
+    .footer ul li a {
+        color: #e0e0e0;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: block;
+        padding: 5px
+    }
 </style>
-
-
 <body>
    {% include "includes/utils/overall_navbar.html" %}
     {% block content %}{% endblock content %}
