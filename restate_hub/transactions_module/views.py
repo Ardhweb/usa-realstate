@@ -15,11 +15,15 @@ def process_setup(request):
                     "email": request.user.email,
                     "customerCode": f"CST{request.user.id}",
                     "full_name": f"{request.user.first_name} {request.user.last_name}",
+                    "street1": f'{request.user.member_address.street_no}',
+                    "street2": f'{request.user.member_address.street_name}',
+                    "city": f"{request.user.member_address.city}",
+                    #"province": usr_data.get("province", ""),  # State abbreviation (e.g., GA, NY)
+                    "country": "USA" , # Default to USA
+                    "postalCode": f"{request.user.member_address.zip_code}"
                 }
 
                 customer_response = create_customer_helcim(usr_data=data)
-                print(customer_response)
-
                 # Check response status using match-case
                 match customer_response.get("status_code"):
                     case 200 | 201 if "data" in customer_response:

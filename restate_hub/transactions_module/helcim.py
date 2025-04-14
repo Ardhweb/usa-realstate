@@ -105,17 +105,17 @@ def create_customer_helcim(usr_data=None):
 
     # Keep payload as it is
     payload = {
-        # "billingAddress": {
-        #     "name": usr_data.get("full_name", ""),  # Assigning contact or business name
-        #     "street1": usr_data.get("street1", ""),  # Combining multiple fields for street address
-        #     "street2": usr_data.get("street2", ""),
-        #     "city": usr_data.get("city", ""),
-        #     "province": usr_data.get("province", ""),  # State abbreviation (e.g., GA, NY)
-        #     "country": usr_data.get("country", "USA"),  # Default to USA
-        #     "postalCode": usr_data.get("postal_code", ""),
-        #     "phone": usr_data.get("phone", ""),
-        #     "email": usr_data.get("email", ""),
-        # },
+        "billingAddress": {
+            "name": usr_data.get("full_name", ""),  # Assigning contact or business name
+            "street1": usr_data.get("street1", ""),  # Combining multiple fields for street address
+            "street2": usr_data.get("street2", ""),
+            "city": usr_data.get("city", ""),
+            "province": usr_data.get("province", ""),  # State abbreviation (e.g., GA, NY)
+            "country": usr_data.get("country", "USA"),  # Default to USA
+            "postalCode": usr_data.get("postal_code", ""),
+            "phone": usr_data.get("phone", ""),
+            "email": usr_data.get("email", ""),
+        },
         "customerCode": usr_data.get("customerCode", ""),
         "contactName": usr_data.get("full_name", ""),  # Use full_name for contact
         #"businessName": usr_data.get("full_name", ""),  # If it's a business, assign full_name

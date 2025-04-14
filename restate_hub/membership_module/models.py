@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import BaseModel,Address
+from core.models import BaseModel,Address,State,City
 import shortuuid
 # Create your models here.
 from buyer_module.models import Buyers
@@ -37,7 +37,7 @@ class MemberAddress(BaseModel):
     lender_id = models.IntegerField(null=True)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True)# Unncessory or below one unncessory. remove
     city = models.CharField(max_length=100, null=True, blank=True)
-    state = models.CharField(max_length=100, null=True, blank=True)
+    state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True, related_name="member_state")
     zip_code = models.CharField(max_length=20, null=True, blank=True)
     state_two_code = models.CharField(max_length=5, null=True,blank=True)
     
