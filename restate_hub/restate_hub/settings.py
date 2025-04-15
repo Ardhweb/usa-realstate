@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
-    'dashboard',
+   
  
 ]
 
@@ -224,6 +224,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',  # Restrict access to authenticated users
     ),
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.UserRateThrottle',
+    #     'rest_framework.throttling.AnonRateThrottle',
+    # ],
+    # 'DEFAULT_THROTTLE_RATES': {
+    #     'user': '1000/day',
+    #     'anon': '100/day',
+    # }
 }
 
 
@@ -237,8 +245,16 @@ SIMPLE_JWT = {
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
-
-
-
 HELCIM_API_TOKEN = os.getenv("HELCIM_API_TOKEN")
 HELCIM_API_URL = os.getenv("HELCIM_API_URL")
+
+
+# CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE ')
+# SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE ')
+# SECURE_HSTS_SECONDS = os.getenv('SECURE_HSTS_SECONDS')
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS')
+# SECURE_HSTS_PRELOAD = os.getenv('SECURE_HSTS_PRELOAD')
+# SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT')
+# SECURE_BROWSER_XSS_FILTER = os.getenv('SECURE_BROWSER_XSS_FILTER')
+# SECURE_CONTENT_TYPE_NOSNIFF = os.getenv('SECURE_CONTENT_TYPE_NOSNIFF')
+# X_FRAME_OPTIONS = os.getenv('X_FRAME_OPTIONS')

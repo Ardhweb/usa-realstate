@@ -53,7 +53,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),#JWT Token for DRF
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc-docs'),
-    path('dashboard/', include("dashboard.urls")),
     path('transactions/', include("transactions_module.urls")),
    
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)#For Media Manging Step4

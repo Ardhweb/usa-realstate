@@ -26,20 +26,20 @@ def generate__address(data):
     member_address, created = MemberAddress.objects.update_or_create(
         street_no=data.get("street_no"),
         street_name=data.get("street_name"),
-        city=data.get("city"),
-        state=data.get("state"),
+        city_id=data.get("city_id"),
+        state_id=data.get("state_id"),
         zip_code=data.get("zip_code"),
         member_type=data.get("member_type"),
         user_id=data.get('user_id'),
         # defaults=defaults
-    )
+    ) 
 
     return member_address.id
 
 
 
 def validate_fields(request, first_name=None, last_name=None, phone=None,
-                    street_number=None, street_address=None, city=None, state=None, 
+                    street_number=None, street_address=None, 
                     zip_code=None, business_name=None):
     errors_exist = False  # Flag to check if errors were added
 
@@ -48,11 +48,8 @@ def validate_fields(request, first_name=None, last_name=None, phone=None,
         "First name": first_name,
         "Last name": last_name,
         "Phone": phone,
-       
         "Street number": street_number,
         "Street address": street_address,
-        "City": city,
-        "State": state,
         "Zip code": zip_code,
         "Business name": business_name,
     }
@@ -63,7 +60,7 @@ def validate_fields(request, first_name=None, last_name=None, phone=None,
             errors_exist = True
 
     # Numeric fields validation
-    numeric_fields = {"Phone": phone, "Zip code": zip_code}
+    numeric_fields = {"Zip code": zip_code}
     
     for field_name, value in numeric_fields.items():
         if value and not str(value).isdigit():
@@ -77,10 +74,8 @@ def validate_fields(request, first_name=None, last_name=None, phone=None,
         "Phone": 15,
         "Street number": 10,
         "Street address": 100,
-        "City": 50,
-        "State": 50,
         "Zip code": 10,
-        "Business name": 100
+        "Business name":50
     }
 
     for field_name, max_length in max_length_fields.items():
@@ -90,15 +85,13 @@ def validate_fields(request, first_name=None, last_name=None, phone=None,
             errors_exist = True
 
     # Phone number length validation
-    if phone and (len(phone) < 10 or len(phone) > 15):
+    '''if phone and (len(phone) < 10 or len(phone) > 15):
         messages.error(request, "Phone number must be between 10 and 15 digits.")
-        errors_exist = True
+        errors_exist = True'''
 
     return errors_exist if errors_exist else None  # Return None if no errors exist
 
 
-
-'''
 @login_required
 def member_profile(request):  
     if request.method == 'POST':
@@ -108,8 +101,8 @@ def member_profile(request):
         phone = request.POST.get('phone')
         street_number = request.POST.get('street_number')
         street_address = request.POST.get('street_address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
+        city = int(request.POST.get('city'))
+        state = int(request.POST.get('state'))
         zip_code = request.POST.get('zip_code')
         has_agent = request.POST.get('has_agent')
         agent_first_name = request.POST.get('agent_first_name') if has_agent == 'yes' else None
@@ -118,208 +111,13 @@ def member_profile(request):
         agent_email = request.POST.get('agent_email') if has_agent == 'yes' else None
         business_name = request.POST.get('business_name')
         send_question = request.POST.get('send_question')
-
         #validation:
-        validation_errors = validate_fields(request, first_name, last_name, phone, 
-                                    street_number, street_address, city, 
-                                    state, zip_code, business_name)
-        if validation_errors:  # If there are errors, redirect back to the profile page
-            return redirect('membership_module:member_profile')
-        
+        # validation_errors = validate_fields(request, first_name, last_name, phone, 
+        #                         street_number, street_address,zip_code, business_name)
+        # if validation_errors:  # If there are errors, redirect back to the profile page
+        #     return redirect('membership_module:member_profile')
         
         # Proceed with saving data since validation passed
-        
-
-        
-        # Get the current logged-in user
-        user = request.user
-        #update user fields
-        user.first_name = first_name
-        user.last_name = last_name
-        #user.contact_no  = phone # getting error 
-        user.save()
-        
-        address_id = None
-        address = {
-            "street_no":street_number,
-            "street_name":street_address,
-            "city":city,
-            "state":state,
-            "zip_code":zip_code,
-            "member_type":user.member_type,
-            "user_id":request.user.id,
-           
-        }
-       
-        match request.user.member_type:
-            case 'buyer':
-                buyer, created = Buyers.objects.get_or_create(user=request.user)
-                buyer.business_name = business_name
-                buyer.save()
-                print(buyer.id)
-                address['buyer_id'] = buyer.id
-                address_id = generate__address(address)
-            case 'seller':
-                seller, created = Sellers.objects.get_or_create(user=user)
-                seller.business_name = business_name
-                seller.save()
-                address['seller_id'] = seller.id
-                address_id = generate__address(address)
-            case 'agent':
-                agent, created = Agents.objects.get_or_create(user=user)
-                agent.business_name = business_name
-                agent.save()
-                address_id = generate__address(address)
-      
-        # 🌟 **Handle Agent Assignment**
-        if has_agent == 'yes':
-            # agent = Agents.objects.get(
-            #     email=agent_email
-            # )
-            try:
-                agent = Agents.objects.get(email=agent_email)
-            except Agents.DoesNotExist:
-                agent = None
-            # Link the agent to the buyer or seller
-            if user.member_type == 'buyer':
-                buyer.agent = agent
-                buyer.save()
-            elif user.member_type == 'seller':
-                seller.agent = agent
-                seller.save()
-        else:
-             # Link the agent to the buyer or seller
-            if user.member_type == 'buyer':
-                buyer.agent = None
-                buyer.save()
-            elif user.member_type == 'seller':
-                seller.agent = None
-                seller.save()
-            
-            
-
-        # Handle the message to admin (if required)
-        if send_question:
-            # Code to send message to the admin (e.g., via email or saving it to a database)
-            pass
-
-        # Redirect to the profile success page
-        return redirect('membership_module:member_profile')
-    else:
-        profile_data = None
-        unified = None
-    
-        # Handle the different user member types
-        match request.user.member_type:
-            case 'buyer':
-                profile_data = Buyers.objects.get(user=request.user)
-                agent_data = {}
-              
-                
-                try:
-                    agent = profile_data.agent
-                    # Fetch agent and related data
-                    agents = Agents.objects.get(id=agent.id) if agent else None
-                    agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()} if agents else {}
-    
-                    # Fetch address and membership fee for the buyer
-                    address = MemberAddress.objects.get(buyer_id=profile_data.id)
-                
-                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                  
-                   
-                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, agent_data = {}, {}
-    
-                # Start with the profile data and merge
-                unified = model_to_dict(profile_data)
-                unified.update(address_data)
-                unified.update(agent_data)
-              
-            case 'seller':
-                profile_data = Sellers.objects.get(user=request.user)
-                
-                agent_data = {}
-                try:
-                    agent = profile_data.agent
-                    # Fetch agent and related data
-                    agents = Agents.objects.get(id=agent.id)if agent else None
-                    agent_data = {f"agents_{k}": v for k, v in model_to_dict(agents).items()} if agents else {}
-                  
-    
-                    # Fetch address and membership fee for the seller
-                    address = MemberAddress.objects.get(seller_id=profile_data.id)
-                  
-                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                  
-                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, agent_data = {}, {}
-    
-                # Start with the profile data and merge
-                unified = model_to_dict(profile_data)
-                unified.update(address_data)
-              
-                unified.update(agent_data)
-            case 'agent':
-                profile_data = Agents.objects.get(user=request.user)
-                agent_data = {}
-                try:
-                    # Fetch address and membership fee for the seller
-                    address = MemberAddress.objects.get(seller_id=profile_data.id)
-                   
-                    address_data = {f"{k}": v for k, v in model_to_dict(address).items()}
-                    
-                except (MemberAddress.DoesNotExist, MembershipFee.DoesNotExist):
-                    address_data, agent_data = {}, {}
-    
-                # Start with the profile data and merge
-                unified = model_to_dict(profile_data)
-                unified.update(address_data)
-                unified.update(agent_data)
-    
-            case _:
-                profile_data = None
-                unified = None
-        #print(unified)
-        
-    
-    return render(request, 'members/profile.html', {'profile_data': profile_data or {}, "data": unified or {}})
-'''
-
-
-
-@login_required
-def member_profile(request):  
-    if request.method == 'POST':
-        # Retrieve form data from POST request
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        phone = request.POST.get('phone')
-        street_number = request.POST.get('street_number')
-        street_address = request.POST.get('street_address')
-        city = request.POST.get('city')
-        state = request.POST.get('state')
-        zip_code = request.POST.get('zip_code')
-        has_agent = request.POST.get('has_agent')
-        agent_first_name = request.POST.get('agent_first_name') if has_agent == 'yes' else None
-        agent_last_name = request.POST.get('agent_last_name') if has_agent == 'yes' else None
-        agent_phone = request.POST.get('agent_phone') if has_agent == 'yes' else None
-        agent_email = request.POST.get('agent_email') if has_agent == 'yes' else None
-        business_name = request.POST.get('business_name')
-        send_question = request.POST.get('send_question')
-
-        #validation:
-        validation_errors = validate_fields(request, first_name, last_name, phone, 
-                                    street_number, street_address, city, 
-                                    state, zip_code, business_name)
-        if validation_errors:  # If there are errors, redirect back to the profile page
-            return redirect('membership_module:member_profile')
-        
-        
-        # Proceed with saving data since validation passed
-        
-
-        
         # Get the current logged-in user
         user = request.user
         #update user fields
@@ -332,14 +130,13 @@ def member_profile(request):
         address = {
             "street_no":street_number,
             "street_name":street_address,
-            "city":city,
-            "state":state,
+            "city_id":city,
+            "state_id":state,
             "zip_code":zip_code,
             "member_type":user.member_type,
             "user_id":request.user.id,
            
         }
-       
         match request.user.member_type:
             case 'buyer':
                 buyer, created = Buyers.objects.get_or_create(user=request.user)
@@ -384,9 +181,6 @@ def member_profile(request):
             elif user.member_type == 'seller':
                 seller.agent = None
                 seller.save()
-            
-            
-
         # Handle the message to admin (if required)
         if send_question:
             # Code to send message to the admin (e.g., via email or saving it to a database)

@@ -178,15 +178,15 @@
                        </div>
                        <div class="form-group">
                         <label for="phone">Phone:</label>
-                        <input value="{{request.user.member_address.phone_num|default:""}}" type="tel"  id="phone" name="phone" class="form-control"  >
+                        <input value="{{request.user.contact_no|default:""}}" type="tel"  id="phone" name="phone" class="form-control"  >
                     </div>                     
                    <div class="form-group">
                         <label for="state">State:</label>
                          {% comment %} <input value="{{request.user.member_address.state|default:""}}" type="text" id="state" name="state" class="form-control" > {% endcomment %}
-                          <select class="form-select" id="state">
+                          <select class="form-select" id="state" name="state">
                             <option value="" selected>Select Your State</option>
                             {% for state in states %}
-                              <option  {% if equest.user.member_address.state.id == state.id %}selected{% endif %} value="{{state.id}}">{{state.name}}</option>
+                              <option  {% if request.user.member_address.state.id == state.id %}selected{% endif %} value="{{state.id}}">{{state.name}}</option>
                             {% endfor %}
                           </select>
                         </div>
@@ -218,10 +218,10 @@
                       <div class="form-group">
                         <label for="city">City:</label>
                         {% comment %} <input value="{{request.user.member_address.city|default:""}}" type="text" id="city" name="city" class="form-control" > {% endcomment %}
-                        <select class="form-select" id="state">
+                        <select class="form-select" id="city" name="city">
                             <option value="" selected>Select Your City</option>
                             {% for city in cities %}
-                              <option {% if equest.user.member_address.city.id == city.id %}selected{% endif %} value="{{city.id}}">{{city.name}}</option>
+                              <option {% if request.user.member_address.city.id == city.id %}selected{% endif %} value="{{city.id}}">{{city.name}}</option>
                             {% endfor %}
                           </select>
                     </div>
