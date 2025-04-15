@@ -1,0 +1,96 @@
+<script type="text/javascript" src="https://secure.helcim.app/helcim-pay/services/start.js"></script>
+<script>
+    
+    function getCSRFToken() {
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      return csrfToken;
+  }
+    
+    let checkoutToken = null;
+    const payNowButton = document.getElementById("pay-now");
+    const loader = document.getElementById("loader");
+  
+    function showLoader() {
+      loader.classList.remove("d-none");
+      payNowButton.disabled = true;  // Disable button
+    }
+  
+    function hideLoader() {
+      loader.classList.add("d-none");
+      payNowButton.disabled = false;  // Re-enable button
+    }
+  
+    async function getCheckoutCard() {
+      showLoader();
+      let apiUrl = `${API_ROOT}/api-root/transactions/checkout-card`;
+  
+      try {
+          const response = await fetch(apiUrl, {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+          });
+  
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+  
+          const data = await response.json();
+          checkoutToken = data.data;
+          hideLoader();
+          return true;
+  
+      } catch (error) {
+          console.error('Error fetching checkout token:', error);
+          hideLoader();
+          return false;
+      }
+    }
+  
+  
+    payNowButton.addEventListener("click", async function(event) {
+      event.preventDefault();
+      payNowButton.disabled = true;  // Disable button immediately
+  
+      const tokenFetched = await getCheckoutCard();
+  
+      if (tokenFetched) {
+        showLoader();
+        appendHelcimPayIframe(checkoutToken, { allowExit: false });  // Prevent manual exit
+      } else {
+        alert("Failed to fetch checkout token. Please try again.");
+        payNowButton.disabled = false;  // Re-enable button if token fetch fails
+      }
+    });
+  
+    window.addEventListener("message", (event) => {
+      const helcimPayJsIdentifierKey = "helcim-pay-js-" + checkoutToken;
+      hideLoader();
+      if (event.data.eventName === helcimPayJsIdentifierKey) {
+        switch (event.data.eventStatus) {
+          case "SUCCESS":
+            console.log("Transaction successful!", event.data.eventMessage);
+            hideLoader();
+           
+            break;
+  
+          case "ABORTED":
+            console.error("Transaction aborted!", event.data.eventMessage);
+            alert("Payment was declined! Please try again.");
+            hideLoader(); 
+            break;
+  
+          case "HIDE":
+            console.log("User closed the confirmation screen.");
+            hideLoader();  
+            break;
+  
+          default:
+            console.warn("Unhandled event:", event.data.eventStatus);
+        }
+      }
+    });
+  </script>
+  
+  
+  
+  <script type="text/javascript" src="https://secure.myhelcim.com/js/version2.js"></script>

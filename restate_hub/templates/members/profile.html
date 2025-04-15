@@ -1,6 +1,6 @@
 
 {% extends "base.html" %}
-
+{% load next_month %}
 {% comment %} {% load disable_contextmenu_click %} {% endcomment %}
 {% block title %}
 <title>Member's Profile</title>
@@ -127,10 +127,22 @@
      color: #0d527a;
 }
 
+.pane-btn{
+    color:rgb(42, 91, 196); text-decoration: none; font-weight:400;
+}
+
+
 </style>
 {% if request.user.is_authenticated %}
+  <!-- Loader -->
+  <div id="loader" class="d-none position-fixed top-0 start-0 w-100 vh-100 d-flex flex-column justify-content-center align-items-center bg-white bg-opacity-75" style="z-index: 1055;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Processing...</span>
+    </div>
+    <p class="mt-3">Processing your payment...</p>
+  </div>
+  
 <div class="container p-2">
-
 {% if messages %}
     {% for message in messages %}
     <div class="alert alert-warning alert-dismissible fade show {% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
@@ -343,8 +355,8 @@
                 <div class="card shadow-sm border-0 p-3 mb-3">
                     <div class="d-flex justify-content-between align-items-center pb-2 border-bottom">
                         <p style="color: #6c757d; font-weight: 300; margin-bottom: 0;">Current Plan</p>
-                        <a href="#" style="color: #007bff; text-decoration: none; font-weight:300;">Add Another Card</a>
-                        
+                        {% comment %} <a id="pay-now" href="{% url "transactions_module:process_checkout_add_card" %}" class="pane-btn">Add Another Card</a> {% endcomment %}
+                        <button id="pay-now" class="btn-sm  btn-primary btn">Add Another Credit Card</button>
                     </div>
 
                     <div class="pt-3 ">
@@ -368,7 +380,7 @@
 
                     <div class="pt-3 ">
                         <p class="py-3" style="font-weight: 400; color: #343a40; margin-bottom: 0.5rem;">
-                            2025 / 06 / 08
+                            {{ request.user.user_helcim_account.signup_date|next_month_same_day }}
                         </p>
                     </div>
                 </div>
@@ -555,4 +567,10 @@
     inputs.forEach(input => input.disabled = !input.disabled); // Toggle the disabled attribute
 });
     </script>
+
+
+
+{% if request.user.is_authenticated %}
+{% include "includes/helcim/cardmodal.html" %}
+{% endif %}
 {% endblock %}
