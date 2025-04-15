@@ -36,10 +36,9 @@ class MemberAddress(BaseModel):
     suite_no = models.CharField(max_length=50, blank=True, null=True)
     lender_id = models.IntegerField(null=True)
     member_type  = models.CharField(max_length=30,choices=MEMBER_TYPES, blank=True, null=True)# Unncessory or below one unncessory. remove
-    city = models.CharField(max_length=100, null=True, blank=True)
+    city =  models.ForeignKey(City, on_delete=models.SET_NULL, null=True, blank=True, related_name="member_city")
     state = models.ForeignKey(State, on_delete=models.SET_NULL, null=True, blank=True, related_name="member_state")
     zip_code = models.CharField(max_length=20, null=True, blank=True)
-    state_two_code = models.CharField(max_length=5, null=True,blank=True)
     
     
 

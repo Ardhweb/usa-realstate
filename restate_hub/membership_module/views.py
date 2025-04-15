@@ -12,7 +12,8 @@ from buyer_module.models import Buyers
 from agent_module.models import Agents
 from django.db.models import F
 from django.forms.models import model_to_dict
-from django.contrib import messages
+from core.models import State, City
+
 
 
 
@@ -394,7 +395,13 @@ def member_profile(request):
         # Redirect to the profile success page
         return redirect('membership_module:member_profile')
     else:
-        return render(request, 'members/profile.html')
+        cities = City.objects.all()
+        states = State.objects.all()
+        context = {
+            'cities':cities,
+            'states':states,
+        }
+        return render(request, 'members/profile.html',context)
 
 
 
