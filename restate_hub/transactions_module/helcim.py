@@ -112,7 +112,7 @@ def create_customer_helcim(usr_data=None):
             "city": usr_data.get("city", ""),
             "province": usr_data.get("province", ""),  # State abbreviation (e.g., GA, NY)
             "country": usr_data.get("country", "USA"),  # Default to USA
-            "postalCode": usr_data.get("postal_code", ""),
+            "postalCode": usr_data.get("postalCode", ""),
             "phone": usr_data.get("phone", ""),
             "email": usr_data.get("email", ""),
         },

@@ -19,11 +19,9 @@
       </div>
       {% csrf_token %}
 
-      {% comment %} <!-- Pay Now Button -->
-      <button id="pay-now" class="btn btn-primary w-100 mt-3">Add Your Credit Card</button>
-       {% endcomment %}
-      {% if request.user.user_helcim_account and  request.user.user_helcim_account.is_subscribed == False %}
-      <button type="button" class="btn btn-warning w-100 mt-3" onclick="subscribeUser()">Re-Activate Subscription</button>
+     
+      {% if not request.user.user_helcim_account.is_subscribed and request.user.user_helcim_account.subscription_status == 'deactived' %}
+      {% comment %} <button type="button" class="btn btn-warning w-100 mt-3" onclick="subscribeUser()">Re-Activate Subscription</button> {% endcomment %}
       <!-- Pay Now Button -->
       <button id="pay-now" class="btn btn-primary w-100 mt-3">Add Another Credit Card</button>
       
@@ -98,7 +96,7 @@
 
         if (response.ok) {
             console.log("Subscription successful:", data);
-            alert(`Subscription Successful! ID: ${data.subscription_id}`);
+            //alert(`Subscription Successful! ID: ${data.subscription_id}`);
             
 
         } else {
