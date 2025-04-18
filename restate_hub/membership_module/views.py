@@ -13,8 +13,6 @@ from agent_module.models import Agents
 from django.db.models import F
 from django.forms.models import model_to_dict
 from core.models import State, City
-from accounts.forms import RemoveRequestForm
-
 
 
 def generate__address(data):
