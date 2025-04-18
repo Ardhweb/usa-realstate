@@ -47,7 +47,8 @@ def user_login(request):
                 else:
                     return HttpResponse('Disabled account')
             else:
-                return HttpResponse('Invalid login')
+                messages.error(request, "Invalid login!")
+            return redirect("membership_module:member_profile")
     else:
         form = LoginForm()
     return render(request, 'accounts/login.html', {'form': form})
