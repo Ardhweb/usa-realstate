@@ -3,7 +3,7 @@ from django.http import request
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout 
-from .forms import LoginForm, SignupForm ,OTPVerificationForm                                  
+from .forms import LoginForm, SignupForm ,OTPVerificationForm                                
 from django.contrib import auth, messages
 from accounts.models import SingleFactorEmailOTP
 import secrets

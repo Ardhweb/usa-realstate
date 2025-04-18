@@ -43,43 +43,31 @@ uuid_25 = generate_alphanumeric_uuid_25()
 full_uuid = generate_full_uuid()
 
 
+def test_helcim_connection():
+    url = "https://api.helcim.com/v2/connection-test"
+    headers = {
+        "accept": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN
+    }
+    try:
+        response = requests.get(url, headers=headers)
+        print("API Response Text:", response.text)  # Debugging
 
-class CustomerDataService:
-    def __init__(self, user):
-        self.user = user
-        self.member_type = f"{self.user.member_type}s"  # Example: 'buyer' → 'buyers'
-        
-        # Dynamically get the related object (if it exists)
-        self.related_member = getattr(self.user, self.member_type, None)
-        
-        # If it's a related manager (reverse relationship), get the first object
-        self.instance_member = self.related_member if self.related_member else None
-        # self.buyer =  self.user.buyers 
-        self.address = self.instance_member.memberaddress_set.first() if self.instance_member else None  # Get first address
+        response.raise_for_status()  # Raises an exception for HTTP errors (4xx, 5xx)
 
-    def get_customer_data(self):
-        if self.user.member_type not in ['buyer', 'seller', 'agent']:
-            return None  # Or return {}
-        return {
-            "customerCode": f"CST{self.user.id}",
-            "full_name": f"{self.instance_member.first_name}{self.instance_member.last_name}" if self.instance_member else "",
-            "email": self.user.email,
-            "phone": getattr(self.instance_member, "phone_num", ""),
+        try:
+            response_dict = response.json()  # Parse response as JSON
+        except json.JSONDecodeError:
+            print("Error decoding JSON:", response.text)
+            return {"error": "Invalid JSON response", "status_code": response.status_code, "raw_response": response.text}
 
-            # # Member Address Fields
-            "street1": f"{self.address.street_no} {self.address.street_name}" if self.address else "",
-            "street2": self.address.suite_no if self.address else "",
-            "country": "USA",
-            "city": self.address.city if self.address else "",
-            "province": self.address.state[:2].upper() if self.address and self.address.state else "",
-            "postal_code": self.address.zip_code if self.address else "",
-        }
+        return {"data": response_dict, "status_code": response.status_code}  # Return both response and status code
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return {"error": str(e), "status_code": 500}  # Return error message with status code
 
-
-
-
-
-
+    
+    
 def get_customer(api_token=None,usr_id=None):
     
     url = f"https://api.helcim.com/v2/customers/CST{usr_id}"
@@ -144,8 +132,6 @@ def create_customer_helcim(usr_data=None):
     except requests.exceptions.RequestException as e:
         print(f"API request failed: {e}")
         return {"error": str(e), "status_code": 500}  # Return error message with status code
-
-
 
 
 
@@ -260,15 +246,3 @@ def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
         return {"error": str(e), "status_code": 500}  # Return error message with status code
 
 
-def test_connection():
-  
-    url = "https://api.helcim.com/v2/connection-test"
-    
-    headers = {
-        "accept": "application/json",
-        "api-token": settings.HELCIM_API_TOKEN
-    }
-    
-    response = requests.get(url, headers=headers)
-    
-    print(response.text)

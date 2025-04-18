@@ -5,6 +5,8 @@ import shortuuid
 import random
 from django.utils.timezone import now
 from datetime import timedelta
+from django.db.models import F, ExpressionWrapper, fields
+
 # Create your models here.
 class User(AbstractUser):
     contact_no = models.CharField(max_length=15,null=True,blank=True)
@@ -39,3 +41,28 @@ class SingleFactorEmailOTP(models.Model):
             self.is_expired = False
         self.save()
 
+
+
+class RemoveRequest(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
+    request_at = models.DateField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
+    reason = models.TextField(null=True, blank=True)  # Optional field for the reason for the request
+    comments = models.TextField(null=True, blank=True)  # Optional field for additional comments or notes
+
+    def __str__(self):
+        return f"Remove request {self.request_at}"
+
+
+    @classmethod
+    def annotate_time_ago(cls):
+        # Annotate the time difference
+        return cls.objects.annotate(
+            time_ago=ExpressionWrapper(
+                Now() - F('request_at'),
+                output_field=fields.DurationField()
+            )
+        )
+
+
+      
