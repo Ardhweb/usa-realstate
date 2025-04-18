@@ -23,7 +23,7 @@ class SignupForm(forms.ModelForm):
             }
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        validate_email_domain(email)  # Apply custom validator
+        #validate_email_domain(email)  # Apply custom validator Pause for now
         # Ensure email uniqueness
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email is already in use.")
