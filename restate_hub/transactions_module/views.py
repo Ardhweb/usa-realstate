@@ -1,12 +1,13 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import JsonResponse
 # Create your views here.
-from transactions_module.helcim import test_helcim_connection,checkout_session , create_subscription, get_customer , create_customer_helcim
+from transactions_module.helcim import create_plans, test_helcim_connection,checkout_session , create_subscription, get_customer , create_customer_helcim
 from  .models import HelcimInfo
 from membership_module.models import SubscriptionPlans
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 @login_required()
 def process_setup(request):
@@ -65,3 +66,12 @@ def process_checkout_add_card(request):
 
 
 
+def test_pg(request):
+    # Test values (you can later make this dynamic or get from request.GET/POST)
+    # response = create_plans(
+    #     name="Test Plan",
+    #     setup_amount=0.99,
+    #     recurring_amount=10.00
+    # )
+
+    return HttpResponse("ok")

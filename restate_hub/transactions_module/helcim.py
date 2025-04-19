@@ -200,6 +200,82 @@ def get_plan(paymentPlanId=None):
     print(response.text)
     return response.text
 
+from decimal import Decimal
+
+def create_plans(name=None, setup_amount=0.0, recurring_amount=0.0):
+    url = "https://api.helcim.com/v2/payment-plans"
+
+    setup_amount = float(setup_amount) if isinstance(setup_amount, Decimal) else setup_amount
+    recurring_amount = float(recurring_amount) if isinstance(recurring_amount, Decimal) else recurring_amount
+    payload = {
+        "paymentPlans": [
+            {
+                "type": "subscription",
+                "billingPeriod": "monthly",
+                "termType": "forever",
+                "paymentMethod": "card",
+                "name": name or "Default Plan Name",  # fallback if name is None
+                "status": "active",
+                "setupAmount": setup_amount,
+                "recurringAmount": recurring_amount,
+                "billSetupImmediately": "first_billing",
+                "billingPeriodIncrements": 1,
+                "dateBilling": "Sign-up"
+            }
+        ]
+    }
+
+    headers = {
+        "accept": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN,  # Replace with real token
+        "content-type": "application/json"
+    }
+
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        print("API Response Text:", response.text)  # Debugging
+
+        response.raise_for_status()  # Raises an exception for HTTP errors (4xx, 5xx)
+
+        try:
+            response_dict = response.json()  # Parse response as JSON
+            print(response_dict)
+        except json.JSONDecodeError:
+            print("Error decoding JSON:", response.text)
+            return {"error": "Invalid JSON response", "status_code": response.status_code, "raw_response": response.text}
+
+        return {"data": response_dict, "status_code": response.status_code}  # Return both response and status code
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return {"error": str(e), "status_code": 500}  # Return error message with status code
+
+def delete_plan(paymentPlanId=None):
+    ''' 
+      dataType : 
+      paymentPlanId : int
+    '''
+    url = f"https://api.helcim.com/v2/payment-plans/{paymentPlanId}"
+    headers = {
+        "accept": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN,
+    }
+    
+    try:
+        response = requests.delete(url, headers=headers)
+        print(response.text)
+        response.raise_for_status()  # Raises an exception for HTTP errors (4xx, 5xx
+        try:
+            response_dict = response.json()  # Parse response as JSON
+        except json.JSONDecodeError:
+            print("Error decoding JSON:", response.text)
+            return {"error": "Invalid JSON response", "status_code": response.status_code, "raw_response": response.text}
+        return {"status_code": response.status_code}  # Return both response and status code
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return {"error": str(e), "status_code": 500}  # Return error message with status code
+
+
+
 
 def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
     if not paymentPlanId:
