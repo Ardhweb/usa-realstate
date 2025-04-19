@@ -9,7 +9,7 @@ from django.db.models import F, ExpressionWrapper, fields
 
 # Create your models here.
 class User(AbstractUser):
-    contact_no = models.CharField(max_length=15,null=True,blank=True)
+    contact_no = models.CharField(max_length=20,null=True,blank=True)
     member_type = models.CharField(max_length=50,null=True,blank=True)
     message = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

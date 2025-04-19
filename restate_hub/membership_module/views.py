@@ -14,13 +14,12 @@ from django.db.models import F
 from django.forms.models import model_to_dict
 from core.models import State, City
 
-
+'''
 def generate__address(data):
     # defaults = {}
     # if "buyer_id" in data: defaults["buyer_id"] = data["buyer_id"]
     # if "seller_id" in data: defaults["seller_id"] = data["seller_id"]
     # if "agent_id" in data: defaults["agent_id"] = data["agent_id"]
-    
     member_address, created = MemberAddress.objects.update_or_create(
         street_no=data.get("street_no"),
         street_name=data.get("street_name"),
@@ -31,6 +30,33 @@ def generate__address(data):
         user_id=data.get('user_id'),
         # defaults=defaults
     ) 
+
+    return member_address.id
+'''
+def generate__address(data):
+    user_id = data.get("user_id")
+
+    try:
+        member_address = MemberAddress.objects.get(user_id=user_id)
+        # Update the existing address
+        member_address.street_no = data.get("street_no")
+        member_address.street_name = data.get("street_name")
+        member_address.city_id = data.get("city_id")
+        member_address.state_id = data.get("state_id")
+        member_address.zip_code = data.get("zip_code")
+        member_address.member_type = data.get("member_type")
+        member_address.save()
+    except MemberAddress.DoesNotExist:
+        # Create a new address if one doesn't exist
+        member_address = MemberAddress.objects.create(
+            user_id=user_id,
+            street_no=data.get("street_no"),
+            street_name=data.get("street_name"),
+            city_id=data.get("city_id"),
+            state_id=data.get("state_id"),
+            zip_code=data.get("zip_code"),
+            member_type=data.get("member_type")
+        )
 
     return member_address.id
 
