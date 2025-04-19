@@ -43,7 +43,7 @@ class AgentsAPI(APIView):
                 return Response({"error": "Email parameter is required."}, status=400)
 
             try:
-                agent = Agents.objects.get(email=email)  # Fetch agent by email
+                agent = User.objects.get(email=email)  # Fetch agent by email
                 return Response({"email": agent.email})  # Only return the email
             except ObjectDoesNotExist:
                 return Response({"error": "Agent not found."}, status=404)
