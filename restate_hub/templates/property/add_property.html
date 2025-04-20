@@ -47,6 +47,11 @@ input[type="file"]::file-selector-button {
 {% endblock style %}
 {% block content %}
 <div class="container  rounded-3 p-4 ">
+    {% if not request.user.user_helcim_account and not request.user.member_address %}
+    <p>Please Update the Profile and Billing Setup</p>
+    {% elif  request.user.user_helcim_account.is_subscribed == True  %}
+    <p>Please finish the  Billing Setup  steps.</p>
+    {% else %}
     <section class="hero text-center mb-4">
         <h1 class="text-primary fw-semibold">Add New Property</h1>
         <p>Create an new property and filled its details  and information below.</p>
@@ -213,6 +218,7 @@ input[type="file"]::file-selector-button {
             <input type="submit" value="Add Property" class="btn btn-primary w-50" />
         </div>
     </form>
+    {% endif %}
 </div>
 {% endblock content %}
 

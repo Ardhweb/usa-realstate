@@ -12,6 +12,9 @@ from django.conf import settings
 from django.urls import reverse
 from property_module.utils import send_email_inquiry
 from seller_module.models import Sellers
+from transactions_module.models import HelcimInfo
+from membership_module.models import MemberAddress
+from django.contrib import messages
 # Create your views here.
 def property_listing(request):
     states = State.objects.all() # Get all objects for now.
@@ -29,14 +32,15 @@ def add_property(request):
                 instance = form.save(commit=False)
                 instance.seller = seller
                 instance.save()
-                
-               
                 return redirect('property_module:property-mine')
             else:
                 print(form.errors, location_form.errors)  # Debugging: Print form validation errors
+        elif not getattr(request.user, 'user_helcim_account', None) and not getattr(request.user, 'member_address', None):
+            messages.error(request, "You need to update your profile and billing setup.")
+            return redirect('membership_module:member_profile')
         else:
+            
             form = AddPropertiesInfoForm()
-           
         return render(request, 'property/add_property.html', {'form': form,})
     else:
         raise Http404('Page not found')
