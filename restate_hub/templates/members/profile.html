@@ -1,6 +1,8 @@
 
 {% extends "base.html" %}
 {% load next_month %}
+{% load member_tags %}
+
 {% comment %} {% load disable_contextmenu_click %} {% endcomment %}
 {% block title %}
 <title>Member's Profile</title>
@@ -295,7 +297,8 @@
                   <div class=" {% if request.user.member_type == 'agent' %} col-md-12 {% else %}col-md-6 {% endif %} ">
                     <div class="form-group" style="margin-bottom: 1.5rem;">
                          <label for="business_name" style="font-weight: 500; color: #343a40;">Business Name:</label>
-                        <input  value="{{request.user.member_address.business_name|default:""}}" type="text" id="business_name" name="business_name" class="form-control"  style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
+                           
+                         <input  value="{% get_member_field request.user 'business_name' 'Not Available' %}"  type="text" id="business_name" name="business_name" class="form-control"  style="border: 1px solid #ced4da; border-radius: 8px; padding: 12px 16px; font-size: 1rem;">
                     </div>
                   </div>            
                 </div>
@@ -339,7 +342,7 @@
         <!-- Navigation -->
         <div class="nav flex-column nav-pills me-3 fs-5 card rounded p-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <button class="nav-link text-center py-3 w-100 active" id="v-pills-billing-tab" data-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="true">Billing</button>
-            <button class="nav-link text-center py-3 w-100" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
+            {% comment %} <button class="nav-link text-center py-3 w-100" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> {% endcomment %}
         </div>
 
         <!-- Content -->
@@ -416,7 +419,7 @@
             </div>
 
             <!-- Settings Section -->
-            <div class="tab-pane fade w-100" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+            {% comment %} <div class="tab-pane fade w-100" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                 <h3>Settings Content</h3>
                 <p>This is the Settings tab content.</p>
                 <h5>Cancellation</h5>
@@ -426,7 +429,7 @@
                     <label class="form-check-label" for="confirmCancellation">I understand this action cannot be undone.</label>
                 </div>
                 <button class="btn btn-danger btn-md mt-3" type="button" id="deleteAccountButton" disabled>Delete Account and Membership</button>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
 </div>

@@ -14,25 +14,6 @@ from django.db.models import F
 from django.forms.models import model_to_dict
 from core.models import State, City
 
-'''
-def generate__address(data):
-    # defaults = {}
-    # if "buyer_id" in data: defaults["buyer_id"] = data["buyer_id"]
-    # if "seller_id" in data: defaults["seller_id"] = data["seller_id"]
-    # if "agent_id" in data: defaults["agent_id"] = data["agent_id"]
-    member_address, created = MemberAddress.objects.update_or_create(
-        street_no=data.get("street_no"),
-        street_name=data.get("street_name"),
-        city_id=data.get("city_id"),
-        state_id=data.get("state_id"),
-        zip_code=data.get("zip_code"),
-        member_type=data.get("member_type"),
-        user_id=data.get('user_id'),
-        # defaults=defaults
-    ) 
-
-    return member_address.id
-'''
 def generate__address(data):
     user_id = data.get("user_id")
 
@@ -117,7 +98,7 @@ def validate_fields(request, first_name=None, last_name=None, phone=None,
 
 
 @login_required
-def member_profile(request):  
+def member_profile(request):
     if request.method == 'POST':
         # Retrieve form data from POST request
         first_name = request.POST.get('first_name')
@@ -149,7 +130,7 @@ def member_profile(request):
         user.last_name = last_name
         user.contact_no  = phone # getting error 
         user.save()
-        
+
         address_id = None
         address = {
             "street_no":street_number,
@@ -167,13 +148,11 @@ def member_profile(request):
                 buyer.business_name = business_name
                 buyer.save()
                 print(buyer.id)
-                #address['buyer_id'] = buyer.id
                 address_id = generate__address(address)
             case 'seller':
                 seller, created = Sellers.objects.get_or_create(user=user)
                 seller.business_name = business_name
                 seller.save()
-                #address['seller_id'] = seller.id
                 address_id = generate__address(address)
             case 'agent':
                 agent, created = Agents.objects.get_or_create(user=user)
@@ -218,6 +197,7 @@ def member_profile(request):
         context = {
             'cities':cities,
             'states':states,
+           
         }
         return render(request, 'members/profile.html',context)
 
