@@ -131,6 +131,33 @@
     color:rgb(42, 91, 196); text-decoration: none; font-weight:400;
 }
 
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.agent_alert {
+  position: fixed;
+  top: 20vh;
+  right: 2rem;
+  z-index: 9999;
+  animation: slideInRight 0.5s ease-out;
+}
 
 </style>
 {% if request.user.is_authenticated %}
@@ -154,10 +181,14 @@
 {% endif %}
 
 <!-- Bootstrap Alert -->
-<div id="resultMessage" class=" z-4 custom-alert alert d-none alert-dismissible fade show" role="alert">
+<div id="resultMessage"
+     class="z-4 custom-alert agent_alert alert d-none alert-dismissible fade show"
+     role="alert"
+    >
   <span id="alertText"></span>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+
 
     <main class="member-profile-main">
         <div class="container">
@@ -194,7 +225,7 @@
                     </div>                     
                    <div class="form-group">
                         <label for="state">State:</label>
-                         {% comment %} <input value="{{request.user.member_address.state|default:""}}" type="text" id="state" name="state" class="form-control" > {% endcomment %}
+                         
                           <select class="form-select" id="state" name="state">
                             <option value="" selected>Select Your State</option>
                             {% for state in states %}
@@ -229,7 +260,7 @@
                   <div class="col-md-6">
                       <div class="form-group">
                         <label for="city">City:</label>
-                        {% comment %} <input value="{{request.user.member_address.city|default:""}}" type="text" id="city" name="city" class="form-control" > {% endcomment %}
+                      
                         <select class="form-select" id="city" name="city">
                             <option value="" selected>Select Your City</option>
                             {% for city in cities %}
@@ -270,16 +301,12 @@
                 </div>
                
                   <div id="agent-section" style="display: none;">
-                   
-         
                       <div class="row mt-3">
-                       
-                        
                         <div class="col-md-12">
                            <div class="form-group">
                              <label for="agent_email">Agent Email:</label>
                             <input value="{{request.user.member_address.agents_email|default:""}}" type="email" id="agent_email" name="agent_email" class=" form-control"  placeholder="Enter Agent Email">
-                            <a class="btn btn-secondary  btn-sm" id="verifyButton">Verify Agent</a> 
+                            <a class="btn btn-secondary  btn-sm my-2" id="verifyButton">Verify Agent</a> 
                             <span id="agent-exist" class="agent-exist"></span>
                           </div>
                          </div>

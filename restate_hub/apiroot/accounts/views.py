@@ -38,13 +38,11 @@ class AgentsAPI(APIView):
     def get(self, request, format=None):
         if request.user.is_authenticated:
             email = request.query_params.get("email")  # Get email from query params
-            
             if not email:
                 return Response({"error": "Email parameter is required."}, status=400)
-
             try:
-                agent = User.objects.get(email=email)  # Fetch agent by email
-                return Response({"email": agent.email})  # Only return the email
+                agent = Agents.objects.get(user__email=email)
+                return Response({"email": agent.user.email})  # Only return the email
             except ObjectDoesNotExist:
                 return Response({"error": "Agent not found."}, status=404)
 
