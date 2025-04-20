@@ -135,7 +135,7 @@
           hideLoader();
           subscribeUser()
           setTimeout(function() {
-            window.location.href = "http://127.0.0.1:8000/members/profile/";
+            window.location.href = "{{ request.scheme }}://{{ request.get_host }}/members/profile/";
         }, 4000);
         
           break;

@@ -33,7 +33,7 @@ def process_setup(request):
                     "province": f'{request.user.member_address.state.code}',
                     "country": "USA",
                     "postalCode":f"{request.user.member_address.zip_code}",
-                    'phone':int(request.user.contact_no)
+                    'phone':request.user.contact_no
                 }
                 customer_response = create_customer_helcim(usr_data=data)
                 match customer_response.get("status_code"):
