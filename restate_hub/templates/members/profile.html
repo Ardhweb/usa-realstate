@@ -334,7 +334,7 @@
                  
             </div>
             
-            <button id="form-0submit" class=" d-none btn btn-success">Submit</button>
+            <button type="submit" id="form-0submit" class=" d-none btn btn-success">Submit</button>
            </form>
         </div>
     </main>
@@ -346,7 +346,7 @@
         <!-- Navigation -->
         <div class="nav flex-column nav-pills me-3 fs-5 card rounded p-1" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <button class="nav-link text-center py-3 w-100 active" id="v-pills-billing-tab" data-bs-toggle="pill" data-bs-target="#v-pills-billing" type="button" role="tab" aria-controls="v-pills-billing" aria-selected="true">Billing</button>
-            {% comment %} <button class="nav-link text-center py-3 w-100" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button> {% endcomment %}
+            <button class="nav-link text-center py-3 w-100" id="v-pills-settings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</button>
         </div>
 
         <!-- Content -->
@@ -389,7 +389,7 @@
                 <div class="card shadow-sm border-0 p-3 mb-3">
                     <div class="d-flex justify-content-between align-items-center pb-2 border-bottom">
                         <p style="color: #6c757d; font-weight: 300; margin-bottom: 0;">Current Plan</p>
-                        {% comment %} <a id="pay-now" href="{% url "transactions_module:process_checkout_add_card" %}" class="pane-btn">Add Another Card</a> {% endcomment %}
+                       
                         <button id="pay-now" class="btn-sm  btn-primary btn">Add Another Credit Card</button>
                     </div>
 
@@ -423,7 +423,7 @@
             </div>
 
             <!-- Settings Section -->
-            {% comment %} <div class="tab-pane fade w-100" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+         <div class="tab-pane fade w-100" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                 <h3>Settings Content</h3>
                 <p>This is the Settings tab content.</p>
                 <h5>Cancellation</h5>
@@ -432,8 +432,8 @@
                     <input class="form-check-input" type="checkbox" id="confirmCancellation">
                     <label class="form-check-label" for="confirmCancellation">I understand this action cannot be undone.</label>
                 </div>
-                <button class="btn btn-danger btn-md mt-3" type="button" id="deleteAccountButton" disabled>Delete Account and Membership</button>
-            </div> {% endcomment %}
+                <button data-csrf="{{ csrf_token }}" class="btn btn-danger btn-md mt-3" type="button" id="deleteAccountButton" disabled>Delete Account and Membership</button>
+            </div> 
         </div>
     </div>
 </div>
@@ -457,7 +457,7 @@
 
     // On form submit, manually validate only the phone field
     $('#profile-form-id').on('submit', function (e) {
-      e.preventDefault(); // Prevent form from submitting
+      // Prevent form from submitting
 
       var phoneField = $('#phone').parsley();
 
@@ -466,6 +466,7 @@
 
       // Show appropriate message based on validation
       if (phoneField.isValid()) {
+        //e.preventDefault();
         $('.bs-callout-info').removeClass('d-none');
         $('.bs-callout-warning').addClass('d-none');
       } else {
@@ -556,18 +557,8 @@
     
         
 
-        function updateTotal() {
-          let monthlyFee = parseFloat(document.getElementById("monthly_fee").value) || 0;
-          let oneTimeFee = parseFloat(document.getElementById("one_time_fee").value) || 0;
 
-          if (monthlyFee === 0 && oneTimeFee === 0) {
-              return; // Do nothing if both are empty or zero
-          }
-
-          document.getElementById("total").value = monthlyFee + oneTimeFee;
-      }
-
-      document.addEventListener("DOMContentLoaded", updateTotal); // Run on page load
+      //document.addEventListener("DOMContentLoaded", updateTotal); // Run on page load
       document.querySelectorAll("#profile-form-id input, #profile-form-id select").forEach(element => element.setAttribute("disabled", "true"));
 
       document.addEventListener("DOMContentLoaded", function () {
@@ -624,9 +615,48 @@
 
 
 
-  document.getElementById('editagent').addEventListener('click', () => {
+  {% comment %} document.getElementById('editagent').addEventListener('click', () => {
     const inputs = document.querySelectorAll('#agent-section input');
     inputs.forEach(input => input.disabled = !input.disabled); // Toggle the disabled attribute
+}); {% endcomment %}
+
+document.getElementById("deleteAccountButton").addEventListener("click", function () {
+ 
+  const checkbox = document.getElementById("confirmCancellation");
+  const csrfToken = event.currentTarget.dataset.csrf;
+  console.log("Clicked delete");
+  console.log("Checkbox checked:", checkbox.checked);
+  console.log("CSRF token:", csrfToken);
+  if (checkbox.checked) {
+      // Call your API
+      fetch(`{{ request.scheme }}://{{ request.get_host }}{% url 'subscription_manage_api' %}`, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": `${csrfToken}`  // Include if CSRF is required
+          }
+      })
+      .then(response => {
+          if (response.ok) {
+              alert("Your subscription was paused and account deactivated.");
+              // Optionally redirect
+              window.reload()
+             window.location.href = '{{ request.scheme }}://{{ request.get_host }}{% url 'accounts:login' %}';
+          } else {
+              return response.json().then(data => {
+                  console.error(data);
+                  alert("Failed to process your request.");
+              });
+          }
+      })
+      .catch(error => {
+          console.error("Error:", error);
+          alert("An error occurred.");
+      });
+  } else {
+      alert("Please confirm cancellation by checking the box.");
+  }
 });
     </script>
 

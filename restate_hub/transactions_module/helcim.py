@@ -300,9 +300,6 @@ def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
         "content-type": "application/json"
     }
     
-    response = requests.post(url, json=payload, headers=headers)
-    
-    print(response.text)
     try:
         response = requests.post(url, json=payload, headers=headers)
         print("API Response Text:", response.text)  # Debugging
@@ -322,3 +319,39 @@ def create_subscription(paymentPlanId=None,usr_id=None,dateActive=None):
         return {"error": str(e), "status_code": 500}  # Return error message with status code
 
 
+def delete_subscription():
+    pass
+
+def update_subscription(subscription_id=None, status="active"):
+    url = "https://api.helcim.com/v2/subscriptions"
+    payload = { "subscriptions": [
+            {
+                "id": subscription_id,
+                "status": status or "paused",
+            }
+        ] }
+    headers = {
+        "accept": "application/json",
+        "api-token": settings.HELCIM_API_TOKEN,
+        "content-type": "application/json"
+    }
+    
+    try:
+        response = requests.patch(url, json=payload, headers=headers)
+        print("API Response Text:", response.text)  # Debugging
+
+        response.raise_for_status()  # Raises an exception for HTTP errors (4xx, 5xx)
+
+        try:
+            response_dict = response.json()  # Parse response as JSON
+        except json.JSONDecodeError:
+            print("Error decoding JSON:", response.text)
+            return {"error": "Invalid JSON response", "status_code": response.status_code, "raw_response": response.text}
+
+        return {"data": response_dict, "status_code": response.status_code}  # Return both response and status code
+
+    except requests.exceptions.RequestException as e:
+        print(f"API request failed: {e}")
+        return {"error": str(e), "status_code": 500}  # Return error message with status code
+
+    

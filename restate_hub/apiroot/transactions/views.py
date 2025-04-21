@@ -50,7 +50,9 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from django.conf import settings
-
+from transactions_module.helcim import update_subscription
+from accounts.models import RemoveRequest
+from django.contrib.auth import logout
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -121,3 +123,61 @@ def subscription_api(request):
     except Exception as e:
         print(str(e))
         return Response(str(e), status=500, content_type="text/plain")
+
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication])
+def subscription_manage_api(request):
+    if not request.user.is_authenticated:
+        return Response("User is not authenticated", status=403, content_type="text/plain") 
+
+    try:
+        # Fetch required data
+        hInfo = get_object_or_404(HelcimInfo, user=request.user)
+        print("📆 Signup Date:", hInfo.signup_date.isoformat())
+
+        # Call the Helcim API
+        response = update_subscription(subscription_id=hInfo.subscriptionId, status='paused')
+
+        status_code = response.get("status_code")
+        data = response.get("data")
+        error = response.get("error")
+
+        match status_code:
+            case 200:
+                print("✅ Paused! Subscription has been paused successfully.")
+                hInfo.is_subscribed = False
+                hInfo.subscription_status = 'deactivated'
+                hInfo.save()
+                user = hInfo.user
+                rr, created = RemoveRequest.objects.update_or_create(user=user,defaults={}
+                )
+                user.is_active = False
+                user.save()
+                logout(request)
+
+
+                return Response({"message": "Subscription paused and account deactivated."}, status=200)
+
+            case 400:
+                print("⚠️ Bad Request: Likely validation error from Helcim.")
+                return Response({"error": "Bad Request", "details": error or data}, status=400)
+
+            case 401:
+                print("⛔ Unauthorized! Check Helcim API credentials.")
+                return Response({"error": "Unauthorized access to Helcim"}, status=401)
+
+            case 403:
+                print("🚫 Forbidden! You don't have permission.")
+                return Response({"error": "Forbidden request to Helcim"}, status=403)
+
+            case _:
+                print(f"❓ Unexpected response: {status_code} - {error or data}")
+                return Response({"error": "Unexpected response", "details": error or data}, status=status_code or 500)
+
+    except Exception as e:
+        print("🔥 Exception:", str(e))
+        return Response({"error": str(e)}, status=500)
+
