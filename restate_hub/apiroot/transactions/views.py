@@ -156,6 +156,7 @@ def subscription_manage_api(request):
                 )
                 user.is_active = False
                 user.save()
+                
                 logout(request)
 
 

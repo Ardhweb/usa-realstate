@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-
+from django.db import models
 
 class AccountsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -7,4 +7,5 @@ class AccountsConfig(AppConfig):
 
     # def ready(self):
     #     import accounts.signal  # Make sure signals are imported
-
+    
+  

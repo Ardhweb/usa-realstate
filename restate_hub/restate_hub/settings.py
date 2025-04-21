@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'rest_framework_simplejwt',
+
+    
    
  
 ]
@@ -258,3 +260,5 @@ HELCIM_API_URL = os.getenv("HELCIM_API_URL")
 # SECURE_BROWSER_XSS_FILTER = os.getenv('SECURE_BROWSER_XSS_FILTER')
 # SECURE_CONTENT_TYPE_NOSNIFF = os.getenv('SECURE_CONTENT_TYPE_NOSNIFF')
 # X_FRAME_OPTIONS = os.getenv('X_FRAME_OPTIONS')
+
+# Replace with your actual PostgreSQL connection

@@ -103,11 +103,7 @@ class PropertiesInfo(BaseModel):
     garage_num = models.IntegerField(null=True)
     hoa_fee_qtr = models.DecimalField(max_digits=10, decimal_places=2, null=True)
    
-    
-    def save(self, *args, **kwargs):
-        if self.latitude is not None and self.longitude is not None:
-            self.point = Point(self.longitude, self.latitude)  # (lng, lat)
-        super().save(*args, **kwargs)
+ 
 
 class PropertyAgent(BaseModel):
     SELLERREP = 'SellerRep'

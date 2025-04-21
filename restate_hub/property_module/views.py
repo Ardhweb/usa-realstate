@@ -26,7 +26,6 @@ def add_property(request):
     if request.user.is_authenticated and request.user.member_type == 'seller' or request.user.member_type == 'agent':
         if request.method == 'POST':
             form = AddPropertiesInfoForm(request.POST,request.FILES)
-            location_form = PropertyLocationForm(request.POST)
             seller =  Sellers.objects.get(user=request.user)
             if form.is_valid():
                 instance = form.save(commit=False)

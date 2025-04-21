@@ -49,7 +49,7 @@ input[type="file"]::file-selector-button {
 <div class="container  rounded-3 p-4 ">
     {% if not request.user.user_helcim_account and not request.user.member_address %}
     <p>Please Update the Profile and Billing Setup</p>
-    {% elif  request.user.user_helcim_account.is_subscribed == True  %}
+    {% elif  request.user.user_helcim_account.is_subscribed == False  %}
     <p>Please finish the  Billing Setup  steps.</p>
     {% else %}
     <section class="hero text-center mb-4">
