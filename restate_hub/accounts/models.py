@@ -54,15 +54,9 @@ class RemoveRequest(models.Model):
         return f"Remove request {self.request_at}"
 
 
-    @classmethod
-    def annotate_time_ago(cls):
-        # Annotate the time difference
-        return cls.objects.annotate(
-            time_ago=ExpressionWrapper(
-                Now() - F('request_at'),
-                output_field=fields.DurationField()
-            )
-        )
+
+
+        
 
 
       

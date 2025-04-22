@@ -1,0 +1,30 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+    {{ block.super }}
+    <div>{{ original.related_info|safe }}</div>
+{% endblock %}
+
+{% block submit_buttons_bottom %}
+    <div class="submit-row" style="display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;">
+        <div class="messagelist">
+            <div class="error">
+                <strong style="font-size: 1.05rem;">
+                    <span class="icon-alert" aria-hidden="true"></span>
+                    Delete All Related Records User.
+                </strong><br>
+                <span style="font-size: 0.95rem; color: #a00; font-weight: 500;">
+                    ⚠️ This process is <u>irreversible</u> and cannot be undone.
+                </span>
+            </div>
+            <details>
+              <summary>Info </summary>
+              <p> From here you gone delete the records from all related table where you  have this same user.</p>
+            </details>
+        </div>
+
+        <a  href="{% url 'admin:accounts_removerequest_delete_user_related' original.pk %}" class="deletelink" name="_customaction"> Permanent Delete User</a>
+    </div>
+
+    {{ block.super }}
+{% endblock %}

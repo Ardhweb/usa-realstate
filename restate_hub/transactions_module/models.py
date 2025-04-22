@@ -78,3 +78,5 @@ class HelcimInfo(models.Model):
     subscription_status = models.CharField(max_length=50, null=True, blank=True, choices=subscription_status )
     is_default_card = models.BooleanField(default=False)
     default_card_exp = models.DateField(auto_now=True, null=True)
+
+    
