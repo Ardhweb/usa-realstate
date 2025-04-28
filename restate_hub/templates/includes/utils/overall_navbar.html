@@ -8,14 +8,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="{% url "home" %}">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url "about" %}">About</a></li>
                 {% if not request.user.is_authenticated or request.user.member_type == "buyer" or request.user.member_type == 'agent' %}
                 <li class="nav-item"><a class="nav-link" href="{% url "property_module:property-listing" %}">Listings</a></li>
                 {% elif request.user.is_authenticated and request.user.member_type == "seller" %}
                 <li class="nav-item"><a class="nav-link" href="{% url "property_module:property-mine" %}">My Property</a></li>
                 {% else %}
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
             </ul>
             <!-- Login & Signup buttons -->
             <div class="ms-3">

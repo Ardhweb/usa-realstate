@@ -17,9 +17,15 @@ from membership_module.models import MemberAddress
 from django.contrib import messages
 # Create your views here.
 def property_listing(request):
-    states = State.objects.all() # Get all objects for now.
-    context = {'states':states,}
-    return render(request,'property/listing.html',context)
+    states = State.objects.all()
+    context = {'states': states}
+    
+    if not request.user.is_authenticated:
+        messages.info(request, "Please sign up first and buy a membership plan to access advanced features.")
+        #return redirect('signup')  # or you can redirect to 'login' or a 'membership' page
+        return render(request, 'property/listing.html', context)
+    else:
+        return render(request, 'property/listing.html', context)
 
 @login_required()  # Ensures user is logged in
 def add_property(request):
@@ -59,13 +65,6 @@ def my_property_seller(request):
         return render(request, 'property/my_property.html', {'properties': properties})
     else:
         return render(request, "error/404.html")
-
-
-
-
-
-
-
 
 @login_required()
 def property_detail(request, property_id):

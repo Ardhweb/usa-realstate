@@ -10,6 +10,15 @@ label{
 {% block content %}
 
 <main class="container mt-4">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'warning' %}alert-warning{% elif message.tags == 'info' %}alert-info{% elif message.tags == 'success' %}alert-success{% else %}alert-primary{% endif %} alert-dismissible fade show {% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+  </div>
+{% endif %}
     <section class="hero text-center mb-4">
         <h1 class="text-primary fw-semibold">Property Listings</h1>
         <p>Find your dream home today.</p>
@@ -156,6 +165,7 @@ label{
 // Global variable to track current page
 let current_page = 1;
 let perpage = 10;
+var isAuthenticated = {% if request.user.is_authenticated and request.user.user_helcim_account.is_subscribed == True %} true {% else %} false {% endif %};
 
 async function updatePerPage(value) {
     perpage = 20// Update per-page value
@@ -209,6 +219,19 @@ async function fetchPropertiesbycity(page = 1, perpage) {
                     `;
                     tbody.appendChild(tr);
                 });
+
+
+                // If the user is not authenticated and the number of properties is 5 or less, display a message
+                if (!isAuthenticated) {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td colspan="3" class="text-center">
+                            <p><strong>You are not authenticated. To view more properties, please sign up and enroll in a buyer's membership plan.</strong></p>
+                           
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                }
 
                 // Update pagination buttons
                 updatePaginationButtons(data.previous, data.next);

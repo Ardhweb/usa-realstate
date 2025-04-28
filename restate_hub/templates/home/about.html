@@ -1,0 +1,681 @@
+about{% extends "base.html" %}
+{% load static %}
+{% block title %}<title>Dream Realty - About Us</title>{% endblock title %}
+
+{% block style %}
+/* Custom styles for Dream Realty about page */
+:root {
+    --primary-color: #2E7D32; /* Green from base.html */
+    --accent-color: #43A047; /* Lighter green from base.html */
+    --light-accent: #388E3C; /* Even lighter green */
+    --text-color: #2c3e50; /* Darker text from base.html */
+    --light-color: #f8f9fa; /* Light background from base.html */
+    --dark-color: #1B5E20; /* Darkest green */
+    --gradient-start: rgba(46, 125, 50, 0.7); /* Green gradient */
+    --gradient-end: rgba(46, 125, 50, 0.4); /* Green gradient */
+}
+
+/* Header banner for about page */
+.about-banner {
+    position: relative;
+    height: 50vh;
+    background: url('{% static "images/about-hero.jpg" %}') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.about-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+}
+
+.about-banner-content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    max-width: 800px;
+    padding: 0 20px;
+    margin: 0 auto;
+    text-align: center;
+    animation: fadeIn 1.2s ease-in-out forwards;
+}
+
+.about-banner-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-family: 'Playfair Display', serif;
+}
+
+.about-banner-content p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* About section styles */
+.about-section {
+    padding: 5rem 0;
+    background-color: white;
+}
+
+.about-intro {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-subtitle {
+    color: var(--accent-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+
+.about-intro p {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-color);
+}
+
+/* Mission and vision */
+.mission-vision {
+    background-color: rgba(248, 249, 250, 0.7);
+    padding: 5rem 0;
+}
+
+.mission-card, .vision-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 3rem;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.mission-card:hover, .vision-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mission-card h3, .vision-card h3 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.mission-card p, .vision-card p {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.card-icon {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+}
+
+/* History timeline */
+.history-section {
+    padding: 5rem 0;
+    background: linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('{% static "images/pattern-bg.jpg" %}');
+}
+
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: var(--accent-color);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -2px;
+}
+
+.timeline-item {
+    padding: 20px 40px;
+    position: relative;
+    width: 50%;
+    animation: fadeIn 1s ease-out;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    right: -10px;
+    background-color: white;
+    border: 4px solid var(--primary-color);
+    top: 22px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-item.left {
+    left: 0;
+}
+
+.timeline-item.right {
+    left: 50%;
+}
+
+.timeline-item.right::after {
+    left: -10px;
+}
+
+.timeline-content {
+    padding: 20px 30px;
+    background-color: white;
+    position: relative;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.timeline-year {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+}
+
+.timeline-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    color: var(--text-color);
+}
+
+.timeline-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+/* Team section */
+.team-section {
+    padding: 5rem 0;
+    background-color: white;
+}
+
+.team-cards {
+    margin-top: 3rem;
+}
+
+.team-card {
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.team-img-container {
+    position: relative;
+    overflow: hidden;
+    height: 300px;
+}
+
+.team-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover .team-img {
+    transform: scale(1.05);
+}
+
+.team-info {
+    padding: 25px;
+    text-align: center;
+}
+
+.team-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.team-position {
+    color: var(--accent-color);
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.team-bio {
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-link {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--light-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Stats section */
+.stats-section {
+    padding: 5rem 0;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+}
+
+.stats-item {
+    margin-bottom: 30px;
+}
+
+.stats-number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.stats-text {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.stats-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+/* CTA section */
+.about-cta-section {
+    padding: 5rem 0;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('{% static "images/cta-bg.jpg" %}') no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+
+.about-cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-cta-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.about-cta-text {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.btn-about-cta {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%) !important;
+    color: white !important;
+    padding: 14px 30px !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px;
+    transition: all 0.4s ease !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3) !important;
+    text-transform: uppercase;
+}
+
+.btn-about-cta:hover {
+    background: linear-gradient(135deg, var(--light-accent) 0%, var(--primary-color) 100%) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4) !important;
+}
+
+.btn-about-cta i {
+    margin-left: 5px;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-about-cta:hover i {
+    transform: translateX(3px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive fixes */
+@media (max-width: 992px) {
+    .timeline::after {
+        left: 31px;
+    }
+    
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+    
+    .timeline-item.right {
+        left: 0;
+    }
+    
+    .timeline-item.left::after,
+    .timeline-item.right::after {
+        left: 21px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about-banner-content h1 {
+        font-size: 2.8rem;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .mission-card, .vision-card {
+        padding: 2rem;
+        margin-bottom: 30px;
+    }
+    
+    .timeline-item {
+        padding-left: 60px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-banner-content h1 {
+        font-size: 2.3rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .about-banner {
+        height: 40vh;
+    }
+}
+{% endblock style %}
+
+{% block content %}
+<!-- Banner Section -->
+<div class="about-banner">
+    <div class="about-banner-content">
+        <h1>About Dream Realty</h1>
+        <p>Learn about our journey, our mission, and the team that makes it all possible.</p>
+    </div>
+</div>
+
+<!-- About Introduction Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-intro">
+            <p class="section-subtitle">Our Story</p>
+            <h2 class="section-title">Who We Are</h2>
+            <p>Founded in 2010, Dream Realty has grown from a small local agency to a trusted leader in the real estate market. Our commitment to excellence, integrity, and client satisfaction has allowed us to help thousands of families find their perfect homes. We believe that buying or selling a property should be an exciting journey, not a stressful process. That's why our team of dedicated professionals works tirelessly to ensure a seamless experience for every client.</p>
+            <br>
+            <p>At Dream Realty, we don't just sell properties – we help you find a place to create memories, build futures, and realize dreams. Our deep knowledge of the local market, combined with cutting-edge technology and personalized service, makes us the preferred choice for discerning clients.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Mission and Vision Section -->
+<section class="mission-vision">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="mission-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>To provide unparalleled real estate services with integrity, expertise, and dedication. We are committed to guiding our clients through every step of their property journey, ensuring they make informed decisions that align with their goals and dreams.</p>
+                    <p>We strive to leverage innovative technology, market insights, and personalized attention to create exceptional experiences for buyers, sellers, and investors alike.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="vision-card">
+                    <div class="card-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>To be the most trusted and respected real estate agency, known for transforming the way people buy, sell, and experience property. We envision a future where every client's real estate journey is seamless, transparent, and rewarding.</p>
+                    <p>We aim to set new standards in the industry through continuous innovation, sustainable practices, and a client-first approach that puts dreams within reach.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- History Timeline Section -->
+<section class="history-section">
+    <div class="container">
+        <div class="section-heading text-center mb-5">
+            <p class="section-subtitle">Our Journey</p>
+            <h2 class="section-title">Our History</h2>
+            <p class="mt-4">From humble beginnings to industry leadership, explore the key milestones in our company's evolution.</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-year">2010</div>
+                    <h3 class="timeline-title">Company Founded</h3>
+                    <p class="timeline-text">Dream Realty was established with just three agents and a vision to transform the real estate experience.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-year">2013</div>
+                    <h3 class="timeline-title">Expansion Begins</h3>
+                    <p class="timeline-text">Opened our second office and expanded our team to 15 agents, serving the wider metropolitan area.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-year">2016</div>
+                    <h3 class="timeline-title">Digital Transformation</h3>
+                    <p class="timeline-text">Launched our proprietary property matching platform, revolutionizing how clients discover their perfect homes.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-year">2019</div>
+                    <h3 class="timeline-title">National Recognition</h3>
+                    <p class="timeline-text">Received the prestigious "Agency of the Year" award and expanded to three new major cities.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <div class="timeline-year">2022</div>
+                    <h3 class="timeline-title">Sustainability Initiative</h3>
+                    <p class="timeline-text">Launched our eco-friendly property program, promoting sustainable housing solutions and green living.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <div class="timeline-year">2024</div>
+                    <h3 class="timeline-title">International Expansion</h3>
+                    <p class="timeline-text">Opened our first international office, bringing the Dream Realty experience to global clients.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <div class="section-heading text-center mb-5">
+            <p class="section-subtitle">Meet the Experts</p>
+            <h2 class="section-title">Our Team</h2>
+            <p class="mt-4">Dedicated professionals committed to making your real estate dreams come true.</p>
+        </div>
+        
+        <div class="row team-cards">
+
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="team-card">
+                    <div class="team-info">
+                        <h3 class="team-name">Tyson C</h3>
+                        <p class="team-position">Founder and CEO</p>
+                        <p class="team-bio">Tyson's financial expertise helps clients navigate the complex financial aspects of real estate investments and purchases.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-6">
+                <div class="stats-item">
+                    <div class="stats-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="stats-number">5,000+</div>
+                    <div class="stats-text">Properties Sold</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="stats-item">
+                    <div class="stats-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number">10,000+</div>
+                    <div class="stats-text">Happy Clients</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="stats-item">
+                    <div class="stats-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stats-number">25+</div>
+                    <div class="stats-text">Industry Awards</div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 col-6">
+                <div class="stats-item">
+                    <div class="stats-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="stats-number">15</div>
+                    <div class="stats-text">Office Locations</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="about-cta-section">
+    <div class="container">
+        <div class="about-cta-content">
+            <h2 class="about-cta-title">Ready to Find Your Dream Home?</h2>
+            <p class="about-cta-text">Let our team of experts guide you through your real estate journey. Whether you're buying, selling, or investing, we're here to help you every step of the way.</p>
+            <a href="#" class="btn btn-about-cta">Contact Us Today <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+{% endblock content %}

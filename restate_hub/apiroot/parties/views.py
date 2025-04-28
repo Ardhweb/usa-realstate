@@ -10,48 +10,76 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import PermissionDenied
-
+from transactions_module.models import HelcimInfo
 
 class PropertyList(APIView):
     authentication_classes = []  # No automatic authentication
     permission_classes = [AllowAny]  # Allow all users (authenticated or not)
 
     """
-    List of all authors.
-    GET /authors/
+    List of filtered properties by city in decsending order.
+    GET /Propertis list by  user's selected city/
     """
     @swagger_auto_schema(
-        operation_description="This endpoint returns a list of all authors objects from records that we have.",
-        responses={200: "Return all authors list via GET Method."}
+        operation_description="This endpoint returns a list of all propertiesinfo objects from records that we have.",
+        responses={200: "Return all propertiesinfo list via GET Method."}
     )
-    def get(self, request, format=None):
-        get_city = request.query_params.get('city', None)  # Get city from query params
-        get_pagesize = request.query_params.get('perpage',10)
+    # def get(self, request, format=None):
+    #     get_city = request.query_params.get('city', None)  # Get city from query params
+    #     get_pagesize = request.query_params.get('perpage',10)
 
-        # Validate before conversion
-        if get_pagesize.isdigit():  
+    #     # Validate before conversion
+    #     if get_pagesize.isdigit():  
+    #         get_pagesize = int(get_pagesize)
+    #     else:
+    #         get_pagesize = 10  # Default fallback
+        
+    #     print(get_pagesize)
+    #     properties = PropertiesInfo.objects.all()
+
+    #     if get_city:
+    #         properties = properties.filter(city__iexact=get_city)  # Case-insensitive filter
+    #     # Limit to max 5 properties if user is not authenticated
+    #     if not request.user.is_authenticated or request.user.user_helcim_account.is_subscribed == False:
+    #         properties = properties[:5]
+    #     # Implement pagination
+    #     paginator = PageNumberPagination()
+    #     paginator.page_size = get_pagesize # Set default page size
+    #     print()
+    #     paginated_queryset = paginator.paginate_queryset(properties, request)
+
+    #     serializer = PropertiesInfoSerializer(paginated_queryset, many=True)
+    #     return paginator.get_paginated_response(serializer.data)
+    
+    def get(self, request, format=None):
+        get_city = request.query_params.get('city', None)
+        get_pagesize = request.query_params.get('perpage', 10)
+    
+        if str(get_pagesize).isdigit():
             get_pagesize = int(get_pagesize)
         else:
-            get_pagesize = 10  # Default fallback
-        
-        print(get_pagesize)
-        properties = PropertiesInfo.objects.all()
-
-        if get_city:
-            properties = properties.filter(city__iexact=get_city)  # Case-insensitive filter
-        
-
-           
-
-      
-         # Implement pagination
+            get_pagesize = 10
+    
+        if not get_city:
+            return Response({"detail": "City parameter is required."}, status=400)
+    
+        # Always filter and order by latest created
+        properties = PropertiesInfo.objects.filter(city__iexact=get_city).order_by('-created_at')
+    
         paginator = PageNumberPagination()
-        paginator.page_size = get_pagesize # Set default page size
-        print()
+        paginator.page_size = get_pagesize
+    
+        if not request.user.is_authenticated or not hasattr(request.user, 'user_helcim_account') or not request.user.user_helcim_account.is_subscribed:
+            properties = properties[:5]
+    
         paginated_queryset = paginator.paginate_queryset(properties, request)
-
         serializer = PropertiesInfoSerializer(paginated_queryset, many=True)
         return paginator.get_paginated_response(serializer.data)
+
+
+       
+      
+
     #How to consume this :GET /api/properties/?city=New York
 
 

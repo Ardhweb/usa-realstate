@@ -433,33 +433,22 @@
         opacity: 1;
     }
 }
+
 {% endblock style %}
 
 {% block content %}
-  <div class="banner">
+<div class="banner">
     <div class="banner-text">
-        <h2>Find Your Dream Home</h2>
-        <div class="search-bar">
-            <div class="row">
-                <div class="col-md-5">
-                    <input type="text" class="form-control" placeholder="Enter location">
-                </div>
-                <div class="col-md-4">
-                    <select class="form-select">
-                        <option value="">Property Type</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="house">House</option>
-                        <option value="commercial">Commercial</option>
-                        <option value="land">Land</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <button class="btn btn-search w-100">Search <i class="fas fa-search"></i></button>
-                </div>
-            </div>
+      <h2>Find Your Dream Home</h2>
+      <div class="auth-buttons">
+        <div class="row">
+          <div class="col-md-5">
+            <p class="welcome-text">Welcome to Dream Realty, where your perfect home awaits.</p>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
 <div class="container">
     <div class="description">
@@ -473,62 +462,6 @@
         </p>
     </div>
 
-    <div class="form-section">
-        <h5>Where would you like to find your next home?</h5>
-        <label for="cities">You can select up to 3 cities in your surrounding area:</label>
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="City 1">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="City 2">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="City 3">
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="state">State:</label>
-                <select class="form-select">
-                    <option value="">Select State</option>
-                    <option value="TX">TX</option>
-                    <option value="FL">FL</option>
-                    <option value="CA">CA</option>
-                    <option value="NY">NY</option>
-                </select>
-            </div>
-            <div class="col-md-6">
-                <label for="propertyType">Select Property Type:</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="apartment">
-                    <label class="form-check-label" for="apartment">Apartment</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="house">
-                    <label class="form-check-label" for="house">House</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="commercial">
-                    <label class="form-check-label" for="commercial">Commercial</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="land">
-                    <label class="form-check-label" for="land">Land</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="all">
-                    <label class="form-check-label" for="all">All</label>
-                </div>
-            </div>
-        </div>
-
-        <label for="otherPropertyType">Looking for something specific? Enter it below:</label>
-        <input type="text" class="form-control mb-3" placeholder="Enter property type">
-
-        <button class="btn btn-search w-100">Show Me Properties <i class="fas fa-search"></i></button>
-    </div>
 
     <div class="section-heading">
         <h2 class="section-title">Featured Properties</h2>
