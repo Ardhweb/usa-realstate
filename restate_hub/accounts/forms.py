@@ -5,6 +5,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from .validators import validate_email_domain  # Import the validator
 
+
 class LoginForm(forms.Form):
     username_or_email = forms.CharField(label='Username or Email',widget=forms.TextInput(attrs={'class':'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
@@ -54,5 +55,6 @@ class SignupForm(forms.ModelForm):
 
 class OTPVerificationForm(forms.Form):
     otp = forms.IntegerField(widget=forms.HiddenInput(attrs={'id': 'passing-navel', 'class': 'form-control d-none',}))
+
 
 

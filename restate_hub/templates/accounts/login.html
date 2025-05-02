@@ -40,8 +40,13 @@
                     Log In <i class="ms-2 fas fa-sign-in-alt"></i>
                 </button>
                 <p class="mt-3 text-center">
-                    Don't have an account? <a href="{% url "accounts:register" %}" class="login-link text-primary text-decoration-underline">Sign up</a>
+                    Don't have an account? <a href="{% url "accounts:register" %}" class="login-link text-primary text-decoration-none">Sign up</a>
                 </p>
+
+                <p class="mt-3 text-center">
+                  <a href="{% url "accounts:password_reset" %}" class="login-link text-primary text-decoration-none">Forgot Password</a>
+                </p>
+               
             </form>
         </div>
     </div>

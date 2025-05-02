@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*']
 
 
 # Application definition
@@ -262,3 +262,4 @@ HELCIM_API_URL = os.getenv("HELCIM_API_URL")
 # X_FRAME_OPTIONS = os.getenv('X_FRAME_OPTIONS')
 
 # Replace with your actual PostgreSQL connection
+PASSWORD_RESET_TIMEOUT = int(os.getenv("PASSWORD_RESET_TIMEOUT", 14400))

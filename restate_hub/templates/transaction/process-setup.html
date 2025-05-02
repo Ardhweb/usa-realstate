@@ -14,25 +14,35 @@
                 <div class="card text-center p-4 shadow-sm 
                     {% if request.user.member_type == plans.member_type %}border border-primary {% else %}  opacity-50 pointer-events-none{% endif %}">
                     <h3 class="fw-bold text-capitalize">{{ plans.member_type }} Plan</h3>
-                    <p class="fs-5 text-muted">
+                    <p class="fs-6  text-muted  text-wrap" style="font-weight:400; width: 16rem;">
                         
-                        {% if request.user.member_type == 'buyer' %}
+                        {% if plans.member_type == 'buyer' %}
                         Connect with our great community  and find your best deal today.
-                        {% elif request.user.member_type == 'seller' %}
+                        {% elif plans.member_type == 'seller' %}
                         Find the best deal for your property.
-                        {% elif request.user.member_type == 'agent' %}
+                        {% elif plans.member_type == 'agent' %}
                         Let's connect with community with great oppertunites.
                         {% else %}
                         Bring your great dream  true today with our community help.
                         {% endif %}</p>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-check-circle-fill text-success"></i> No Ads</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i> No Spam</li>
                         <li><i class="bi bi-check-circle-fill text-success"></i> Search and Find</li>
-                        <li><i class="bi bi-check-circle-fill text-success"></i> Hassle Free</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i> Easy going</li>
+                        {% if plans.member_type  == 'buyer' %}
                         <li><i class="bi bi-check-circle-fill text-success"></i>Premium location's</li>
+                        {% else %}
+                        <li><i class="bi bi-check-circle-fill text-success"></i>Make ease todo  your business.</li>
+                        <li><i class="bi bi-check-circle-fill text-success"></i>List your property effortlessly today</li>
+                        {% endif %}
                         <li><i class="bi bi-check-circle-fill text-success"></i> One Time Setup ${{plans.setup_fee}}</li>
                     </ul>
+                    {% if plans.member_type == 'seller' %}
+                    <h2 class="fw-bold">${{plans.setup_fee}}<span class="fs-6 text-muted">/ one time only</span></h2>
+                    {% else %}
                     <h2 class="fw-bold">${{plans.monthly_fee}}<span class="fs-6 text-muted">/month</span></h2>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

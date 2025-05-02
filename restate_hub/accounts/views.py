@@ -3,7 +3,7 @@ from django.http import request
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout 
-from .forms import LoginForm, SignupForm ,OTPVerificationForm                                
+from .forms import LoginForm, SignupForm ,OTPVerificationForm 
 from django.contrib import auth, messages
 from accounts.models import SingleFactorEmailOTP
 import secrets
@@ -17,6 +17,8 @@ from agent_module.models import Agents
 from django.db import transaction
 from transactions_module.helcim import create_customer_helcim
 from transactions_module.models import HelcimInfo
+# views.py
+
 
 
 def generate_secure_otp(length=6):
@@ -80,4 +82,6 @@ def new_user_register(request):
         user_form = SignupForm()
     
     return render(request, 'accounts/register.html', {'user_form': user_form})
+
+
 
