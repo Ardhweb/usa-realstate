@@ -18,7 +18,7 @@ from django.db import transaction
 from transactions_module.helcim import create_customer_helcim
 from transactions_module.models import HelcimInfo
 # views.py
-
+from django.urls import reverse_lazy
 
 
 def generate_secure_otp(length=6):
@@ -45,6 +45,8 @@ def user_login(request):
                 elif user.is_active and user.is_email_verified==False:
                     login(request, user)
                     #return to property listing
+                    if user.is_superuser:
+                        return redirect(reverse_lazy('admin:index'))
                     return redirect("membership_module:member_profile")
                 else:
                     return HttpResponse('Disabled account')

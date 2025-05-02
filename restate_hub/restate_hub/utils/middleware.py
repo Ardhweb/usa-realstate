@@ -2,57 +2,6 @@ from django.urls import resolve
 from django.http import HttpResponseNotFound
 from django.conf import settings
 from django.shortcuts import render,redirect
-
-'''
-class RoleBasedAccessMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        # Allow superusers to access everything
-        if request.user.is_authenticated and request.user.is_superuser:
-            return self.get_response(request)
-        
-        # Handle anonymous users
-        if not request.user.is_authenticated:
-            common_restricted_urls = getattr(settings, "COMMON_RESTRICTED_URLS", [])
-            resolver_match = resolve(request.path)
-            url_name = resolver_match.url_name if resolver_match else None
-
-            if url_name in common_restricted_urls:
-               return render(request, 'error/404.html')
-
-        return self.get_response(request)
-
-
-
-        # Get the current view's URL name
-        resolver_match = resolve(request.path)
-        url_name = resolver_match.url_name if resolver_match else None
-
-        if url_name:
-            # Common restricted URLs for all users
-            common_restricted_urls = getattr(settings, "COMMON_RESTRICTED_URLS", [])
-            if url_name in common_restricted_urls:
-                return render(request, 'error/404.html')
-
-            # Role-based restricted URLs using match-case
-            match request.user.member_type:
-                case "seller":
-                    restricted_urls = getattr(settings, "SELLER_RESTRICTED_URLS", [])
-                case "buyer":
-                    restricted_urls = getattr(settings, "BUYER_RESTRICTED_URLS", [])
-                case "agent":
-                    restricted_urls = getattr(settings, "AGENT_RESTRICTED_URLS", [])
-                case _:
-                    restricted_urls = []
-            
-            if url_name in restricted_urls:
-                return render(request, 'error/404.html')
-        
-        return self.get_response(request)
-'''
-
 from django.urls import resolve
 from django.conf import settings
 from django.shortcuts import render
@@ -96,3 +45,20 @@ class RoleBasedAccessMiddleware:
             return render(request, 'error/404.html')
 
         return self.get_response(request)
+
+
+# core/middleware.py
+from django.http import Http404
+
+class AdminAccessMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Restrict access to Django admin
+        if request.path.startswith('/admin/'):
+            user = request.user
+            if not user.is_authenticated or not (user.is_staff or user.is_superuser):
+                raise Http404("Page not found")
+        return self.get_response(request)
+

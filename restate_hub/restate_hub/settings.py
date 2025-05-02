@@ -75,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'restate_hub.utils.middleware.RoleBasedAccessMiddleware',
+    'restate_hub.utils.middleware.AdminAccessMiddleware',
 ]
 
 ROOT_URLCONF = 'restate_hub.urls'
